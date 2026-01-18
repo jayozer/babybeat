@@ -1,0 +1,504 @@
+{
+  "project": "BabyBeat",
+  "branchName": "ralph/baby-kick-counter-mvp",
+  "description": "Baby Kick Beat Counter - A PWA that helps expectant parents log fetal movements with a beat-counter interface, 2-hour session window targeting 10 movements, with calendar history",
+  "userStories": [
+    {
+      "id": "US-001",
+      "title": "Initialize Next.js project with TypeScript and dependencies",
+      "description": "As a developer, I need the project scaffolded with the correct tech stack.",
+      "acceptanceCriteria": [
+        "Next.js 14+ project initialized with TypeScript",
+        "Dependencies installed: dexie, date-fns, uuid",
+        "Dev dependencies: vitest, @testing-library/react, playwright",
+        "Basic folder structure: src/app, src/components, src/lib, src/types",
+        "Tailwind CSS configured",
+        "Typecheck passes"
+      ],
+      "priority": 1,
+      "passes": true,
+      "notes": "Project initialized with Next.js 15, TypeScript, Tailwind CSS, and all required dependencies"
+    },
+    {
+      "id": "US-002",
+      "title": "Create domain types for sessions and events",
+      "description": "As a developer, I need TypeScript types for the data model.",
+      "acceptanceCriteria": [
+        "KickSession type with: id, createdAt, startedAt, endedAt, status, targetCount, timeLimitSec, kickCount, durationSec, strengthRating, notes, timezone, schemaVersion",
+        "KickEvent type with: id, sessionId, occurredAt, ordinal, source",
+        "UserPreferences type with: defaultTargetCount, defaultTimeLimitSec, soundEnabled, vibrationEnabled, keepScreenAwake",
+        "SessionStatus union type: 'idle' | 'active' | 'paused' | 'complete' | 'timeout' | 'ended_early'",
+        "Types exported from src/types/index.ts",
+        "Typecheck passes"
+      ],
+      "priority": 2,
+      "passes": true,
+      "notes": "All types created with proper documentation and default values"
+    },
+    {
+      "id": "US-003",
+      "title": "Set up IndexedDB with Dexie schema",
+      "description": "As a developer, I need persistent storage for sessions and events.",
+      "acceptanceCriteria": [
+        "Dexie database class created in src/lib/db.ts",
+        "sessions table with indexes on createdAt, startedAt, status",
+        "events table with indexes on sessionId, occurredAt",
+        "prefs table with single 'prefs' key",
+        "Schema version 1 defined",
+        "Database instance exported",
+        "Typecheck passes"
+      ],
+      "priority": 3,
+      "passes": true,
+      "notes": "Dexie database configured with all required tables and indexes"
+    },
+    {
+      "id": "US-004",
+      "title": "Implement session service with CRUD operations",
+      "description": "As a developer, I need functions to create, read, update sessions.",
+      "acceptanceCriteria": [
+        "createSession() creates new session with defaults (target=10, timeLimit=7200)",
+        "getSession(id) retrieves session by ID",
+        "updateSession(id, updates) updates session fields",
+        "getAllSessions() returns all sessions ordered by createdAt desc",
+        "getSessionsByDate(date) returns sessions for a specific day",
+        "Unit tests for all functions",
+        "Typecheck passes",
+        "Tests pass"
+      ],
+      "priority": 4,
+      "passes": true,
+      "notes": "15 unit tests passing for all CRUD operations"
+    },
+    {
+      "id": "US-005",
+      "title": "Implement kick event service",
+      "description": "As a developer, I need functions to manage kick events.",
+      "acceptanceCriteria": [
+        "registerKick(sessionId) creates KickEvent with timestamp and ordinal",
+        "getKicksForSession(sessionId) returns all kicks ordered by ordinal",
+        "deleteLastKick(sessionId) removes most recent kick (for undo)",
+        "Each operation writes to IndexedDB immediately",
+        "Unit tests for all functions",
+        "Typecheck passes",
+        "Tests pass"
+      ],
+      "priority": 5,
+      "passes": true,
+      "notes": "16 unit tests passing for all kick operations"
+    },
+    {
+      "id": "US-006",
+      "title": "Implement session state machine logic",
+      "description": "As a developer, I need the core session lifecycle logic.",
+      "acceptanceCriteria": [
+        "startSession() transitions from idle to active, sets startedAt",
+        "Session auto-completes when kickCount reaches targetCount",
+        "Session times out when elapsed >= timeLimitSec",
+        "endSessionEarly() marks session as ended_early",
+        "pauseSession() and resumeSession() handle paused state",
+        "State transitions update session in IndexedDB",
+        "Unit tests for state transitions",
+        "Typecheck passes",
+        "Tests pass"
+      ],
+      "priority": 6,
+      "passes": true,
+      "notes": "30 unit tests for all state transitions and time calculations"
+    },
+    {
+      "id": "US-007",
+      "title": "Create TapPad component with animation",
+      "description": "As a user, I want a large tap target that responds visually to my taps.",
+      "acceptanceCriteria": [
+        "TapPad component fills most of screen width",
+        "Visual feedback on tap (scale or ripple animation)",
+        "onClick handler prop for registering taps",
+        "Accessible: focusable, keyboard operable (Enter/Space)",
+        "Touch-friendly: minimum 48px tap target",
+        "Typecheck passes",
+        "Verify in browser"
+      ],
+      "priority": 7,
+      "passes": true,
+      "notes": "Component with scale animation, focus ring, keyboard support, aria-label"
+    },
+    {
+      "id": "US-008",
+      "title": "Create CountDisplay component",
+      "description": "As a user, I want to see my current kick count clearly.",
+      "acceptanceCriteria": [
+        "CountDisplay shows 'X / 10' format",
+        "Large, readable font size",
+        "Props: currentCount, targetCount",
+        "Accessible: aria-live region for screen readers",
+        "Typecheck passes",
+        "Verify in browser"
+      ],
+      "priority": 8,
+      "passes": true,
+      "notes": "Large text-7xl display with aria-live and target reached indicator"
+    },
+    {
+      "id": "US-009",
+      "title": "Create TimerDisplay component",
+      "description": "As a user, I want to see elapsed and remaining time.",
+      "acceptanceCriteria": [
+        "TimerDisplay shows elapsed time in HH:MM:SS format",
+        "Shows remaining time out of 2:00:00",
+        "Updates every second during active session",
+        "Props: startedAt, timeLimitSec, isPaused",
+        "Uses requestAnimationFrame or setInterval",
+        "Typecheck passes",
+        "Verify in browser"
+      ],
+      "priority": 9,
+      "passes": true,
+      "notes": "Uses setInterval with 1s updates, shows warning colors for last 10 min"
+    },
+    {
+      "id": "US-010",
+      "title": "Create SessionControls component",
+      "description": "As a user, I want controls to undo, pause, and end my session.",
+      "acceptanceCriteria": [
+        "Undo button (disabled when count is 0)",
+        "Pause/Resume toggle button",
+        "End Session button with confirmation dialog",
+        "Props: onUndo, onPause, onResume, onEnd, canUndo, isPaused",
+        "Buttons have clear labels and icons",
+        "Typecheck passes",
+        "Verify in browser"
+      ],
+      "priority": 10,
+      "passes": true,
+      "notes": "Includes confirmation modal, emoji icons, disabled states"
+    },
+    {
+      "id": "US-011",
+      "title": "Create main session page with React context",
+      "description": "As a user, I want the main counting screen that integrates all components.",
+      "acceptanceCriteria": [
+        "SessionContext provides active session state",
+        "Main page at / route shows TapPad, CountDisplay, TimerDisplay, SessionControls",
+        "Tapping TapPad registers kick and updates count",
+        "Undo removes last kick",
+        "Session starts on first tap (auto-start)",
+        "Typecheck passes",
+        "Verify in browser"
+      ],
+      "priority": 11,
+      "passes": true,
+      "notes": "SessionContext with reducer, auto-start on first tap, IndexedDB integration"
+    },
+    {
+      "id": "US-012",
+      "title": "Implement auto-complete at 10 kicks",
+      "description": "As a user, I want my session to automatically finish when I reach 10 kicks.",
+      "acceptanceCriteria": [
+        "Session status changes to 'complete' at 10 kicks",
+        "endedAt timestamp recorded",
+        "durationSec calculated (endedAt - startedAt)",
+        "UI transitions to summary view",
+        "Typecheck passes",
+        "Verify in browser"
+      ],
+      "priority": 12,
+      "passes": true,
+      "notes": "Auto-complete triggered in SessionContext tap() function"
+    },
+    {
+      "id": "US-013",
+      "title": "Implement auto-timeout at 2 hours",
+      "description": "As a user, I want to be notified if 2 hours pass without reaching 10 kicks.",
+      "acceptanceCriteria": [
+        "Session status changes to 'timeout' when elapsed >= 7200 seconds",
+        "Timer checks elapsed time and triggers timeout",
+        "UI transitions to timeout guidance view",
+        "Typecheck passes",
+        "Verify in browser"
+      ],
+      "priority": 13,
+      "passes": true,
+      "notes": "Periodic timeout check in SessionContext useEffect, shows guidance message"
+    },
+    {
+      "id": "US-014",
+      "title": "Create SessionSummaryModal for completed sessions",
+      "description": "As a user, I want to see a summary when my session completes.",
+      "acceptanceCriteria": [
+        "Modal shows: duration (minutes to 10), start time, end time",
+        "Shows kick count achieved",
+        "Close button to dismiss modal",
+        "Option to start a new session",
+        "Typecheck passes",
+        "Verify in browser"
+      ],
+      "priority": 14,
+      "passes": true,
+      "notes": "SessionSummaryModal displays duration, kick count, start/end times with Start New Session and Close buttons"
+    },
+    {
+      "id": "US-015",
+      "title": "Create timeout guidance modal",
+      "description": "As a user, I want guidance when I don't reach 10 kicks in 2 hours.",
+      "acceptanceCriteria": [
+        "Modal shows count achieved and elapsed time",
+        "Shows guidance: 'Try techniques to encourage movement' and 'Contact your provider if concerned'",
+        "Non-alarmist, supportive tone",
+        "Option to start a new session",
+        "Typecheck passes",
+        "Verify in browser"
+      ],
+      "priority": 15,
+      "passes": true,
+      "notes": "Timeout guidance section in modal with supportive bullet points and provider contact suggestion"
+    },
+    {
+      "id": "US-016",
+      "title": "Add strength rating to session summary",
+      "description": "As a user, I want to optionally rate movement strength after a session.",
+      "acceptanceCriteria": [
+        "StrengthRatingSelector component with 1-5 scale",
+        "Displayed in SessionSummaryModal",
+        "Rating saved to session.strengthRating",
+        "Optional - can skip",
+        "Typecheck passes",
+        "Verify in browser"
+      ],
+      "priority": 16,
+      "passes": true,
+      "notes": "1-5 strength rating buttons with toggle selection, saved via saveSessionDetails"
+    },
+    {
+      "id": "US-017",
+      "title": "Add notes field to session summary",
+      "description": "As a user, I want to add optional notes to my session.",
+      "acceptanceCriteria": [
+        "NotesEditor component (textarea)",
+        "Displayed in SessionSummaryModal",
+        "Notes saved to session.notes",
+        "Optional - can leave blank",
+        "Typecheck passes",
+        "Verify in browser"
+      ],
+      "priority": 17,
+      "passes": true,
+      "notes": "Textarea for optional notes in modal, saved via saveSessionDetails"
+    },
+    {
+      "id": "US-018",
+      "title": "Add tap feedback (sound and vibration)",
+      "description": "As a user, I want audio/haptic feedback when I tap.",
+      "acceptanceCriteria": [
+        "Optional click sound on tap (Web Audio API)",
+        "Optional vibration on tap (Vibration API where supported)",
+        "Feedback respects user preferences",
+        "Graceful fallback if APIs not available",
+        "Typecheck passes",
+        "Verify in browser"
+      ],
+      "priority": 18,
+      "passes": true,
+      "notes": "Web Audio API click sound, Vibration API, PreferencesContext for settings, graceful fallback"
+    },
+    {
+      "id": "US-019",
+      "title": "Create CalendarView component",
+      "description": "As a user, I want to see a monthly calendar showing which days I tracked.",
+      "acceptanceCriteria": [
+        "Month grid view with day cells",
+        "Days with sessions show dot/badge indicator",
+        "Different indicator for complete vs timeout sessions",
+        "Navigate between months (prev/next)",
+        "Click day to view sessions for that day",
+        "Typecheck passes",
+        "Verify in browser"
+      ],
+      "priority": 19,
+      "passes": true,
+      "notes": "Calendar with month navigation, colored dots for complete/timeout/ended sessions, legend"
+    },
+    {
+      "id": "US-020",
+      "title": "Create SessionList component",
+      "description": "As a user, I want to see a list of sessions for a selected day.",
+      "acceptanceCriteria": [
+        "Shows all sessions for selected date",
+        "Each item shows: start time, duration, status (complete/timeout/ended_early)",
+        "Click session to view details",
+        "Empty state when no sessions for day",
+        "Typecheck passes",
+        "Verify in browser"
+      ],
+      "priority": 20,
+      "passes": true,
+      "notes": "Session list with status badges, links to detail page, empty state"
+    },
+    {
+      "id": "US-021",
+      "title": "Create history page with calendar and session list",
+      "description": "As a user, I want a history page to browse past sessions.",
+      "acceptanceCriteria": [
+        "Route at /history",
+        "CalendarView at top",
+        "SessionList below showing selected day's sessions",
+        "Defaults to current day",
+        "Navigation back to main counter",
+        "Typecheck passes",
+        "Verify in browser"
+      ],
+      "priority": 21,
+      "passes": true,
+      "notes": "/history route with calendar and session list, link back to counter"
+    },
+    {
+      "id": "US-022",
+      "title": "Create session detail page",
+      "description": "As a user, I want to view details of a past session.",
+      "acceptanceCriteria": [
+        "Route at /session/[id]",
+        "Shows session metadata: date, time, duration, status",
+        "Shows kick timestamps list with intervals between kicks",
+        "Shows strength rating and notes if present",
+        "Navigation back to history",
+        "Typecheck passes",
+        "Verify in browser"
+      ],
+      "priority": 22,
+      "passes": true,
+      "notes": "/session/[id] route with metadata, kick timeline with intervals, notes display"
+    },
+    {
+      "id": "US-023",
+      "title": "Create onboarding modal with how-to-count instructions",
+      "description": "As a new user, I want to learn how to count kicks.",
+      "acceptanceCriteria": [
+        "Modal shown on first app visit (check localStorage flag)",
+        "Steps: choose a time, get comfortable, start timer, count to 10, record minutes",
+        "Explains what kick counting is and why it's useful",
+        "Dismiss button sets 'onboarded' flag",
+        "Can be re-accessed from Info page",
+        "Typecheck passes",
+        "Verify in browser"
+      ],
+      "priority": 23,
+      "passes": true,
+      "notes": "4-step onboarding modal with progress dots, skip option, localStorage flag"
+    },
+    {
+      "id": "US-024",
+      "title": "Create Info page with educational content and disclaimer",
+      "description": "As a user, I want to access educational information anytime.",
+      "acceptanceCriteria": [
+        "Route at /info",
+        "How-to-count instructions",
+        "Escalation guidance: contact provider if movements change or can't reach 10 in 2 hours",
+        "Disclaimer: educational only, not diagnosis/treatment",
+        "Link to re-view onboarding",
+        "Typecheck passes",
+        "Verify in browser"
+      ],
+      "priority": 24,
+      "passes": true,
+      "notes": "/info route with how-to-count, provider guidance, tips, disclaimer, tutorial link"
+    },
+    {
+      "id": "US-025",
+      "title": "Create Settings page",
+      "description": "As a user, I want to customize my preferences.",
+      "acceptanceCriteria": [
+        "Route at /settings",
+        "Toggle for sound enabled/disabled",
+        "Toggle for vibration enabled/disabled",
+        "Toggle for keep screen awake",
+        "Settings saved to IndexedDB prefs table",
+        "Settings persist across sessions",
+        "Typecheck passes",
+        "Verify in browser"
+      ],
+      "priority": 25,
+      "passes": true,
+      "notes": "/settings route with toggle switches for sound, vibration, screen wake"
+    },
+    {
+      "id": "US-026",
+      "title": "Add app navigation header",
+      "description": "As a user, I want to navigate between app sections.",
+      "acceptanceCriteria": [
+        "Header/nav component with links: Counter, History, Settings, Info",
+        "Current page highlighted",
+        "Visible on all pages",
+        "Mobile-friendly (hamburger or bottom nav)",
+        "Typecheck passes",
+        "Verify in browser"
+      ],
+      "priority": 26,
+      "passes": true,
+      "notes": "BottomNav component with 4 nav items, current page highlight, safe-area support"
+    },
+    {
+      "id": "US-027",
+      "title": "Implement session recovery on page reload",
+      "description": "As a user, I want my active session to persist if I refresh the page.",
+      "acceptanceCriteria": [
+        "On app start, check for session with status='active' or 'paused'",
+        "If found, restore session state and resume timer",
+        "Timer continues from where it left off (accounting for elapsed time)",
+        "User can continue tapping",
+        "Typecheck passes",
+        "Verify in browser"
+      ],
+      "priority": 27,
+      "passes": true,
+      "notes": "SessionContext loadActiveSession checks for active/paused sessions on mount"
+    },
+    {
+      "id": "US-028",
+      "title": "Add beforeunload warning during active session",
+      "description": "As a user, I want a warning if I try to close the tab during a session.",
+      "acceptanceCriteria": [
+        "beforeunload event handler when session is active",
+        "Browser shows 'Leave site?' confirmation",
+        "Handler removed when session ends",
+        "Typecheck passes",
+        "Verify in browser"
+      ],
+      "priority": 28,
+      "passes": true,
+      "notes": "useBeforeUnload hook with cleanup on session end"
+    },
+    {
+      "id": "US-029",
+      "title": "Implement Wake Lock to keep screen on",
+      "description": "As a user, I want the screen to stay on during my counting session.",
+      "acceptanceCriteria": [
+        "Request Wake Lock API when session is active",
+        "Release lock when session ends",
+        "Respect user preference (keepScreenAwake setting)",
+        "Graceful fallback if API not supported",
+        "Typecheck passes",
+        "Verify in browser"
+      ],
+      "priority": 29,
+      "passes": true,
+      "notes": "useWakeLock hook respects preferences, re-requests on visibility change"
+    },
+    {
+      "id": "US-030",
+      "title": "Configure PWA with service worker and manifest",
+      "description": "As a user, I want to install the app and use it offline.",
+      "acceptanceCriteria": [
+        "next-pwa or similar configured",
+        "manifest.json with app name, icons, theme color",
+        "Service worker caches app shell and static assets",
+        "App works offline (can load and use with no network)",
+        "Install prompt appears on supported browsers",
+        "Typecheck passes",
+        "Verify in browser"
+      ],
+      "priority": 30,
+      "passes": true,
+      "notes": "manifest.json, sw.js with network-first caching, ServiceWorkerRegistration component"
+    }
+  ]
+}
