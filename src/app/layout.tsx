@@ -27,7 +27,7 @@ export const metadata: Metadata = {
     siteName: "Baby Kick Count",
     images: [
       {
-        url: "/og-image.png",
+        url: "/baby_kick_count_carousel.png",
         width: 1200,
         height: 630,
         alt: "Baby Kick Count - Track your baby's movements gently",
@@ -40,7 +40,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Baby Kick Count",
     description: "A gentle, calming app to help expectant parents track fetal movements during pregnancy",
-    images: ["/og-image.png"],
+    images: ["/baby_kick_count_carousel.png"],
   },
   appleWebApp: {
     capable: true,
@@ -71,11 +71,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className="h-full">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased pb-16`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased h-full flex flex-col`}
       >
-        <Providers>{children}</Providers>
+        <div className="flex-1 overflow-y-auto">
+          <Providers>{children}</Providers>
+        </div>
         <BottomNav />
         <ServiceWorkerRegistration />
       </body>
