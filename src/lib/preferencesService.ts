@@ -16,8 +16,9 @@ export async function getPreferences(): Promise<UserPreferences> {
   if (!stored) {
     return { ...DEFAULT_PREFERENCES };
   }
-  // Merge with defaults to handle any new fields
-  const { id: _id, ...prefs } = stored;
+  // Merge with defaults to handle any new fields (exclude id from result)
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { id, ...prefs } = stored;
   return { ...DEFAULT_PREFERENCES, ...prefs };
 }
 
