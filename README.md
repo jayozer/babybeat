@@ -3,6 +3,7 @@
 A gentle, calming web app to help expectant parents track fetal movements during pregnancy.
 
 [![Live Demo](https://img.shields.io/badge/Live%20Demo-babykickcount-5a8f5a?style=for-the-badge&logo=vercel&logoColor=white)](https://babykickcount.com)
+[![Read on Medium](https://img.shields.io/badge/Read%20on-Medium-000000?style=for-the-badge&logo=medium&logoColor=white)](https://jayozer.medium.com/building-a-pregnancy-app-with-ai-assisted-development-753800d07657)
 
 ## About
 
