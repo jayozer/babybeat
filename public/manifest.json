@@ -1,6 +1,6 @@
 {
-  "name": "Baby Kick Beat Counter",
-  "short_name": "BabyBeat",
+  "name": "Baby Kick Count",
+  "short_name": "KickCount",
   "description": "Track fetal movements with a beat-counter interface",
   "start_url": "/",
   "display": "standalone",

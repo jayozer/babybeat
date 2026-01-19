@@ -16,13 +16,13 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Baby Kick Beat Counter",
+  title: "Baby Kick Count",
   description: "Track fetal movements with a beat-counter interface",
   manifest: "/manifest.json",
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
-    title: "BabyBeat",
+    title: "Baby Kick Count",
   },
   icons: {
     icon: [

@@ -55,7 +55,7 @@ export function TapPad({ onClick, disabled = false }: TapPadProps) {
 
     // Trigger sound and/or vibration feedback
     triggerTapFeedback({
-      soundEnabled: preferences.soundEnabled,
+      soundOption: preferences.soundOption,
       vibrationEnabled: preferences.vibrationEnabled,
     });
 
@@ -66,7 +66,7 @@ export function TapPad({ onClick, disabled = false }: TapPadProps) {
     setTimeout(() => {
       setIsPressed(false);
     }, 200);
-  }, [onClick, disabled, addRipple, preferences.soundEnabled, preferences.vibrationEnabled]);
+  }, [onClick, disabled, addRipple, preferences.soundOption, preferences.vibrationEnabled]);
 
   const handleKeyDown = useCallback(
     (event: KeyboardEvent<HTMLButtonElement>) => {

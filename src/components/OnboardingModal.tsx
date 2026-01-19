@@ -15,7 +15,7 @@ export function OnboardingModal({ onComplete, isOpen = true }: OnboardingModalPr
   const steps = [
     {
       emoji: '👶',
-      title: 'Welcome to Baby Kick Counter',
+      title: 'Welcome to Baby Kick Count',
       content: (
         <>
           <p>
