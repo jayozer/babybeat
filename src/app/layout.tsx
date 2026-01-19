@@ -17,8 +17,31 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Baby Kick Count",
-  description: "Track fetal movements with a beat-counter interface",
+  description: "A gentle, calming app to help expectant parents track fetal movements during pregnancy",
   manifest: "/manifest.json",
+  metadataBase: new URL("https://babykickcount.com"),
+  openGraph: {
+    title: "Baby Kick Count",
+    description: "A gentle, calming app to help expectant parents track fetal movements during pregnancy",
+    url: "https://babykickcount.com",
+    siteName: "Baby Kick Count",
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "Baby Kick Count - Track your baby's movements gently",
+      },
+    ],
+    locale: "en_US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Baby Kick Count",
+    description: "A gentle, calming app to help expectant parents track fetal movements during pregnancy",
+    images: ["/og-image.png"],
+  },
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
