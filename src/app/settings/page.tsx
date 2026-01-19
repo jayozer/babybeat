@@ -4,7 +4,13 @@ import Link from 'next/link';
 import { usePreferences } from '@/lib/PreferencesContext';
 import { playSound, initAudioContext } from '@/lib/feedback';
 import type { SoundOption } from '@/types';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import {
+  exportSummaryCSV,
+  exportDetailedCSV,
+  downloadCSV,
+  getExportableSessionCount,
+} from '@/lib/exportService';
 
 const SOUND_OPTIONS: { value: SoundOption; label: string; description: string }[] = [
   { value: 'soft-click', label: 'Soft Click', description: 'Gentle click sound' },
@@ -16,6 +22,13 @@ const SOUND_OPTIONS: { value: SoundOption; label: string; description: string }[
 
 export default function SettingsPage() {
   const { preferences, updatePreferences, isLoading } = usePreferences();
+  const [sessionCount, setSessionCount] = useState<number>(0);
+  const [isExporting, setIsExporting] = useState(false);
+
+  // Fetch exportable session count
+  useEffect(() => {
+    getExportableSessionCount().then(setSessionCount);
+  }, []);
 
   // Initialize audio context on first user interaction
   useEffect(() => {
@@ -43,6 +56,28 @@ export default function SettingsPage() {
   const handlePreviewSound = (option: SoundOption) => {
     if (option !== 'none') {
       playSound(option);
+    }
+  };
+
+  const handleSummaryExport = async () => {
+    setIsExporting(true);
+    try {
+      const csv = await exportSummaryCSV();
+      const date = new Date().toISOString().split('T')[0];
+      downloadCSV(csv, `kick-count-summary-${date}.csv`);
+    } finally {
+      setIsExporting(false);
+    }
+  };
+
+  const handleDetailedExport = async () => {
+    setIsExporting(true);
+    try {
+      const csv = await exportDetailedCSV();
+      const date = new Date().toISOString().split('T')[0];
+      downloadCSV(csv, `kick-count-detailed-${date}.csv`);
+    } finally {
+      setIsExporting(false);
     }
   };
 
@@ -193,6 +228,58 @@ export default function SettingsPage() {
                 `}
               />
             </button>
+          </div>
+        </section>
+
+        {/* Data Export */}
+        <section className="bg-white/70 backdrop-blur-sm rounded-3xl shadow-[0_4px_20px_rgba(90,143,90,0.08)] overflow-hidden">
+          <h2 className="px-5 py-3 text-sm font-medium text-[#858e85] bg-[#f6f9f6]/50">
+            Data
+          </h2>
+          <div className="px-5 py-4 space-y-4">
+            <p className="text-sm text-[#858e85]">
+              Export your kick counting history to share with healthcare providers.
+              {sessionCount > 0 && (
+                <span className="block mt-1">
+                  {sessionCount} completed {sessionCount === 1 ? 'session' : 'sessions'} available.
+                </span>
+              )}
+            </p>
+            <div className="flex gap-3">
+              <button
+                type="button"
+                onClick={handleSummaryExport}
+                disabled={sessionCount === 0 || isExporting}
+                className={`
+                  flex-1 px-4 py-2.5 rounded-xl font-medium text-sm transition-colors
+                  ${
+                    sessionCount === 0 || isExporting
+                      ? 'bg-[#e8f0e8] text-[#a5ada5] cursor-not-allowed'
+                      : 'bg-[#5a8f5a] text-white hover:bg-[#477347]'
+                  }
+                `}
+              >
+                Summary Export
+              </button>
+              <button
+                type="button"
+                onClick={handleDetailedExport}
+                disabled={sessionCount === 0 || isExporting}
+                className={`
+                  flex-1 px-4 py-2.5 rounded-xl font-medium text-sm transition-colors
+                  ${
+                    sessionCount === 0 || isExporting
+                      ? 'bg-[#e8f0e8] text-[#a5ada5] cursor-not-allowed'
+                      : 'bg-[#5a8f5a] text-white hover:bg-[#477347]'
+                  }
+                `}
+              >
+                Detailed Export
+              </button>
+            </div>
+            <p className="text-xs text-[#a5ada5]">
+              Summary: one row per session. Detailed: individual kick timestamps.
+            </p>
           </div>
         </section>
 
