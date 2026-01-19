@@ -100,6 +100,7 @@ function SessionPage() {
         {/* Timer Display */}
         <TimerDisplay
           startedAt={state.session?.startedAt ?? null}
+          endedAt={state.session?.endedAt ?? null}
           timeLimitSec={state.session?.timeLimitSec ?? 7200}
           isPaused={isPaused}
           pausedDurationSec={state.session?.pausedDurationSec ?? 0}
