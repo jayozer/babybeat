@@ -35,7 +35,7 @@ export function SessionControls({
   };
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-4 animate-fade-in">
       {/* Main controls row */}
       <div className="flex justify-center gap-4">
         {/* Undo button */}
@@ -45,20 +45,19 @@ export function SessionControls({
           disabled={!canUndo}
           aria-label="Undo last kick"
           className={`
-            flex items-center gap-2
-            px-4 py-3
-            rounded-xl
+            px-6 py-3 rounded-2xl
+            bg-white/60 backdrop-blur-sm
             font-medium
-            transition-all
+            border border-[#e2e5e2]
+            transition-all duration-200
             ${
               canUndo
-                ? 'bg-gray-100 text-gray-700 hover:bg-gray-200 active:bg-gray-300'
-                : 'bg-gray-50 text-gray-300 cursor-not-allowed'
+                ? 'text-[#6b736b] hover:bg-white hover:shadow-md'
+                : 'text-[#c7ccc7] cursor-not-allowed opacity-50'
             }
           `}
         >
-          <span className="text-xl">↩️</span>
-          <span>Undo</span>
+          Undo
         </button>
 
         {/* Pause/Resume button */}
@@ -67,20 +66,17 @@ export function SessionControls({
           onClick={isPaused ? onResume : onPause}
           aria-label={isPaused ? 'Resume session' : 'Pause session'}
           className={`
-            flex items-center gap-2
-            px-4 py-3
-            rounded-xl
+            px-6 py-3 rounded-2xl
             font-medium
-            transition-all
+            transition-all duration-200
             ${
               isPaused
-                ? 'bg-green-100 text-green-700 hover:bg-green-200 active:bg-green-300'
-                : 'bg-yellow-100 text-yellow-700 hover:bg-yellow-200 active:bg-yellow-300'
+                ? 'bg-[#a8c9a8] text-white hover:bg-[#7bab7b]'
+                : 'bg-white/60 backdrop-blur-sm text-[#6b736b] border border-[#e2e5e2] hover:bg-white hover:shadow-md'
             }
           `}
         >
-          <span className="text-xl">{isPaused ? '▶️' : '⏸'}</span>
-          <span>{isPaused ? 'Resume' : 'Pause'}</span>
+          {isPaused ? 'Resume' : 'Pause'}
         </button>
 
         {/* End button */}
@@ -89,36 +85,35 @@ export function SessionControls({
           onClick={handleEndClick}
           aria-label="End session early"
           className="
-            flex items-center gap-2
-            px-4 py-3
-            rounded-xl
-            font-medium
-            bg-red-100 text-red-700
-            hover:bg-red-200 active:bg-red-300
-            transition-all
+            px-6 py-3 rounded-2xl
+            bg-white/60 backdrop-blur-sm
+            text-[#9f8fc5] font-medium
+            border border-[#e6e1f1]
+            transition-all duration-200
+            hover:bg-[#f9f8fc] hover:shadow-md
           "
         >
-          <span className="text-xl">⏹</span>
-          <span>End</span>
+          End
         </button>
       </div>
 
       {/* Confirmation dialog */}
       {showConfirmEnd && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+        <div className="fixed inset-0 bg-black/30 backdrop-blur-sm flex items-center justify-center z-50 p-4">
           <div
-            className="bg-white rounded-2xl p-6 max-w-sm w-full shadow-xl"
+            className="bg-white rounded-3xl p-6 max-w-sm w-full shadow-[0_8px_32px_rgba(90,143,90,0.15)] animate-fade-in"
             role="dialog"
             aria-modal="true"
             aria-labelledby="confirm-end-title"
           >
             <h2
               id="confirm-end-title"
-              className="text-xl font-bold text-gray-800 mb-2"
+              className="text-xl font-semibold text-[#494d49] mb-2"
+              style={{ fontFamily: 'Quicksand, sans-serif' }}
             >
               End session early?
             </h2>
-            <p className="text-gray-600 mb-6">
+            <p className="text-[#6b736b] mb-6">
               Your current progress will be saved, but the session will be
               marked as ended early.
             </p>
@@ -128,10 +123,10 @@ export function SessionControls({
                 onClick={handleCancelEnd}
                 className="
                   flex-1 px-4 py-3
-                  rounded-xl font-medium
-                  bg-gray-100 text-gray-700
-                  hover:bg-gray-200 active:bg-gray-300
-                  transition-all
+                  rounded-2xl font-medium
+                  bg-[#f0f2f0] text-[#6b736b]
+                  hover:bg-[#e2e5e2]
+                  transition-all duration-200
                 "
               >
                 Cancel
@@ -141,10 +136,10 @@ export function SessionControls({
                 onClick={handleConfirmEnd}
                 className="
                   flex-1 px-4 py-3
-                  rounded-xl font-medium
-                  bg-red-600 text-white
-                  hover:bg-red-700 active:bg-red-800
-                  transition-all
+                  rounded-2xl font-medium
+                  bg-[#9f8fc5] text-white
+                  hover:bg-[#8a74b0]
+                  transition-all duration-200
                 "
               >
                 End Session

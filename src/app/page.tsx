@@ -41,8 +41,8 @@ function SessionPage() {
 
   if (state.isLoading || onboardingLoading) {
     return (
-      <div className="flex min-h-screen items-center justify-center">
-        <p className="text-gray-500">Loading...</p>
+      <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-[#fefdfb] to-[#f6f9f6]">
+        <p className="text-[#858e85]">Loading...</p>
       </div>
     );
   }
@@ -72,16 +72,24 @@ function SessionPage() {
   };
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-4 bg-gray-50">
-      <div className="w-full max-w-md flex flex-col gap-6 py-8">
+    <main className="flex min-h-screen flex-col items-center justify-between p-4 bg-gradient-to-br from-[#fefdfb] via-[#fdf9f3] to-[#f6f9f6]">
+      <div className="w-full max-w-md flex flex-col gap-8 py-8">
         {/* Header */}
-        <h1 className="text-2xl font-bold text-center text-gray-800">
-          Baby Kick Beat Counter
-        </h1>
+        <header className="text-center animate-fade-in">
+          <h1
+            className="text-2xl font-semibold text-[#494d49] tracking-wide"
+            style={{ fontFamily: 'Quicksand, sans-serif' }}
+          >
+            Baby Kick Counter
+          </h1>
+          <p className="text-sm text-[#858e85] mt-1">
+            Track your baby&apos;s movements gently
+          </p>
+        </header>
 
         {/* Error display */}
         {state.error && (
-          <div className="bg-red-100 text-red-700 p-3 rounded-lg text-center">
+          <div className="bg-[#f9f8fc] border border-[#d3cce6] text-[#735d94] p-4 rounded-2xl text-center animate-fade-in">
             {state.error}
           </div>
         )}
@@ -118,10 +126,13 @@ function SessionPage() {
             type="button"
             onClick={handleStartNew}
             className="
-              w-full py-4 rounded-xl
-              bg-pink-500 text-white font-bold text-lg
-              hover:bg-pink-600 active:bg-pink-700
-              transition-colors
+              w-full py-4 rounded-2xl
+              bg-gradient-to-r from-[#a8c9a8] to-[#7bab7b]
+              text-white font-semibold text-lg
+              shadow-[0_4px_20px_rgba(90,143,90,0.25)]
+              transition-all duration-300
+              hover:shadow-[0_8px_30px_rgba(90,143,90,0.35)]
+              active:scale-[0.98]
             "
           >
             Start New Session

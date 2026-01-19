@@ -14,13 +14,13 @@ interface SessionDetailPageProps {
 function getStatusInfo(status: KickSession['status']) {
   switch (status) {
     case 'complete':
-      return { label: 'Complete', emoji: '🎉', className: 'text-green-700' };
+      return { label: 'Complete', emoji: '🎉', className: 'text-[#477347]' };
     case 'timeout':
-      return { label: 'Time Limit Reached', emoji: '⏰', className: 'text-orange-700' };
+      return { label: 'Time Limit Reached', emoji: '⏰', className: 'text-[#8b7355]' };
     case 'ended_early':
-      return { label: 'Ended Early', emoji: '⏹', className: 'text-gray-700' };
+      return { label: 'Ended Early', emoji: '⏹', className: 'text-[#735d94]' };
     default:
-      return { label: status, emoji: '', className: 'text-gray-700' };
+      return { label: status, emoji: '', className: 'text-[#6b736b]' };
   }
 }
 
@@ -62,17 +62,17 @@ export default function SessionDetailPage({ params }: SessionDetailPageProps) {
 
   if (isLoading) {
     return (
-      <div className="flex min-h-screen items-center justify-center">
-        <p className="text-gray-500">Loading...</p>
+      <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-[#fefdfb] to-[#f6f9f6]">
+        <p className="text-[#858e85]">Loading...</p>
       </div>
     );
   }
 
   if (error || !session) {
     return (
-      <div className="flex min-h-screen flex-col items-center justify-center gap-4">
-        <p className="text-gray-500">{error || 'Session not found'}</p>
-        <Link href="/history" className="text-pink-500 hover:text-pink-600">
+      <div className="flex min-h-screen flex-col items-center justify-center gap-4 bg-gradient-to-br from-[#fefdfb] to-[#f6f9f6]">
+        <p className="text-[#858e85]">{error || 'Session not found'}</p>
+        <Link href="/history" className="text-[#5a8f5a] hover:text-[#477347] transition-colors">
           Back to History
         </Link>
       </div>
@@ -98,74 +98,82 @@ export default function SessionDetailPage({ params }: SessionDetailPageProps) {
   });
 
   return (
-    <main className="min-h-screen bg-gray-50 pb-20">
+    <main className="min-h-screen bg-gradient-to-br from-[#fefdfb] via-[#fdf9f3] to-[#f6f9f6] pb-20">
       {/* Header */}
-      <header className="bg-white shadow-sm">
+      <header className="bg-white/80 backdrop-blur-md border-b border-[#e8f0e8] sticky top-0 z-10">
         <div className="max-w-md mx-auto px-4 py-4 flex items-center justify-between">
           <Link
             href="/history"
-            className="text-pink-500 hover:text-pink-600 transition-colors"
+            className="text-[#5a8f5a] hover:text-[#477347] transition-colors font-medium"
           >
             &larr; Back
           </Link>
-          <h1 className="text-lg font-bold text-gray-800">Session Details</h1>
+          <h1
+            className="text-lg font-semibold text-[#494d49]"
+            style={{ fontFamily: 'Quicksand, sans-serif' }}
+          >
+            Session Details
+          </h1>
           <div className="w-16" /> {/* Spacer for centering */}
         </div>
       </header>
 
       <div className="max-w-md mx-auto px-4 py-6 space-y-6">
         {/* Status card */}
-        <div className="bg-white rounded-xl shadow-sm p-6 text-center">
+        <div className="bg-white/70 backdrop-blur-sm rounded-3xl shadow-[0_4px_20px_rgba(90,143,90,0.08)] p-6 text-center">
           <div className="text-5xl mb-2">{statusInfo.emoji}</div>
-          <h2 className={`text-xl font-bold ${statusInfo.className}`}>
+          <h2
+            className={`text-xl font-semibold ${statusInfo.className}`}
+            style={{ fontFamily: 'Quicksand, sans-serif' }}
+          >
             {statusInfo.label}
           </h2>
         </div>
 
         {/* Session metadata */}
-        <div className="bg-white rounded-xl shadow-sm p-4">
-          <h3 className="text-sm font-medium text-gray-500 mb-3">
+        <div className="bg-white/70 backdrop-blur-sm rounded-3xl shadow-[0_4px_20px_rgba(90,143,90,0.08)] p-4">
+          <h3 className="text-sm font-medium text-[#858e85] mb-3">
             Session Details
           </h3>
           <div className="grid grid-cols-2 gap-4 text-sm">
             <div>
-              <p className="text-gray-500">Date</p>
-              <p className="font-medium text-gray-800">
+              <p className="text-[#858e85]">Date</p>
+              <p className="font-medium text-[#494d49]">
                 {session.startedAt
                   ? format(new Date(session.startedAt), 'MMM d, yyyy')
                   : 'N/A'}
               </p>
             </div>
             <div>
-              <p className="text-gray-500">Duration</p>
-              <p className="font-medium text-gray-800">{durationMinutes} min</p>
+              <p className="text-[#858e85]">Duration</p>
+              <p className="font-medium text-[#494d49]">{durationMinutes} min</p>
             </div>
             <div>
-              <p className="text-gray-500">Started</p>
-              <p className="font-medium text-gray-800">
+              <p className="text-[#858e85]">Started</p>
+              <p className="font-medium text-[#494d49]">
                 {session.startedAt
                   ? format(new Date(session.startedAt), 'h:mm a')
                   : 'N/A'}
               </p>
             </div>
             <div>
-              <p className="text-gray-500">Ended</p>
-              <p className="font-medium text-gray-800">
+              <p className="text-[#858e85]">Ended</p>
+              <p className="font-medium text-[#494d49]">
                 {session.endedAt
                   ? format(new Date(session.endedAt), 'h:mm a')
                   : 'N/A'}
               </p>
             </div>
             <div>
-              <p className="text-gray-500">Kicks</p>
-              <p className="font-medium text-gray-800">
+              <p className="text-[#858e85]">Kicks</p>
+              <p className="font-medium text-[#494d49]">
                 {session.kickCount} / {session.targetCount}
               </p>
             </div>
             {session.strengthRating && (
               <div>
-                <p className="text-gray-500">Strength</p>
-                <p className="font-medium text-gray-800">
+                <p className="text-[#858e85]">Strength</p>
+                <p className="font-medium text-[#494d49]">
                   {session.strengthRating} / 5
                 </p>
               </div>
@@ -174,17 +182,17 @@ export default function SessionDetailPage({ params }: SessionDetailPageProps) {
 
           {/* Notes */}
           {session.notes && (
-            <div className="mt-4 pt-4 border-t border-gray-100">
-              <p className="text-gray-500 text-sm mb-1">Notes</p>
-              <p className="text-gray-800">{session.notes}</p>
+            <div className="mt-4 pt-4 border-t border-[#e8f0e8]">
+              <p className="text-[#858e85] text-sm mb-1">Notes</p>
+              <p className="text-[#494d49]">{session.notes}</p>
             </div>
           )}
         </div>
 
         {/* Kick timeline */}
         {kicks.length > 0 && (
-          <div className="bg-white rounded-xl shadow-sm p-4">
-            <h3 className="text-sm font-medium text-gray-500 mb-3">
+          <div className="bg-white/70 backdrop-blur-sm rounded-3xl shadow-[0_4px_20px_rgba(90,143,90,0.08)] p-4">
+            <h3 className="text-sm font-medium text-[#858e85] mb-3">
               Kick Timeline
             </h3>
             <div className="space-y-2">
@@ -194,15 +202,15 @@ export default function SessionDetailPage({ params }: SessionDetailPageProps) {
                   className="flex items-center justify-between text-sm"
                 >
                   <div className="flex items-center gap-3">
-                    <span className="w-6 h-6 rounded-full bg-pink-100 text-pink-600 flex items-center justify-center text-xs font-medium">
+                    <span className="w-6 h-6 rounded-full bg-[#e8f0e8] text-[#5a8f5a] flex items-center justify-center text-xs font-medium">
                       {index + 1}
                     </span>
-                    <span className="text-gray-800">
+                    <span className="text-[#494d49]">
                       {format(new Date(kick.occurredAt), 'h:mm:ss a')}
                     </span>
                   </div>
                   {kick.intervalFromPrev !== null && (
-                    <span className="text-gray-400 text-xs">
+                    <span className="text-[#a5ada5] text-xs">
                       +{formatDuration(kick.intervalFromPrev)}
                     </span>
                   )}

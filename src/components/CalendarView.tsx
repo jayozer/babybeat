@@ -89,27 +89,30 @@ export function CalendarView({
   const weekDays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
   return (
-    <div className="bg-white rounded-xl shadow-sm p-4">
+    <div className="bg-white/70 backdrop-blur-sm rounded-3xl shadow-[0_4px_20px_rgba(90,143,90,0.08)] p-4">
       {/* Month navigation */}
       <div className="flex items-center justify-between mb-4">
         <button
           type="button"
           onClick={handlePrevMonth}
-          className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+          className="p-2 hover:bg-[#f6f9f6] rounded-2xl transition-colors"
           aria-label="Previous month"
         >
-          <span className="text-gray-600">&larr;</span>
+          <span className="text-[#6b736b]">&larr;</span>
         </button>
-        <h2 className="text-lg font-semibold text-gray-800">
+        <h2
+          className="text-lg font-semibold text-[#494d49]"
+          style={{ fontFamily: 'Quicksand, sans-serif' }}
+        >
           {format(currentMonth, 'MMMM yyyy')}
         </h2>
         <button
           type="button"
           onClick={handleNextMonth}
-          className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+          className="p-2 hover:bg-[#f6f9f6] rounded-2xl transition-colors"
           aria-label="Next month"
         >
-          <span className="text-gray-600">&rarr;</span>
+          <span className="text-[#6b736b]">&rarr;</span>
         </button>
       </div>
 
@@ -118,7 +121,7 @@ export function CalendarView({
         {weekDays.map((day) => (
           <div
             key={day}
-            className="text-center text-xs font-medium text-gray-500 py-1"
+            className="text-center text-xs font-medium text-[#858e85] py-1"
           >
             {day}
           </div>
@@ -149,14 +152,14 @@ export function CalendarView({
               className={`
                 aspect-square
                 flex flex-col items-center justify-center
-                rounded-lg
+                rounded-xl
                 text-sm
-                transition-colors
+                transition-all duration-200
                 ${isSelected
-                  ? 'bg-pink-500 text-white'
+                  ? 'bg-[#5a8f5a] text-white shadow-[0_2px_8px_rgba(90,143,90,0.3)]'
                   : isCurrentDay
-                    ? 'bg-pink-100 text-pink-700'
-                    : 'hover:bg-gray-100 text-gray-700'
+                    ? 'bg-[#e8f0e8] text-[#477347]'
+                    : 'hover:bg-[#f6f9f6] text-[#6b736b]'
                 }
               `}
               aria-label={`${format(dayInfo.date, 'MMMM d, yyyy')}${hasAnySession ? ', has sessions' : ''}`}
@@ -172,7 +175,7 @@ export function CalendarView({
                   {dayInfo.hasCompleteSession && (
                     <span
                       className={`w-1.5 h-1.5 rounded-full ${
-                        isSelected ? 'bg-white' : 'bg-green-500'
+                        isSelected ? 'bg-white' : 'bg-[#7bab7b]'
                       }`}
                       aria-hidden="true"
                     />
@@ -180,7 +183,7 @@ export function CalendarView({
                   {dayInfo.hasTimeoutSession && (
                     <span
                       className={`w-1.5 h-1.5 rounded-full ${
-                        isSelected ? 'bg-white' : 'bg-orange-500'
+                        isSelected ? 'bg-white' : 'bg-[#d4a373]'
                       }`}
                       aria-hidden="true"
                     />
@@ -188,7 +191,7 @@ export function CalendarView({
                   {dayInfo.hasEndedEarlySession && (
                     <span
                       className={`w-1.5 h-1.5 rounded-full ${
-                        isSelected ? 'bg-white' : 'bg-gray-400'
+                        isSelected ? 'bg-white' : 'bg-[#b8a9c9]'
                       }`}
                       aria-hidden="true"
                     />
@@ -201,17 +204,17 @@ export function CalendarView({
       </div>
 
       {/* Legend */}
-      <div className="flex justify-center gap-4 mt-4 text-xs text-gray-600">
+      <div className="flex justify-center gap-4 mt-4 text-xs text-[#858e85]">
         <div className="flex items-center gap-1">
-          <span className="w-2 h-2 rounded-full bg-green-500" />
+          <span className="w-2 h-2 rounded-full bg-[#7bab7b]" />
           <span>Complete</span>
         </div>
         <div className="flex items-center gap-1">
-          <span className="w-2 h-2 rounded-full bg-orange-500" />
+          <span className="w-2 h-2 rounded-full bg-[#d4a373]" />
           <span>Timeout</span>
         </div>
         <div className="flex items-center gap-1">
-          <span className="w-2 h-2 rounded-full bg-gray-400" />
+          <span className="w-2 h-2 rounded-full bg-[#b8a9c9]" />
           <span>Ended</span>
         </div>
       </div>

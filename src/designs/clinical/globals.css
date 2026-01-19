@@ -1,0 +1,182 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* Primary - Deep Navy */
+  --clinical-navy-50: #f0f4f8;
+  --clinical-navy-100: #d9e2ec;
+  --clinical-navy-200: #bcccdc;
+  --clinical-navy-300: #9fb3c8;
+  --clinical-navy-400: #829ab1;
+  --clinical-navy-500: #627d98;
+  --clinical-navy-600: #486581;
+  --clinical-navy-700: #334e68;
+  --clinical-navy-800: #243b53;
+  --clinical-navy-900: #102a43;
+
+  /* Accent - Medical Teal */
+  --clinical-teal-50: #effcf6;
+  --clinical-teal-100: #c6f7e2;
+  --clinical-teal-200: #8eedc7;
+  --clinical-teal-300: #65d6ad;
+  --clinical-teal-400: #3ebd93;
+  --clinical-teal-500: #27ab83;
+  --clinical-teal-600: #199473;
+  --clinical-teal-700: #147d64;
+
+  /* Secondary - Calm Blue */
+  --clinical-blue-500: #0077e6;
+  --clinical-blue-600: #005bb3;
+
+  /* Status */
+  --clinical-success: #27ab83;
+  --clinical-warning: #f0b429;
+  --clinical-error: #e12d39;
+
+  /* Neutrals */
+  --clinical-gray-50: #f7f9fc;
+  --clinical-gray-100: #edf2f7;
+  --clinical-gray-200: #e2e8f0;
+  --clinical-gray-300: #cbd5e0;
+  --clinical-gray-400: #a0aec0;
+  --clinical-gray-500: #718096;
+  --clinical-gray-600: #4a5568;
+  --clinical-gray-700: #2d3748;
+  --clinical-gray-800: #1a202c;
+  --clinical-gray-900: #171923;
+
+  --background: #ffffff;
+  --foreground: var(--clinical-navy-900);
+
+  --font-sans: 'Inter', 'IBM Plex Sans', system-ui, -apple-system, sans-serif;
+  --font-mono: 'IBM Plex Mono', 'SF Mono', Monaco, monospace;
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-family: var(--font-sans);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Precise fade animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Subtle slide up */
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Progress bar fill */
+@keyframes fillProgress {
+  from {
+    width: 0%;
+  }
+  to {
+    width: var(--progress-width, 100%);
+  }
+}
+
+/* Minimal pulse for active state */
+@keyframes minimalPulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+/* Count increment animation */
+@keyframes countUp {
+  0% {
+    transform: translateY(8px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Status indicator blink */
+@keyframes statusBlink {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.4;
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.2s ease-out forwards;
+}
+
+.animate-slide-up {
+  animation: slideUp 0.3s ease-out forwards;
+}
+
+.animate-fill-progress {
+  animation: fillProgress 0.6s ease-out forwards;
+}
+
+.animate-minimal-pulse {
+  animation: minimalPulse 2s ease-in-out infinite;
+}
+
+.animate-count-up {
+  animation: countUp 0.2s ease-out forwards;
+}
+
+.animate-status-blink {
+  animation: statusBlink 1.5s ease-in-out infinite;
+}
+
+/* Safe area for bottom navigation on iOS */
+.safe-area-bottom {
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+/* Custom scrollbar for clinical theme */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--clinical-gray-100);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--clinical-gray-300);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--clinical-gray-400);
+}
+
+/* Focus styles for accessibility */
+*:focus-visible {
+  outline: 2px solid var(--clinical-teal-500);
+  outline-offset: 2px;
+}

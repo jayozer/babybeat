@@ -1,0 +1,226 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Comfortaa:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* Primary - Warm Coral */
+  --joyful-coral-50: #fff5f3;
+  --joyful-coral-100: #ffe8e4;
+  --joyful-coral-200: #ffd4cd;
+  --joyful-coral-300: #ffb5a8;
+  --joyful-coral-400: #ff8c78;
+  --joyful-coral-500: #f96d55;
+  --joyful-coral-600: #e54e35;
+  --joyful-coral-700: #c13d27;
+
+  /* Secondary - Sunny Yellow */
+  --joyful-sunny-50: #fffbeb;
+  --joyful-sunny-100: #fff4c6;
+  --joyful-sunny-200: #ffe888;
+  --joyful-sunny-300: #ffd74a;
+  --joyful-sunny-400: #ffc520;
+  --joyful-sunny-500: #f9a507;
+
+  /* Accent - Soft Teal */
+  --joyful-teal-50: #f0fdfa;
+  --joyful-teal-100: #ccfbf1;
+  --joyful-teal-200: #99f6e4;
+  --joyful-teal-300: #5eead4;
+  --joyful-teal-400: #2dd4bf;
+  --joyful-teal-500: #14b8a6;
+
+  /* Neutrals */
+  --joyful-gray-50: #faf9f7;
+  --joyful-gray-100: #f3f1ed;
+  --joyful-gray-200: #e8e4dd;
+  --joyful-gray-300: #d4cfc4;
+  --joyful-gray-400: #b5aea0;
+  --joyful-gray-500: #9a9184;
+  --joyful-gray-600: #7d756a;
+  --joyful-gray-700: #665f56;
+  --joyful-gray-800: #554f48;
+
+  --background: var(--joyful-gray-50);
+  --foreground: var(--joyful-gray-800);
+
+  --font-sans: 'Poppins', 'Comfortaa', system-ui, -apple-system, sans-serif;
+  --font-display: 'Comfortaa', 'Poppins', system-ui, -apple-system, sans-serif;
+}
+
+body {
+  color: var(--foreground);
+  background: linear-gradient(180deg, var(--joyful-coral-50) 0%, var(--joyful-sunny-50) 50%, var(--joyful-gray-50) 100%);
+  font-family: var(--font-sans);
+  min-height: 100vh;
+}
+
+/* Bouncy animation */
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+/* Pop in animation */
+@keyframes popIn {
+  0% {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* Wiggle animation */
+@keyframes wiggle {
+  0%, 100% {
+    transform: rotate(-3deg);
+  }
+  50% {
+    transform: rotate(3deg);
+  }
+}
+
+/* Number flip animation */
+@keyframes flipUp {
+  0% {
+    transform: translateY(100%) rotateX(-90deg);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0) rotateX(0);
+    opacity: 1;
+  }
+}
+
+/* Confetti animation */
+@keyframes confettiFall {
+  0% {
+    transform: translateY(-100%) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(100vh) rotate(720deg);
+    opacity: 0;
+  }
+}
+
+/* Celebration burst */
+@keyframes burst {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.5);
+    opacity: 0.5;
+  }
+  100% {
+    transform: scale(2);
+    opacity: 0;
+  }
+}
+
+/* Tap spring effect */
+@keyframes tapSpring {
+  0% {
+    transform: scale(1);
+  }
+  30% {
+    transform: scale(0.92);
+  }
+  50% {
+    transform: scale(1.03);
+  }
+  70% {
+    transform: scale(0.98);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* Heartbeat for count */
+@keyframes heartbeat {
+  0%, 100% {
+    transform: scale(1);
+  }
+  10% {
+    transform: scale(1.15);
+  }
+  20% {
+    transform: scale(1);
+  }
+  30% {
+    transform: scale(1.1);
+  }
+  40% {
+    transform: scale(1);
+  }
+}
+
+.animate-bounce-gentle {
+  animation: bounce 2s ease-in-out infinite;
+}
+
+.animate-pop-in {
+  animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+.animate-wiggle {
+  animation: wiggle 0.5s ease-in-out;
+}
+
+.animate-flip-up {
+  animation: flipUp 0.3s ease-out forwards;
+}
+
+.animate-tap-spring {
+  animation: tapSpring 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.animate-heartbeat {
+  animation: heartbeat 1s ease-in-out;
+}
+
+.animate-confetti {
+  animation: confettiFall 3s ease-in forwards;
+}
+
+.animate-burst {
+  animation: burst 0.6s ease-out forwards;
+}
+
+/* Safe area for bottom navigation on iOS */
+.safe-area-bottom {
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+/* Custom scrollbar for joyful theme */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--joyful-coral-50);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, var(--joyful-coral-300), var(--joyful-sunny-300));
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, var(--joyful-coral-400), var(--joyful-sunny-400));
+}

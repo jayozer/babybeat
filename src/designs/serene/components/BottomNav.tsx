@@ -6,6 +6,7 @@ import { usePathname } from 'next/navigation';
 interface NavItem {
   href: string;
   label: string;
+  icon: React.ReactNode;
 }
 
 // Serene icons - minimal line art style
@@ -82,13 +83,13 @@ const InfoIcon = ({ active }: { active: boolean }) => (
 );
 
 const navItems: NavItem[] = [
-  { href: '/', label: 'Count' },
-  { href: '/history', label: 'History' },
-  { href: '/settings', label: 'Settings' },
-  { href: '/info', label: 'Help' },
+  { href: '/', label: 'Count', icon: <HomeIcon active={false} /> },
+  { href: '/history', label: 'History', icon: <HistoryIcon active={false} /> },
+  { href: '/settings', label: 'Settings', icon: <SettingsIcon active={false} /> },
+  { href: '/info', label: 'Help', icon: <InfoIcon active={false} /> },
 ];
 
-export function BottomNav() {
+export function SereneBottomNav() {
   const pathname = usePathname();
 
   const isActive = (href: string) => {

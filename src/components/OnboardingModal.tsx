@@ -54,9 +54,9 @@ export function OnboardingModal({ onComplete, isOpen = true }: OnboardingModalPr
             Most babies will reach 10 kicks in much less time. If you don&apos;t
             reach 10 in 2 hours, try techniques to encourage movement.
           </p>
-          <p className="mt-3 text-sm text-gray-600">
+          <p className="mt-3 text-sm text-[#858e85]">
             If movements seem decreased or you&apos;re concerned,{' '}
-            <strong>contact your healthcare provider</strong>.
+            <strong className="text-[#6b736b]">contact your healthcare provider</strong>.
           </p>
         </>
       ),
@@ -71,7 +71,7 @@ export function OnboardingModal({ onComplete, isOpen = true }: OnboardingModalPr
             Your sessions are saved locally on your device for you to review
             anytime.
           </p>
-          <p className="mt-3 text-sm text-gray-600">
+          <p className="mt-3 text-sm text-[#858e85]">
             This app is for educational purposes only and does not replace
             medical advice.
           </p>
@@ -100,9 +100,9 @@ export function OnboardingModal({ onComplete, isOpen = true }: OnboardingModalPr
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+    <div className="fixed inset-0 bg-black/30 backdrop-blur-sm flex items-center justify-center z-50 p-4">
       <div
-        className="bg-white rounded-2xl p-6 max-w-md w-full shadow-xl max-h-[90vh] overflow-y-auto"
+        className="bg-white/95 backdrop-blur-md rounded-3xl p-6 max-w-md w-full shadow-[0_8px_32px_rgba(90,143,90,0.15)] max-h-[90vh] overflow-y-auto animate-fade-in"
         role="dialog"
         aria-modal="true"
         aria-labelledby="onboarding-title"
@@ -113,8 +113,8 @@ export function OnboardingModal({ onComplete, isOpen = true }: OnboardingModalPr
             <span
               key={i}
               className={`
-                w-2 h-2 rounded-full transition-colors
-                ${i === step ? 'bg-pink-500' : 'bg-gray-200'}
+                w-2 h-2 rounded-full transition-all duration-300
+                ${i === step ? 'bg-[#5a8f5a] scale-125' : 'bg-[#e8f0e8]'}
               `}
               aria-hidden="true"
             />
@@ -126,11 +126,12 @@ export function OnboardingModal({ onComplete, isOpen = true }: OnboardingModalPr
           <div className="text-5xl mb-3">{currentStep.emoji}</div>
           <h2
             id="onboarding-title"
-            className="text-xl font-bold text-gray-800 mb-4"
+            className="text-xl font-semibold text-[#494d49] mb-4"
+            style={{ fontFamily: 'Quicksand, sans-serif' }}
           >
             {currentStep.title}
           </h2>
-          <div className="text-gray-600 text-left">{currentStep.content}</div>
+          <div className="text-[#6b736b] text-left">{currentStep.content}</div>
         </div>
 
         {/* Actions */}
@@ -139,10 +140,13 @@ export function OnboardingModal({ onComplete, isOpen = true }: OnboardingModalPr
             type="button"
             onClick={handleNext}
             className="
-              w-full py-4 rounded-xl
-              bg-pink-500 text-white font-bold text-lg
-              hover:bg-pink-600 active:bg-pink-700
-              transition-colors
+              w-full py-4 rounded-2xl
+              bg-gradient-to-r from-[#a8c9a8] to-[#7bab7b]
+              text-white font-semibold text-lg
+              shadow-[0_4px_20px_rgba(90,143,90,0.25)]
+              transition-all duration-300
+              hover:shadow-[0_8px_30px_rgba(90,143,90,0.35)]
+              active:scale-[0.98]
             "
           >
             {isLastStep ? "Let's Go!" : 'Next'}
@@ -152,10 +156,10 @@ export function OnboardingModal({ onComplete, isOpen = true }: OnboardingModalPr
               type="button"
               onClick={handleSkip}
               className="
-                w-full py-3 rounded-xl
-                text-gray-500 font-medium
-                hover:bg-gray-100 active:bg-gray-200
-                transition-colors
+                w-full py-3 rounded-2xl
+                text-[#858e85] font-medium
+                hover:bg-[#f6f9f6] active:bg-[#e8f0e8]
+                transition-all duration-200
               "
             >
               Skip

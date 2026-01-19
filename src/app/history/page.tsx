@@ -35,23 +35,28 @@ export default function HistoryPage() {
 
   if (isLoading) {
     return (
-      <div className="flex min-h-screen items-center justify-center">
-        <p className="text-gray-500">Loading...</p>
+      <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-[#fefdfb] to-[#f6f9f6]">
+        <p className="text-[#858e85]">Loading...</p>
       </div>
     );
   }
 
   return (
-    <main className="min-h-screen bg-gray-50 pb-20">
+    <main className="min-h-screen bg-gradient-to-br from-[#fefdfb] via-[#fdf9f3] to-[#f6f9f6] pb-20">
       {/* Header */}
-      <header className="bg-white shadow-sm">
+      <header className="bg-white/80 backdrop-blur-md border-b border-[#e8f0e8] sticky top-0 z-10">
         <div className="max-w-md mx-auto px-4 py-4 flex items-center justify-between">
-          <h1 className="text-xl font-bold text-gray-800">History</h1>
+          <h1
+            className="text-xl font-semibold text-[#494d49]"
+            style={{ fontFamily: 'Quicksand, sans-serif' }}
+          >
+            History
+          </h1>
           <Link
             href="/"
             className="
-              text-pink-500 font-medium
-              hover:text-pink-600 transition-colors
+              text-[#5a8f5a] font-medium
+              hover:text-[#477347] transition-colors
             "
           >
             Counter

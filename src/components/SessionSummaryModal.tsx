@@ -40,9 +40,9 @@ export function SessionSummaryModal({
   };
 
   return (
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+    <div className="fixed inset-0 bg-black/30 backdrop-blur-sm flex items-center justify-center z-50 p-4">
       <div
-        className="bg-white rounded-2xl p-6 max-w-md w-full shadow-xl max-h-[90vh] overflow-y-auto"
+        className="bg-white/95 backdrop-blur-md rounded-3xl p-6 max-w-md w-full shadow-[0_8px_32px_rgba(90,143,90,0.15)] max-h-[90vh] overflow-y-auto animate-fade-in"
         role="dialog"
         aria-modal="true"
         aria-labelledby="summary-title"
@@ -54,13 +54,14 @@ export function SessionSummaryModal({
           </div>
           <h2
             id="summary-title"
-            className={`text-2xl font-bold ${
+            className={`text-2xl font-semibold ${
               isComplete
-                ? 'text-green-700'
+                ? 'text-[#477347]'
                 : isTimeout
-                  ? 'text-orange-700'
-                  : 'text-gray-800'
+                  ? 'text-[#b8860b]'
+                  : 'text-[#494d49]'
             }`}
+            style={{ fontFamily: 'Quicksand, sans-serif' }}
           >
             {isComplete && 'Session Complete!'}
             {isTimeout && 'Time Limit Reached'}
@@ -69,32 +70,32 @@ export function SessionSummaryModal({
         </div>
 
         {/* Session details */}
-        <div className="bg-gray-50 rounded-xl p-4 mb-6">
+        <div className="bg-[#f6f9f6] rounded-2xl p-4 mb-6">
           <div className="grid grid-cols-2 gap-4 text-sm">
             <div>
-              <p className="text-gray-500">Kicks Recorded</p>
-              <p className="text-2xl font-bold text-gray-800">
+              <p className="text-[#858e85]">Kicks Recorded</p>
+              <p className="text-2xl font-bold text-[#494d49]">
                 {session.kickCount}
               </p>
             </div>
             <div>
-              <p className="text-gray-500">Duration</p>
-              <p className="text-2xl font-bold text-gray-800">
+              <p className="text-[#858e85]">Duration</p>
+              <p className="text-2xl font-bold text-[#494d49]">
                 {durationMinutes} min
               </p>
             </div>
             {session.startedAt && (
               <div>
-                <p className="text-gray-500">Started</p>
-                <p className="font-medium text-gray-800">
+                <p className="text-[#858e85]">Started</p>
+                <p className="font-medium text-[#494d49]">
                   {format(new Date(session.startedAt), 'h:mm a')}
                 </p>
               </div>
             )}
             {session.endedAt && (
               <div>
-                <p className="text-gray-500">Ended</p>
-                <p className="font-medium text-gray-800">
+                <p className="text-[#858e85]">Ended</p>
+                <p className="font-medium text-[#494d49]">
                   {format(new Date(session.endedAt), 'h:mm a')}
                 </p>
               </div>
@@ -104,9 +105,9 @@ export function SessionSummaryModal({
 
         {/* Timeout guidance */}
         {isTimeout && (
-          <div className="bg-orange-50 border border-orange-200 rounded-xl p-4 mb-6">
-            <p className="text-orange-800 font-medium mb-2">What to do next:</p>
-            <ul className="text-orange-700 text-sm space-y-1">
+          <div className="bg-[#fdf9f3] border border-[#e6dcc5] rounded-2xl p-4 mb-6">
+            <p className="text-[#8b7355] font-medium mb-2">What to do next:</p>
+            <ul className="text-[#8b7355] text-sm space-y-1">
               <li>• Try gentle techniques to encourage movement</li>
               <li>• Drink cold water or eat something sweet</li>
               <li>• Lie on your side and count again</li>
@@ -120,7 +121,7 @@ export function SessionSummaryModal({
 
         {/* Strength rating */}
         <div className="mb-6">
-          <label className="block text-sm font-medium text-gray-700 mb-2">
+          <label className="block text-sm font-medium text-[#6b736b] mb-2">
             Movement Strength (optional)
           </label>
           <div className="flex justify-center gap-2">
@@ -133,11 +134,11 @@ export function SessionSummaryModal({
                 }
                 className={`
                   w-12 h-12 rounded-full font-bold text-lg
-                  transition-all
+                  transition-all duration-200
                   ${
                     strengthRating === rating
-                      ? 'bg-pink-500 text-white scale-110'
-                      : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                      ? 'bg-[#5a8f5a] text-white scale-110 shadow-[0_4px_12px_rgba(90,143,90,0.3)]'
+                      : 'bg-[#f0f2f0] text-[#6b736b] hover:bg-[#e8f0e8]'
                   }
                 `}
                 aria-label={`Rate strength ${rating} out of 5`}
@@ -147,7 +148,7 @@ export function SessionSummaryModal({
               </button>
             ))}
           </div>
-          <p className="text-xs text-gray-500 text-center mt-2">
+          <p className="text-xs text-[#858e85] text-center mt-2">
             1 = Very weak • 5 = Very strong
           </p>
         </div>
@@ -156,7 +157,7 @@ export function SessionSummaryModal({
         <div className="mb-6">
           <label
             htmlFor="session-notes"
-            className="block text-sm font-medium text-gray-700 mb-2"
+            className="block text-sm font-medium text-[#6b736b] mb-2"
           >
             Notes (optional)
           </label>
@@ -166,9 +167,11 @@ export function SessionSummaryModal({
             onChange={(e) => setNotes(e.target.value)}
             placeholder="Add any notes about this session..."
             className="
-              w-full p-3 border border-gray-200 rounded-xl
+              w-full p-3 border border-[#e8f0e8] rounded-2xl
               resize-none h-24
-              focus:outline-none focus:ring-2 focus:ring-pink-300 focus:border-pink-300
+              focus:outline-none focus:ring-2 focus:ring-[#a8c9a8] focus:border-[#a8c9a8]
+              bg-white/60
+              placeholder:text-[#a5ada5]
             "
           />
         </div>
@@ -179,10 +182,13 @@ export function SessionSummaryModal({
             type="button"
             onClick={handleStartNew}
             className="
-              w-full py-4 rounded-xl
-              bg-pink-500 text-white font-bold text-lg
-              hover:bg-pink-600 active:bg-pink-700
-              transition-colors
+              w-full py-4 rounded-2xl
+              bg-gradient-to-r from-[#a8c9a8] to-[#7bab7b]
+              text-white font-semibold text-lg
+              shadow-[0_4px_20px_rgba(90,143,90,0.25)]
+              transition-all duration-300
+              hover:shadow-[0_8px_30px_rgba(90,143,90,0.35)]
+              active:scale-[0.98]
             "
           >
             Start New Session
@@ -191,10 +197,10 @@ export function SessionSummaryModal({
             type="button"
             onClick={handleSave}
             className="
-              w-full py-3 rounded-xl
-              bg-gray-100 text-gray-700 font-medium
-              hover:bg-gray-200 active:bg-gray-300
-              transition-colors
+              w-full py-3 rounded-2xl
+              bg-[#f0f2f0] text-[#6b736b] font-medium
+              hover:bg-[#e8f0e8] active:bg-[#dfe5df]
+              transition-all duration-200
             "
           >
             Close

@@ -1,36 +1,19 @@
 'use client';
 
 import { useState, useCallback, useRef, type KeyboardEvent } from 'react';
-import { usePreferences } from '@/lib/PreferencesContext';
-import { triggerTapFeedback, initAudioContext } from '@/lib/feedback';
-import { useEffect } from 'react';
 
 interface TapPadProps {
   onClick: () => void;
   disabled?: boolean;
+  soundEnabled?: boolean;
+  vibrationEnabled?: boolean;
 }
 
-export function TapPad({ onClick, disabled = false }: TapPadProps) {
+export function SereneTapPad({ onClick, disabled = false }: TapPadProps) {
   const [isPressed, setIsPressed] = useState(false);
   const [ripples, setRipples] = useState<{ id: number; x: number; y: number }[]>([]);
   const buttonRef = useRef<HTMLButtonElement>(null);
   const rippleIdRef = useRef(0);
-  const { preferences } = usePreferences();
-
-  // Initialize audio context on first user interaction
-  useEffect(() => {
-    const handleFirstInteraction = () => {
-      initAudioContext();
-      document.removeEventListener('touchstart', handleFirstInteraction);
-      document.removeEventListener('click', handleFirstInteraction);
-    };
-    document.addEventListener('touchstart', handleFirstInteraction);
-    document.addEventListener('click', handleFirstInteraction);
-    return () => {
-      document.removeEventListener('touchstart', handleFirstInteraction);
-      document.removeEventListener('click', handleFirstInteraction);
-    };
-  }, []);
 
   const addRipple = useCallback((clientX: number, clientY: number) => {
     if (!buttonRef.current) return;
@@ -53,12 +36,6 @@ export function TapPad({ onClick, disabled = false }: TapPadProps) {
     setIsPressed(true);
     onClick();
 
-    // Trigger sound and/or vibration feedback
-    triggerTapFeedback({
-      soundEnabled: preferences.soundEnabled,
-      vibrationEnabled: preferences.vibrationEnabled,
-    });
-
     if (e) {
       addRipple(e.clientX, e.clientY);
     }
@@ -66,7 +43,7 @@ export function TapPad({ onClick, disabled = false }: TapPadProps) {
     setTimeout(() => {
       setIsPressed(false);
     }, 200);
-  }, [onClick, disabled, addRipple, preferences.soundEnabled, preferences.vibrationEnabled]);
+  }, [onClick, disabled, addRipple]);
 
   const handleKeyDown = useCallback(
     (event: KeyboardEvent<HTMLButtonElement>) => {
@@ -151,7 +128,7 @@ export function TapPad({ onClick, disabled = false }: TapPadProps) {
           </svg>
         </span>
 
-        <span className="text-2xl font-semibold tracking-wider opacity-95" style={{ fontFamily: 'Quicksand, sans-serif' }}>
+        <span className="text-2xl font-semibold tracking-wider opacity-95 font-['Quicksand']">
           gentle tap
         </span>
         <span className="text-sm opacity-70 mt-2 font-light">
