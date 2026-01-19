@@ -80,7 +80,7 @@ function SessionPage() {
             className="text-2xl font-semibold text-[#494d49] tracking-wide"
             style={{ fontFamily: 'Quicksand, sans-serif' }}
           >
-            Baby Kick Counter
+            Baby Kick Count
           </h1>
           <p className="text-sm text-[#858e85] mt-1">
             Track your baby&apos;s movements gently

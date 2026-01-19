@@ -1,5 +1,5 @@
-// Service Worker for Baby Kick Beat Counter
-const CACHE_NAME = 'babybeat-v1';
+// Service Worker for Baby Kick Count
+const CACHE_NAME = 'babykickcount-v1';
 
 // Assets to cache on install
 const STATIC_ASSETS = [

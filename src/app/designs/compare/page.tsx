@@ -53,7 +53,7 @@ export default function DesignComparisonPage() {
       {/* Compact Header */}
       <header className="bg-gray-900 border-b border-gray-800">
         <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
-          <h1 className="text-lg font-bold">BabyBeat Designs</h1>
+          <h1 className="text-lg font-bold">Baby Kick Count Designs</h1>
           <Link href="/" className="text-sm text-gray-400 hover:text-white">
             Back to App
           </Link>

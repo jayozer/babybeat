@@ -13,6 +13,9 @@ export type KickSource = 'tap' | 'manual_edit';
 // Strength rating type (1-5 scale)
 export type StrengthRating = 1 | 2 | 3 | 4 | 5;
 
+// Sound option types for tap feedback
+export type SoundOption = 'soft-click' | 'pop' | 'heartbeat' | 'bubble' | 'none';
+
 /**
  * Represents a kick counting session
  * A session tracks the user's attempt to count 10 fetal movements within 2 hours
@@ -74,8 +77,8 @@ export interface UserPreferences {
   defaultTargetCount: number;
   /** Default time limit for new sessions in seconds */
   defaultTimeLimitSec: number;
-  /** Whether to play sound on tap */
-  soundEnabled: boolean;
+  /** Sound option for tap feedback */
+  soundOption: SoundOption;
   /** Whether to vibrate on tap */
   vibrationEnabled: boolean;
   /** Whether to keep screen awake during active session */
@@ -88,7 +91,7 @@ export interface UserPreferences {
 export const DEFAULT_PREFERENCES: UserPreferences = {
   defaultTargetCount: 10,
   defaultTimeLimitSec: 7200, // 2 hours
-  soundEnabled: true,
+  soundOption: 'soft-click',
   vibrationEnabled: true,
   keepScreenAwake: true,
 };

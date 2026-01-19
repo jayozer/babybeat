@@ -1,15 +1,16 @@
-# Baby Kick Beat Counter
+# Baby Kick Count
 
 A gentle, calming web app to help expectant parents track fetal movements during pregnancy.
 
-[![Live Demo](https://img.shields.io/badge/Live%20Demo-babybeats-5a8f5a?style=for-the-badge&logo=vercel&logoColor=white)](https://babybeats-nu.vercel.app/)
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-babykickcount-5a8f5a?style=for-the-badge&logo=vercel&logoColor=white)](https://babykickcount.com)
 
 ## About
 
-Baby Kick Beat Counter helps pregnant people in their third trimester monitor fetal movement patterns. Kick counting is used to track a baby's typical movement pattern - changes can be an early sign that warrants contacting a healthcare provider.
+Baby Kick Count helps pregnant people in their third trimester monitor fetal movement patterns. Kick counting is used to track a baby's typical movement pattern - changes can be an early sign that warrants contacting a healthcare provider.
 
 **Key Features:**
 - One-tap kick logging with satisfying feedback
+- Customizable tap sounds (Soft Click, Pop, Heartbeat, Bubble, or Silent)
 - 2-hour session window targeting 10 movements
 - Calendar view to track patterns over time
 - Session history with detailed timestamps
@@ -18,15 +19,16 @@ Baby Kick Beat Counter helps pregnant people in their third trimester monitor fe
 
 ## Try It
 
-**[Launch App](https://babybeats-nu.vercel.app/)**
+**[Launch Baby Kick Count](https://babykickcount.com)**
 
 The app works best when added to your home screen for a native app experience.
 
 ## Screenshots
 
-| Home | History | Settings |
-|------|---------|----------|
-| Tap the heart to count | Calendar view of sessions | Customize your experience |
+| Home | Settings | History |
+|:----:|:--------:|:-------:|
+| ![Home](public/screenshots/home.png) | ![Settings](public/screenshots/settings.png) | ![History](public/screenshots/history.png) |
+| Tap the heart to count | Customize tap sounds | Calendar view of sessions |
 
 ## Tech Stack
 

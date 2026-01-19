@@ -8,6 +8,23 @@ import { DEFAULT_PREFERENCES } from '@/types';
 const PREFS_ID = 'user_prefs';
 
 /**
+ * Migrate old preferences format to new format
+ * Handles conversion of soundEnabled boolean to soundOption
+ */
+function migratePreferences(stored: Record<string, unknown>): Partial<UserPreferences> {
+  const migrated: Partial<UserPreferences> = { ...stored } as Partial<UserPreferences>;
+
+  // Migrate soundEnabled (boolean) to soundOption (SoundOption)
+  if ('soundEnabled' in stored && !('soundOption' in stored)) {
+    const soundEnabled = stored.soundEnabled as boolean;
+    migrated.soundOption = soundEnabled ? 'soft-click' : 'none';
+    delete (migrated as Record<string, unknown>).soundEnabled;
+  }
+
+  return migrated;
+}
+
+/**
  * Get user preferences from IndexedDB
  * Returns default preferences if none are stored
  */
@@ -16,10 +33,11 @@ export async function getPreferences(): Promise<UserPreferences> {
   if (!stored) {
     return { ...DEFAULT_PREFERENCES };
   }
-  // Merge with defaults to handle any new fields (exclude id from result)
+  // Migrate old format if needed, then merge with defaults
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { id, ...prefs } = stored;
-  return { ...DEFAULT_PREFERENCES, ...prefs };
+  const migrated = migratePreferences(prefs as Record<string, unknown>);
+  return { ...DEFAULT_PREFERENCES, ...migrated };
 }
 
 /**
