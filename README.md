@@ -55,14 +55,6 @@ npm test
 npm run build
 ```
 
-## Design Variations
-
-The app includes multiple design themes accessible at:
-- `/designs/serene` - Soft sage and cream (default)
-- `/designs/clinical` - Clean medical aesthetic
-- `/designs/joyful` - Playful and colorful
-- `/designs/compare` - Side-by-side comparison
-
 ## Important Disclaimer
 
 This app is for **educational purposes only** and is not a medical device. It does not diagnose conditions or predict outcomes. Always contact your healthcare provider if:
