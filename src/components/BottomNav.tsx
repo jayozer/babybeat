@@ -117,7 +117,7 @@ export function BottomNav() {
   return (
     <nav
       className="
-        fixed bottom-0 left-0 right-0
+        flex-shrink-0
         bg-white/80 backdrop-blur-md
         border-t border-[#e8f0e8]
         safe-area-bottom
