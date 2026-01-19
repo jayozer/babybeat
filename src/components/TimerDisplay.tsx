@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback } from 'react';
 
 interface TimerDisplayProps {
   startedAt: string | null;
+  endedAt: string | null;
   timeLimitSec: number;
   isPaused: boolean;
   pausedDurationSec?: number;
@@ -22,24 +23,29 @@ function formatTime(seconds: number): string {
 
 export function TimerDisplay({
   startedAt,
+  endedAt,
   timeLimitSec,
   isPaused,
   pausedDurationSec = 0,
 }: TimerDisplayProps) {
   const [elapsed, setElapsed] = useState(0);
 
+  const isFinished = endedAt !== null;
+
   const calculateElapsed = useCallback(() => {
     if (!startedAt) return 0;
 
     const startTime = new Date(startedAt).getTime();
-    const now = Date.now();
-    const totalElapsed = (now - startTime) / 1000;
+    // Use endedAt if session is finished, otherwise use current time
+    const endTime = endedAt ? new Date(endedAt).getTime() : Date.now();
+    const totalElapsed = (endTime - startTime) / 1000;
 
     return Math.max(0, totalElapsed - pausedDurationSec);
-  }, [startedAt, pausedDurationSec]);
+  }, [startedAt, endedAt, pausedDurationSec]);
 
   useEffect(() => {
-    if (!startedAt || isPaused) {
+    // Don't run interval if not started, paused, or finished
+    if (!startedAt || isPaused || isFinished) {
       setElapsed(calculateElapsed());
       return;
     }
@@ -51,7 +57,7 @@ export function TimerDisplay({
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [startedAt, isPaused, calculateElapsed]);
+  }, [startedAt, isPaused, isFinished, calculateElapsed]);
 
   const remaining = Math.max(0, timeLimitSec - elapsed);
   const isTimedOut = remaining <= 0 && startedAt !== null;

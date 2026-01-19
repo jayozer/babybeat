@@ -85,6 +85,15 @@ This was non-negotiable. Pregnant people count kicks everywhere—at home, at wo
 
 Every tap writes to the database within 200ms. If your phone dies or the browser crashes, your session picks up right where you left off.
 
+### Export for Healthcare Providers
+
+When it's time for a prenatal appointment, you want to share your kick counting history—not fumble through screens trying to remember dates. The app offers two CSV export options right from Settings:
+
+- **Summary Export** — One row per session with date, duration, kick count, and any notes you added
+- **Detailed Export** — Individual kick timestamps with intervals between movements
+
+The files open perfectly in Excel or Google Sheets, and the format is clean enough to hand directly to your OB or midwife. No account needed, no cloud sync—your data stays on your device until you choose to export it.
+
 ## Grounded in Medical Guidance
 
 I didn't want to invent arbitrary thresholds. The "10 movements in 2 hours" guideline comes from the [Cleveland Clinic](https://my.clevelandclinic.org/) and is widely recommended by healthcare providers. The [NHS](https://www.nhs.uk/) emphasizes pattern awareness—knowing what's normal for *your* baby—over strict numeric goals.
@@ -136,7 +145,6 @@ It's a web app that works beautifully on phones when added to your home screen. 
 
 Coming soon:
 - **Apple Watch app** — Because reaching for your phone isn't always convenient
-- **Data export** — For sharing with healthcare providers
 - **Partner sharing** — So both parents can log kicks
 
 ---
