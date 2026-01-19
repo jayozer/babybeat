@@ -20,7 +20,7 @@ function formatTime(seconds: number): string {
   return `${minutes}:${secs.toString().padStart(2, '0')}`;
 }
 
-export function TimerDisplay({
+export function SereneTimerDisplay({
   startedAt,
   timeLimitSec,
   isPaused,
@@ -69,10 +69,9 @@ export function TimerDisplay({
             </p>
             <p
               className={`
-                text-3xl font-semibold tabular-nums
+                text-3xl font-semibold tabular-nums font-['Quicksand']
                 ${isPaused ? 'text-[#e4cb9a]' : 'text-[#494d49]'}
               `}
-              style={{ fontFamily: 'Quicksand, sans-serif' }}
             >
               {formatTime(elapsed)}
             </p>
@@ -88,11 +87,10 @@ export function TimerDisplay({
             </p>
             <p
               className={`
-                text-3xl font-semibold tabular-nums
+                text-3xl font-semibold tabular-nums font-['Quicksand']
                 transition-colors duration-300
                 ${isTimedOut ? 'text-[#9f8fc5]' : isWarning ? 'text-[#e4cb9a]' : 'text-[#494d49]'}
               `}
-              style={{ fontFamily: 'Quicksand, sans-serif' }}
             >
               {formatTime(remaining)}
             </p>

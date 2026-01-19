@@ -5,7 +5,7 @@ interface CountDisplayProps {
   targetCount: number;
 }
 
-export function CountDisplay({ currentCount, targetCount }: CountDisplayProps) {
+export function SereneCountDisplay({ currentCount, targetCount }: CountDisplayProps) {
   const isComplete = currentCount >= targetCount;
   const progress = Math.min(currentCount / targetCount, 1);
 
@@ -64,11 +64,10 @@ export function CountDisplay({ currentCount, targetCount }: CountDisplayProps) {
         <div className="absolute inset-0 flex flex-col items-center justify-center">
           <span
             className={`
-              text-6xl font-bold tabular-nums
+              text-6xl font-bold tabular-nums font-['Quicksand']
               transition-all duration-300
               ${isComplete ? 'text-[#477347]' : 'text-[#494d49]'}
             `}
-            style={{ fontFamily: 'Quicksand, sans-serif' }}
           >
             {currentCount}
           </span>
