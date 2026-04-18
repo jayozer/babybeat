@@ -6,7 +6,11 @@ struct CalendarGridView: View {
 
     @State private var displayedMonth: Date
 
-    private let calendar = Calendar.current
+    private let calendar: Calendar = {
+        var c = Calendar(identifier: .gregorian)
+        c.firstWeekday = 1 // Sunday, to match the weekday header below
+        return c
+    }()
     private let weekdays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
 
     init(sessions: [KickSession], selectedDate: Binding<Date>) {
@@ -95,7 +99,8 @@ struct CalendarGridView: View {
     private var leadingPadCount: Int {
         let first = calendar.startOfMonth(for: displayedMonth)
         let weekday = calendar.component(.weekday, from: first)
-        return weekday - calendar.firstWeekday // 0-based
+        // Modulo 7 so the offset stays in 0..<7 regardless of firstWeekday.
+        return ((weekday - calendar.firstWeekday) % 7 + 7) % 7
     }
 
     private var monthDays: [Date] {

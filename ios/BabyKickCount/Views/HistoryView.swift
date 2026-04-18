@@ -28,7 +28,8 @@ struct HistoryView: View {
 
     private var filteredSessions: [KickSession] {
         sessions.filter { session in
-            guard let started = session.startedAt else { return false }
+            guard session.status.isTerminal,
+                  let started = session.startedAt else { return false }
             return calendar.isDate(started, inSameDayAs: selectedDate)
         }
     }
