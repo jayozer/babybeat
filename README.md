@@ -1,66 +1,55 @@
 # Baby Kick Count
 
-A gentle, calming web app to help expectant parents track fetal movements during pregnancy.
+Baby Kick Count is a native SwiftUI iOS app for tracking fetal movement sessions.
+The web app and Capacitor wrapper have been removed; the supported App Store
+build now lives entirely in [`ios/`](ios/).
 
-[![Live Demo](https://img.shields.io/badge/Live%20Demo-babykickcount-5a8f5a?style=for-the-badge&logo=vercel&logoColor=white)](https://babykickcount.com)
-[![Read on Medium](https://img.shields.io/badge/Read%20on-Medium-000000?style=for-the-badge&logo=medium&logoColor=white)](https://jayozer.medium.com/building-a-pregnancy-app-with-ai-assisted-development-753800d07657)
+## Features
 
-## About
-
-Baby Kick Count helps pregnant people in their third trimester monitor fetal movement patterns. Kick counting is used to track a baby's typical movement pattern - changes can be an early sign that warrants contacting a healthcare provider.
-
-**Key Features:**
-- One-tap kick logging with satisfying feedback
-- Customizable tap sounds (Soft Click, Pop, Heartbeat, Bubble, or Silent)
+- One-tap kick logging with haptic and synthesized audio feedback
 - 2-hour session window targeting 10 movements
-- Calendar view to track patterns over time
-- Session history with detailed timestamps
-- Offline-first PWA - works without internet
-- Calming, anxiety-reducing design
-
-## Try It
-
-**[Launch Baby Kick Count](https://babykickcount.com)**
-
-The app works best when added to your home screen for a native app experience.
-
-## Screenshots
-
-| Home | Settings | History |
-|:----:|:--------:|:-------:|
-| ![Home](public/screenshots/home.png) | ![Settings](public/screenshots/settings.png) | ![History](public/screenshots/history.png) |
-| Tap the heart to count | Customize tap sounds | Calendar view of sessions |
-
-## Tech Stack
-
-- **Framework:** Next.js 15 with React 19
-- **Styling:** Tailwind CSS
-- **Storage:** IndexedDB via Dexie.js (offline-first)
-- **Deployment:** Vercel
-- **Testing:** Vitest + Playwright
+- Pause, resume, undo, timeout, and end-early session states
+- SwiftData persistence for sessions and kick timestamps
+- Calendar-based history and session review
+- CSV export through the native iOS share sheet
+- First-run onboarding, settings, and educational safety guidance
+- On-device data only: no sign-in, analytics, backend, or network layer
 
 ## Development
 
+Requirements:
+
+- Xcode 15 or later
+- iOS 17.0 or later
+- [XcodeGen](https://github.com/yonaskolb/XcodeGen)
+
+Generate and open the Xcode project:
+
 ```bash
-# Install dependencies
-npm install
-
-# Run development server
-npm run dev
-
-# Run tests
-npm test
-
-# Build for production
-npm run build
+cd ios
+xcodegen generate
+open BabyKickCount.xcodeproj
 ```
+
+Build from the command line:
+
+```bash
+xcodebuild \
+  -project ios/BabyKickCount.xcodeproj \
+  -scheme BabyKickCount \
+  -destination 'generic/platform=iOS Simulator' \
+  build
+```
+
+Before submitting to the App Store, set the signing team in Xcode and confirm
+the bundle identifier, version, build number, and app icon are final.
 
 ## Important Disclaimer
 
-This app is for **educational purposes only** and is not a medical device. It does not diagnose conditions or predict outcomes. Always contact your healthcare provider if:
-- Fetal movements change abruptly, slow down, or stop
-- You cannot feel 10 movements after 2 hours of focused counting
-- You have any concerns about your pregnancy
+This app is for educational purposes only and is not a medical device. It does
+not diagnose conditions or predict outcomes. Always contact your healthcare
+provider if fetal movements change abruptly, slow down, stop, or if you have
+any concerns about your pregnancy.
 
 ## License
 

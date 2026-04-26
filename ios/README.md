@@ -1,63 +1,54 @@
-# Baby Kick Count — iOS
+# Baby Kick Count iOS
 
-Native SwiftUI port of the [Baby Kick Count](../README.md) web app. Feature-parity with the web version: one-tap kick logging with synthesized sounds, 2-hour timer window, pause/resume/undo, session summary with strength rating + notes, calendar-based history, CSV export, and on-device persistence.
+This is the shipping native SwiftUI app for Baby Kick Count. There is no
+Capacitor shell and no bundled web app.
 
 ## Requirements
 
 - Xcode 15 or later
-- iOS 17.0+ deployment target
-- [XcodeGen](https://github.com/yonaskolb/XcodeGen) (`brew install xcodegen`) to generate the Xcode project
+- iOS 17.0 or later
+- [XcodeGen](https://github.com/yonaskolb/XcodeGen)
 
 ## Generate the Xcode project
 
-From the `ios/` directory:
+From this directory:
 
 ```bash
 xcodegen generate
 open BabyKickCount.xcodeproj
 ```
 
-Pick a development team in **Signing & Capabilities**, choose an iPhone simulator or device, and run.
-
-If you prefer not to install XcodeGen, create an empty Xcode iOS App project named `BabyKickCount` targeting iOS 17, delete the default files, drag `ios/BabyKickCount/` into the project, and point the target's Info.plist at `BabyKickCount/Info.plist`.
+Pick a development team in **Signing & Capabilities**, choose an iPhone
+simulator or device, and run.
 
 ## Project layout
 
-```
+```text
 ios/
-├── project.yml                    XcodeGen spec
+├── project.yml
 └── BabyKickCount/
-    ├── App/BabyKickCountApp.swift Entry point + SwiftData model container
-    ├── Models/                    KickSession, KickEvent, UserPreferences, enums
-    ├── Services/                  State machine, SwiftData store, preferences, feedback, export
-    ├── ViewModels/                SessionViewModel (tap / pause / resume / auto-complete / timeout)
-    ├── Views/                     SwiftUI screens and components
-    ├── DesignSystem/              Theme colors and card styling
-    ├── Resources/Assets.xcassets  AppIcon, AccentColor, LaunchBackground
+    ├── App/              SwiftUI app entry point and SwiftData model container
+    ├── DesignSystem/     Theme colors and shared styling
+    ├── Models/           KickSession, KickEvent, preferences, and enums
+    ├── Services/         State machine, persistence, feedback, and export
+    ├── ViewModels/       Session interaction model
+    ├── Views/            SwiftUI screens and components
+    ├── Resources/        Asset catalog and app icon
     └── Info.plist
 ```
 
-## Feature parity with web
+## App Store notes
 
-| Web feature | iOS equivalent |
-| --- | --- |
-| Tap pad + ripple + breathing | `Views/TapPad.swift` using SwiftUI animations |
-| Web Audio synth sounds (click/pop/heartbeat/bubble) | `Services/FeedbackService.swift` generates PCM buffers via `AVAudioEngine` |
-| `navigator.vibrate` | `UIImpactFeedbackGenerator` (medium) |
-| Wake Lock API | `UIApplication.shared.isIdleTimerDisabled` toggled by session state |
-| Dexie/IndexedDB | SwiftData (`@Model` on `KickSession` and `KickEvent`) |
-| Preferences in IndexedDB | JSON-encoded `UserPreferences` in `UserDefaults` |
-| Session state machine | `Services/SessionStateMachine.swift` (idle → active → paused/complete/timeout/ended_early) |
-| Calendar heatmap | `Views/CalendarGridView.swift` |
-| CSV export | `Services/ExportService.swift` + `UIActivityViewController` share sheet |
-| Onboarding modal | `Views/OnboardingView.swift` (first-launch flag in `UserPreferences`) |
-
-## Notes
-
-- The app icon asset is a placeholder — drop a 1024×1024 PNG into `Resources/Assets.xcassets/AppIcon.appiconset/` before shipping.
-- Sounds are synthesized at runtime to match the web app's Web Audio implementation. No audio files are bundled.
-- All data stays on-device. There is no network layer, analytics, or sign-in.
+- Bundle identifier: `com.babykickcount.app`
+- Display name: `Baby Kick Count`
+- Version: `1.0.0`
+- Build: `1`
+- Encryption export flag is set to `false`.
+- Data is stored on device with SwiftData/UserDefaults.
+- The app has no network layer, analytics SDK, account system, or web view.
 
 ## Medical disclaimer
 
-This app is for educational purposes only. It is not a medical device and does not diagnose conditions or predict outcomes. Always consult a healthcare provider with concerns about fetal movement.
+This app is for educational purposes only. It is not a medical device and does
+not diagnose conditions or predict outcomes. Users should contact a healthcare
+provider with concerns about fetal movement.
