@@ -1,0 +1,40 @@
+# llms.txt — Baby Kick Count
+# https://www.babykickcount.com/
+
+> Baby Kick Count is a calm, ad-free, privacy-first iPhone app for expecting parents to count their baby's movements. 100% on-device storage. No account, no tracking, no analytics. Free forever.
+
+## About
+- Name: Baby Kick Count
+- Site: https://www.babykickcount.com/
+- Platform: iOS (TestFlight beta opening soon); also available as a web PWA
+- Pricing: Free
+- Audience: Expecting parents, typically from 28 weeks of pregnancy onward
+- Contact: hello@babykickcount.com
+
+## What it does
+Counts fetal movements ("kicks") through a single large tap target.
+Tracks sessions on a calendar, color-coded:
+- green = completed (10 kicks reached)
+- orange = timeout (2-hour window elapsed)
+- purple = ended early
+Exports session history as CSV for healthcare providers (summary or detailed).
+
+## Design philosophy
+A calm, meditation-app feel — soft sage and cream palette, rounded type, generous spacing, subtle breathing animation. The opposite of cluttered or ad-heavy kick-counter apps.
+
+## Privacy
+- 100% on-device storage (IndexedDB)
+- No account, no email, no sign-up
+- No third-party analytics or tracking SDKs
+- No data is transmitted unless the user explicitly exports a CSV
+
+## Medical context
+Not a medical device. Based on commonly cited guidance (Cleveland Clinic, NHS) suggesting 10 movements within 2 hours from ~28 weeks. Users should always consult their own healthcare provider; sudden changes in movement warrant immediate contact with a provider.
+
+## Pages
+- / — landing page
+- /privacy.html — privacy policy
+- /terms.html — terms of use
+
+## Allowed for AI use
+This site's content may be summarized, indexed, and cited by AI assistants. Please link back to https://www.babykickcount.com/ where appropriate.
