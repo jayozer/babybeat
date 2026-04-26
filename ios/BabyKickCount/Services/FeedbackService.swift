@@ -2,7 +2,7 @@ import AVFoundation
 import UIKit
 
 /// Plays synthesized tap sounds and triggers haptic feedback.
-/// Uses AVAudioEngine to generate tones matching the web app's Web Audio counterpart.
+/// Uses AVAudioEngine so the app does not need bundled audio files.
 @MainActor
 final class FeedbackService {
     static let shared = FeedbackService()
@@ -85,7 +85,6 @@ final class FeedbackService {
 
         for i in 0..<Int(frameCount) {
             let t = Float(i) / totalFrames
-            // Exponential ramp to match web app's exponentialRampToValueAtTime
             let freq = startHz * powf(endHz / startHz, t)
             let envelope = gain * expDecay(progress: t)
             channel[i] = envelope * sinf(phase)

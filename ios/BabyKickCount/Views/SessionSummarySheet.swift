@@ -25,7 +25,7 @@ struct SessionSummarySheet: View {
                     stats
                 }
 
-                Section("How strong were the movements?") {
+                Section {
                     HStack(spacing: 12) {
                         ForEach(1...5, id: \.self) { value in
                             Button {
@@ -38,11 +38,15 @@ struct SessionSummarySheet: View {
                             .buttonStyle(.plain)
                         }
                     }
+                } header: {
+                    Text("How strong were the movements?")
                 }
 
-                Section("Notes") {
+                Section {
                     TextField("Optional notes", text: $notes, axis: .vertical)
                         .lineLimit(3...6)
+                } header: {
+                    Text("Notes")
                 }
 
                 Section {

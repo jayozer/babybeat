@@ -46,7 +46,12 @@ final class SessionViewModel: ObservableObject {
 
     func tap() {
         do {
-            let target = session ?? (try ensureSession())
+            let target: KickSession
+            if let session {
+                target = session
+            } else {
+                target = try ensureSession()
+            }
             if target.status == .idle {
                 try SessionStateMachine.start(target)
                 startTicking()

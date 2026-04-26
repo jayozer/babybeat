@@ -13,38 +13,48 @@ struct SettingsView: View {
 
     var body: some View {
         Form {
-            Section("Tap Sound") {
+            Section {
                 ForEach(SoundOption.allCases) { option in
                     soundRow(option)
                 }
+            } header: {
+                Text("Tap Sound")
             } footer: {
                 Text("Select the sound played when you tap")
             }
 
-            Section("Haptic Feedback") {
+            Section {
                 Toggle("Vibration", isOn: vibrationBinding)
                     .tint(Theme.primary)
+            } header: {
+                Text("Haptic Feedback")
             } footer: {
                 Text("Haptic feedback on tap")
             }
 
-            Section("Screen") {
+            Section {
                 Toggle("Keep Screen Awake", isOn: keepAwakeBinding)
                     .tint(Theme.primary)
+            } header: {
+                Text("Screen")
             } footer: {
                 Text("Prevent screen from sleeping during a session")
             }
 
-            Section("Data") {
+            Section {
                 Button("Summary Export") { triggerExport(kind: .summary) }
                 Button("Detailed Export") { triggerExport(kind: .detailed) }
+            } header: {
+                Text("Data")
             } footer: {
                 Text("\(ExportService.exportableCount(sessions: sessions)) completed sessions available. Summary: one row per session. Detailed: individual kick timestamps.")
             }
 
-            Section("About") {
+            Section {
                 LabeledContent("Version", value: "1.0.0")
                 NavigationLink("Information & Help") { InfoView() }
+            } header: {
+                Text("About")
             }
         }
         .navigationTitle("Settings")
