@@ -1,0 +1,24 @@
+<svg width="1024" height="1024" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
+  <path d="
+    M512 780
+    C 260 600, 120 420, 240 260
+    C 340 140, 460 200, 512 300
+    C 564 200, 684 140, 784 260
+    C 904 420, 764 600, 512 780
+  "
+    fill="none"
+    stroke="#4E8E5F"
+    stroke-width="40"
+    stroke-linecap="round"
+  />
+  <path d="
+    M300 520
+    C 360 520, 400 480, 460 500
+    C 500 515, 540 540, 580 520
+    C 640 490, 680 520, 740 520
+  "
+    stroke="#4E8E5F"
+    stroke-width="32"
+    fill="none"
+    stroke-linecap="round"/>
+</svg>

@@ -591,28 +591,22 @@ h1,h2,h3,h4{ margin:0; font-weight:500; letter-spacing:-0.01em; color: var(--ink
 .beta-card .eyebrow{ color: var(--sage-soft); }
 .beta-card h2{ color: var(--cream); }
 .beta-card .body-lg{ color: rgba(245,241,232,.75); max-width: 50ch; margin: 22px auto 28px; }
-.beta-form{
+.beta-actions{
   display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;
   max-width: 520px; margin: 0 auto;
 }
-.beta-form input{
-  flex: 1 1 240px;
-  height: 48px; padding: 0 18px;
-  border-radius: var(--radius-pill);
-  border: 1px solid rgba(245,241,232,.18);
-  background: rgba(245,241,232,.06);
-  color: var(--cream);
-  font: inherit;
-  font-weight: 500;
-  outline: none;
-  transition: border-color .2s ease, background .2s ease;
-}
-.beta-form input::placeholder{ color: rgba(245,241,232,.45); }
-.beta-form input:focus{ border-color: var(--sage-soft); background: rgba(245,241,232,.10); }
-.beta-form button{
+.beta-actions .btn-primary{
   background: var(--cream); color: var(--ink);
 }
-.beta-form button:hover{ background: var(--sage-soft); color: var(--ink); }
+.beta-actions .btn-primary:hover{ background: var(--sage-soft); color: var(--ink); }
+.beta-support{
+  color: var(--cream);
+  border-color: rgba(245,241,232,.32);
+}
+.beta-support:hover{
+  border-color: var(--cream);
+  color: var(--cream);
+}
 .fineprint{ margin: 16px 0 0; font-size: 13px; color: rgba(245,241,232,.55); }
 
 /* ---------- FAQ ---------- */

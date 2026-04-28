@@ -1,0 +1,30 @@
+<svg width="1024" height="1024" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bgGradient" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#7FB38A"/>
+      <stop offset="100%" stop-color="#4E8E5F"/>
+    </linearGradient>
+  </defs>
+  <!-- Background (flat square — iOS applies rounded-corner mask at runtime; required for App Store) -->
+  <rect x="0" y="0" width="1024" height="1024" fill="url(#bgGradient)"/>
+  <!-- Heart -->
+  <path d="
+    M512 780
+    C 260 600, 120 420, 240 260
+    C 340 140, 460 200, 512 300
+    C 564 200, 684 140, 784 260
+    C 904 420, 764 600, 512 780
+  " fill="#F4F7F4"/>
+  <!-- Soft wave (cutout style via overlay) -->
+  <path d="
+    M300 520
+    C 360 520, 400 480, 460 500
+    C 500 515, 540 540, 580 520
+    C 640 490, 680 520, 740 520
+  "
+    stroke="#4E8E5F"
+    stroke-width="36"
+    fill="none"
+    stroke-linecap="round"
+    stroke-linejoin="round"/>
+</svg>
