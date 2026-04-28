@@ -1,4 +1,4 @@
-# Baby Kick Count — Website (`web/`)
+# Littletaps — Website (`web/`)
 
 A calm, static marketing site for **babykickcount.com**, ready to deploy on Vercel.
 
@@ -9,9 +9,8 @@ web/
 ├── index.html              # landing page
 ├── privacy.html            # privacy policy
 ├── terms.html              # terms of use
+├── support.html            # App Store support page
 ├── styles.css              # shared styles
-├── tweaks.jsx              # in-page Tweaks panel (palette, type, copy)
-├── tweaks-panel.jsx        # Tweaks panel component
 ├── llms.txt                # AI-friendly site summary
 ├── robots.txt
 ├── sitemap.xml
@@ -60,20 +59,10 @@ Generate from your final app icon:
 
 I included an SVG placeholder for `og-cover.png`; rasterize it (or replace with a designed cover) before launch — Twitter/Facebook want PNG/JPG.
 
-## Tweaks
-
-Toggle the **Tweaks** panel from the studio toolbar to live-edit:
-- Palette (sage / blush / cool / mono)
-- Type pairing
-- Hero headline + lede
-- Show/hide the "coming soon" notice strip
-
-Settings persist back to `index.html` so whatever you settle on becomes the deployed default.
-
 ## SEO checklist included
 - ✅ Open Graph + Twitter Card meta
 - ✅ Canonical URL
-- ✅ Apple smart app banner placeholder (replace `app-id=` once App Store Connect issues one)
+- ✅ Apple smart app banner metadata with Apple app ID `6763963304`
 - ✅ Schema.org `MobileApplication` JSON-LD
 - ✅ `llms.txt`
 - ✅ `robots.txt`
@@ -82,7 +71,7 @@ Settings persist back to `index.html` so whatever you settle on becomes the depl
 - ✅ Theme color, viewport, description
 
 ## Apple smart app banner
-Once your app is live in the App Store, edit `index.html` and replace the `apple-itunes-app` meta tag:
+The smart app banner is configured in `index.html`:
 ```html
-<meta name="apple-itunes-app" content="app-id=YOUR_APP_ID, app-argument=https://www.babykickcount.com/" />
+<meta name="apple-itunes-app" content="app-id=6763963304, app-argument=https://www.babykickcount.com/" />
 ```

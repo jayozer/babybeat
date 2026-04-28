@@ -6,12 +6,17 @@
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://www.babykickcount.com/privacy.html</loc>
+    <loc>https://www.babykickcount.com/privacy</loc>
     <changefreq>yearly</changefreq>
     <priority>0.4</priority>
   </url>
   <url>
-    <loc>https://www.babykickcount.com/terms.html</loc>
+    <loc>https://www.babykickcount.com/terms</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.4</priority>
+  </url>
+  <url>
+    <loc>https://www.babykickcount.com/support</loc>
     <changefreq>yearly</changefreq>
     <priority>0.4</priority>
   </url>

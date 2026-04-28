@@ -8,7 +8,7 @@ struct OnboardingView: View {
     private let pages: [Page] = [
         Page(
             icon: "heart.fill",
-            title: "Welcome to Baby Kick Count",
+            title: "Welcome to Littletaps",
             body: "A calm, simple way to track your baby's movements during the third trimester."
         ),
         Page(

@@ -1,12 +1,12 @@
-# llms.txt — Baby Kick Count
+# llms.txt — Littletaps
 # https://www.babykickcount.com/
 
-> Baby Kick Count is a calm, ad-free, privacy-first iPhone app for expecting parents to count their baby's movements. 100% on-device storage. No account, no tracking, no analytics. Free forever.
+> Littletaps is a calm, ad-free, privacy-first iPhone app for expecting parents to count their baby's movements. 100% on-device storage. No account, no tracking, no analytics. Free forever.
 
 ## About
-- Name: Baby Kick Count
+- Name: Littletaps - Baby Kick Count
 - Site: https://www.babykickcount.com/
-- Platform: iOS (TestFlight beta opening soon); also available as a web PWA
+- Platform: Native iOS app
 - Pricing: Free
 - Audience: Expecting parents, typically from 28 weeks of pregnancy onward
 - Contact: hello@babykickcount.com
@@ -23,7 +23,7 @@ Exports session history as CSV for healthcare providers (summary or detailed).
 A calm, meditation-app feel — soft sage and cream palette, rounded type, generous spacing, subtle breathing animation. The opposite of cluttered or ad-heavy kick-counter apps.
 
 ## Privacy
-- 100% on-device storage (IndexedDB)
+- 100% on-device storage in the native iOS app
 - No account, no email, no sign-up
 - No third-party analytics or tracking SDKs
 - No data is transmitted unless the user explicitly exports a CSV
@@ -33,8 +33,9 @@ Not a medical device. Based on commonly cited guidance (Cleveland Clinic, NHS) s
 
 ## Pages
 - / — landing page
-- /privacy.html — privacy policy
-- /terms.html — terms of use
+- /privacy — privacy policy
+- /terms — terms of use
+- /support — support and troubleshooting
 
 ## Allowed for AI use
 This site's content may be summarized, indexed, and cited by AI assistants. Please link back to https://www.babykickcount.com/ where appropriate.

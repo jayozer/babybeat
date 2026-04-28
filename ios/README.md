@@ -1,6 +1,6 @@
-# Baby Kick Count iOS
+# Littletaps iOS
 
-This is the shipping native SwiftUI app for Baby Kick Count. There is no
+This is the shipping native SwiftUI app for Littletaps. There is no
 Capacitor shell and no bundled web app.
 
 ## Requirements
@@ -40,7 +40,7 @@ ios/
 ## App Store notes
 
 - Bundle identifier: `com.babykickcount.app`
-- Display name: `Baby Kick Count`
+- Display name: `Littletaps`
 - Version: `1.0.0`
 - Build: `1`
 - Encryption export flag is set to `false`.

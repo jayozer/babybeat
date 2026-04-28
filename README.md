@@ -1,6 +1,6 @@
-# Baby Kick Count
+# Littletaps
 
-Baby Kick Count is a native SwiftUI iOS app for tracking fetal movement sessions.
+Littletaps is a native SwiftUI iOS app for tracking fetal movement sessions.
 The web app and Capacitor wrapper have been removed; the supported App Store
 build now lives entirely in [`ios/`](ios/).
 
@@ -43,6 +43,21 @@ xcodebuild \
 
 Before submitting to the App Store, set the signing team in Xcode and confirm
 the bundle identifier, version, build number, and app icon are final.
+
+## Launch Prep
+
+The working App Store checklist lives in [`TODO.md`](TODO.md). Current in-repo
+launch items include:
+
+- `PrivacyInfo.xcprivacy` is bundled with the iOS target.
+- Privacy, Terms, and Support links are available from Settings.
+- The support page is available at `https://www.babykickcount.com/support` after
+  the static site is deployed.
+- Focused unit tests cover session state transitions and CSV export escaping.
+
+Still required outside the repo: confirm App Store distribution signing,
+archive/upload a Release build, complete App Privacy and age rating, run
+TestFlight on physical devices, and upload final screenshots.
 
 ## Important Disclaimer
 

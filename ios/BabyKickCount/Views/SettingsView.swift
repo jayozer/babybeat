@@ -51,8 +51,11 @@ struct SettingsView: View {
             }
 
             Section {
-                LabeledContent("Version", value: "1.0.0")
+                LabeledContent("Version", value: appVersion)
                 NavigationLink("Information & Help") { InfoView() }
+                Link("Privacy Policy", destination: AppURLs.privacy)
+                Link("Terms of Use", destination: AppURLs.terms)
+                Link("Support", destination: AppURLs.support)
             } header: {
                 Text("About")
             }
@@ -124,6 +127,10 @@ struct SettingsView: View {
             exportFilename = "kick-count-detailed-\(today).csv"
         }
         showExporter = true
+    }
+
+    private var appVersion: String {
+        Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "1.0"
     }
 }
 

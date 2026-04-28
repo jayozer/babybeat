@@ -101,7 +101,7 @@ struct SessionView: View {
 
     private var header: some View {
         VStack(spacing: 4) {
-            Text("Baby Kick Count")
+            Text("Littletaps")
                 .font(.system(.title2, design: .rounded).weight(.semibold))
                 .foregroundStyle(Theme.ink)
             Text("Track your baby's movements gently")
