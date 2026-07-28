@@ -263,20 +263,32 @@ cat <<'EOF'
     [ ] End early -> confirmation dialog -> session lands in History.
     [ ] Force-quit mid-session, relaunch -> session resumes with correct elapsed time.
 
-  Accessibility (labels were added but never run under VoiceOver):
-    [ ] VoiceOver: calendar day cells announce date + session count as buttons.
-    [ ] VoiceOver: star rating, history overflow menu, sound previews all speak.
-    [ ] Dynamic Type at the largest accessibility size — CountDisplay (72pt) and
-        TapPad (64pt) use fixed sizes; check the tap pad's 3 labels do not clip.
+  Accessibility. Use Accessibility Inspector, not VoiceOver — it reads out the
+  same labels but lets you click an element instead of learning swipe gestures.
+    Xcode -> Open Developer Tool -> Accessibility Inspector. Set the target
+    (top-left dropdown) to your booted Simulator, then:
+    [ ] Click the crosshair, click a calendar day. The Label field should read
+        like "Monday, July 27, 2026, today, 2 sessions recorded" and Traits
+        should include Button.
+    [ ] Same for a star in the summary sheet ("Rate 3 stars"), the history row
+        "..." menu ("Session options"), and a sound preview ("Preview Pop sound").
+    [ ] Run the audit (the checkmark tab) on each of the 4 screens. It flags
+        unlabelled controls, hit targets under 44pt, and contrast failures.
 
-  Export:
-    [ ] Add a note containing a comma, a double quote, and a newline; export
-        Summary CSV and open it. Fields must stay aligned.
+  Dynamic Type. Fastest path is Xcode's Environment Overrides: run the app from
+  Xcode, then in the debug bar click the slider icon, enable Dynamic Type, and
+  drag to AX5.
+    [ ] Counter screen at AX5: the tap pad's three stacked labels must not clip.
+        CountDisplay (72pt) and TapPad (64pt) are fixed sizes and will not grow.
 
-  Then, on the App Store Connect side:
+  Then, on the App Store Connect side (see TODO.md for the click paths):
     [ ] Upload app_store_screenshots/iphone_6_9/* to the 6.9-inch slot.
     [ ] Answer "No" to Regulated Medical Device.
     [ ] Fill App Review Information contact name, phone, and email.
+
+  CSV escaping is covered by the unit tests above (a note containing a comma,
+  a quote, and a newline is round-tripped through an RFC 4180 parser and the
+  column alignment is asserted), so it does not need a manual pass.
 EOF
 
 printf '\n'
