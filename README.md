@@ -44,6 +44,23 @@ xcodebuild \
 Before submitting to the App Store, set the signing team in Xcode and confirm
 the bundle identifier, version, build number, and app icon are final.
 
+## Pre-Submission Check
+
+Run the full automated check on a Mac with Xcode installed:
+
+```bash
+./ios/Scripts/simulator-check.sh              # tests, Release build, bundle checks, simulator launch
+./ios/Scripts/simulator-check.sh --archive    # also archive and export an App Store package
+./ios/Scripts/simulator-check.sh --device "iPhone SE (3rd generation)"
+```
+
+It regenerates the project, runs the unit tests, builds Release, verifies the
+bundled `Info.plist`, privacy manifest, app-icon alpha channel, and App Store
+screenshot dimensions, then installs the app clean and launches it in both light
+and dark appearance so the two screenshots can be compared. Logs and captures
+land in `build/simulator-check/`. Hands-on checks it cannot perform are printed
+at the end.
+
 ## Launch Prep
 
 The working App Store checklist lives in [`TODO.md`](TODO.md). Current in-repo

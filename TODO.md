@@ -100,6 +100,12 @@ Static review of the repo. No simulator was available in this environment, so
 nothing below was verified on a running build — re-run the test/build/archive
 commands on a Mac before submitting.
 
+Run `./ios/Scripts/simulator-check.sh` on a Mac to execute every automatable
+check in one pass (tests, Release build, bundle/privacy-manifest/icon/screenshot
+validation, clean install, and a light-vs-dark launch comparison). It prints the
+remaining hands-on checks at the end. Add `--archive` to also produce an App
+Store package.
+
 Applied in this pass:
 
 - [x] Lock the app to light appearance (`UIUserInterfaceStyle: Light` in `Info.plist` and `project.yml`). The design system in `DesignSystem/Theme.swift` hardcodes light colours (`Theme.ink`, `Theme.surface`, the `Theme.background` gradient), but `SettingsView` and `SessionSummarySheet` use `Form` and several views use `.ultraThinMaterial`, all of which follow the system appearance. In Dark Mode that put dark-grey text on dark backgrounds. This also makes the shipped build match the light-mode screenshots already uploaded.
@@ -122,7 +128,7 @@ Still open, not applied:
 ## P2: Nice To Have Before Public Launch
 
 - [x] Add a lightweight launch checklist to `README.md` or link this file from it.
-- [ ] Add automated screenshot capture scripts for App Store sizes.
+- [x] Add an automated pre-submission check script: `ios/Scripts/simulator-check.sh` validates screenshot dimensions per slot, icon alpha, bundle contents, and captures launch screenshots. It does not yet drive the app through each screen — that still needs UI tests (see below).
 - [ ] Add basic UI tests for onboarding, counting, summary, and export availability.
 - [ ] Add release notes template for version `1.0`.
 - [ ] Consider localization readiness if launching outside English-first regions.
