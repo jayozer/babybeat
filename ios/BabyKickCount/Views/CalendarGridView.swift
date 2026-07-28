@@ -151,15 +151,36 @@ private struct DayCell: View {
             }
             .frame(height: 6)
         }
-        .frame(maxWidth: .infinity, minHeight: 40)
+        .frame(maxWidth: .infinity, minHeight: 44)
         .background(background)
         .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
+        .contentShape(Rectangle())
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(accessibilityText)
+        .accessibilityAddTraits(.isButton)
     }
 
     private var dayString: String {
         let f = DateFormatter()
         f.dateFormat = "d"
         return f.string(from: date)
+    }
+
+    private var accessibilityText: String {
+        let f = DateFormatter()
+        f.dateStyle = .full
+        f.timeStyle = .none
+        var text = f.string(from: date)
+        if isToday { text += ", today" }
+        if isSelected { text += ", selected" }
+        if markers.isEmpty {
+            text += ", no sessions"
+        } else if markers.count == 1 {
+            text += ", 1 session recorded"
+        } else {
+            text += ", \(markers.count) sessions recorded"
+        }
+        return text
     }
 
     @ViewBuilder

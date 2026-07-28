@@ -36,6 +36,7 @@ struct SessionSummarySheet: View {
                                     .foregroundStyle(Theme.primary)
                             }
                             .buttonStyle(.plain)
+                            .accessibilityLabel(value == 1 ? "Rate 1 star" : "Rate \(value) stars")
                         }
                     }
                 } header: {

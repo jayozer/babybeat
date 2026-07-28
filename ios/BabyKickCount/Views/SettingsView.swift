@@ -108,6 +108,7 @@ struct SettingsView: View {
                         .font(.title3)
                 }
                 .buttonStyle(.plain)
+                .accessibilityLabel("Preview \(option.label) sound")
             }
         }
     }

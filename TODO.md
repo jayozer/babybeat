@@ -94,6 +94,31 @@ pregnancy,fetal movement,third trimester,OB,midwife,prenatal,maternity,timer,wel
 - [x] Add `/support` and use it for App Store Connect Support URL.
 - [ ] After App Store approval, replace TestFlight CTAs with App Store download CTAs.
 
+## Follow-Up Review (July 28, 2026)
+
+Static review of the repo. No simulator was available in this environment, so
+nothing below was verified on a running build — re-run the test/build/archive
+commands on a Mac before submitting.
+
+Applied in this pass:
+
+- [x] Lock the app to light appearance (`UIUserInterfaceStyle: Light` in `Info.plist` and `project.yml`). The design system in `DesignSystem/Theme.swift` hardcodes light colours (`Theme.ink`, `Theme.surface`, the `Theme.background` gradient), but `SettingsView` and `SessionSummarySheet` use `Form` and several views use `.ultraThinMaterial`, all of which follow the system appearance. In Dark Mode that put dark-grey text on dark backgrounds. This also makes the shipped build match the light-mode screenshots already uploaded.
+- [x] Delete unreferenced `AppIcon-1024_old.png` and `AppIcon-1024_round.png` from `AppIcon.appiconset`. They were not listed in `Contents.json` (Xcode warns on stray files) and `_round` carried an alpha channel.
+- [x] Add VoiceOver labels and 44 pt targets to the controls that had none: calendar day cells (were a bare `.onTapGesture` at 40 pt with no label or button trait), the history row overflow menu, the summary-sheet star rating, and the settings sound-preview buttons. Also gave `CountDisplay` a combined label/value and `TimerDisplay` a combined element.
+
+Still open, not applied:
+
+- [ ] Confirm which iPhone screenshot slot is filled in App Store Connect. The P1 note above says the `1284 x 2778` set went into the 6.5-inch slot and the `1320 x 2868` set was kept "only as the original source". Apple now treats the 6.9-inch display as the required iPhone size — upload `app_store_screenshots/iphone_6_9/*` to the 6.9-inch slot.
+- [ ] Re-capture screenshots after the light-appearance change and the accessibility tweaks so they match the submitted binary (the history row is now slightly taller).
+- [ ] `SessionViewModel.startTicking()` spawns a `Task` loop that is only cancelled by `stopTicking()`. There is no `deinit`, so if the view model is ever deallocated mid-session the loop keeps sleeping forever with a nil `self`. Harmless today (the view model lives for the app's lifetime) but worth a `deinit { timerTask?.cancel() }` — needs a compiler to check the MainActor isolation.
+- [ ] `SessionViewModel.pause()`, `resume()`, and `undo()` mutate the `KickSession` model object without reassigning the `@Published var session`. This works today only because SwiftData `@Model` types are `Observable`; it is fragile. Verify the count actually decrements on screen after Undo, and that Pause/Resume flip the UI.
+- [ ] `UserPreferences.defaultTargetCount` and `defaultTimeLimitSec` are persisted but have no Settings UI, so they are permanently 10 and 7200. Either expose them or drop them. Relatedly, `TimerDisplay` takes a `timeLimitSec` parameter it never uses.
+- [ ] `ExportService.escape()` quotes commas, quotes, and newlines correctly but does not neutralise notes beginning with `=`, `+`, `-`, or `@`, which spreadsheet apps treat as formulas.
+- [ ] Fixed font sizes in `CountDisplay` (72 pt) and `TapPad` (64 pt) do not respond to Dynamic Type; check the tap pad's three stacked labels at the largest accessibility sizes.
+- [ ] The medical disclaimer lives in `InfoView`, reachable only via Settings -> Information & Help. Consider surfacing it during onboarding — App Review has asked for prominent disclaimers on pregnancy/fetal-movement apps.
+- [ ] Answer "No" to the Regulated Medical Device question in App Store Connect. The in-app and website copy consistently position this as an informational wellness log, which supports that answer.
+- [ ] Fill the App Review Information contact first name, last name, phone, and email.
+
 ## P2: Nice To Have Before Public Launch
 
 - [x] Add a lightweight launch checklist to `README.md` or link this file from it.
