@@ -78,7 +78,7 @@ pregnancy,fetal movement,third trimester,OB,midwife,prenatal,maternity,timer,wel
 - [ ] Test Increase Contrast and Reduce Motion.
 - [ ] Check safe areas on the smallest supported iPhone and a notched/Dynamic Island device.
 - [ ] Verify interactive targets are at least 44 x 44 pt or have enough tappable padding.
-- [ ] Test CSV exports for comma, quote, and newline escaping in notes.
+- [x] Test CSV exports for comma, quote, and newline escaping in notes. Covered by `testSummaryCSVRoundTripsWithoutBreakingColumnAlignment`, which parses the output with an RFC 4180 reader and asserts column alignment holds.
 - [x] Add focused unit tests for `SessionStateMachine` and `ExportService`; these are small and high-value for a health-adjacent app.
 - [ ] Consider a debug-only way to test timeout behavior without waiting two hours, then make sure it is removed from release builds.
 - [ ] Archive and upload using "App Store Connect," not "TestFlight Internal Only," so the build can be used for App Review and distribution.
@@ -116,10 +116,10 @@ Still open, not applied:
 
 - [ ] Confirm which iPhone screenshot slot is filled in App Store Connect. The P1 note above says the `1284 x 2778` set went into the 6.5-inch slot and the `1320 x 2868` set was kept "only as the original source". Apple now treats the 6.9-inch display as the required iPhone size — upload `app_store_screenshots/iphone_6_9/*` to the 6.9-inch slot.
 - [ ] Re-capture screenshots after the light-appearance change and the accessibility tweaks so they match the submitted binary (the history row is now slightly taller).
-- [ ] `SessionViewModel.startTicking()` spawns a `Task` loop that is only cancelled by `stopTicking()`. There is no `deinit`, so if the view model is ever deallocated mid-session the loop keeps sleeping forever with a nil `self`. Harmless today (the view model lives for the app's lifetime) but worth a `deinit { timerTask?.cancel() }` — needs a compiler to check the MainActor isolation.
+- [x] `SessionViewModel.startTicking()` spawns a `Task` loop that is only cancelled by `stopTicking()`. Added `deinit { timerTask?.cancel() }`; it compiles clean under Swift 5.9 with no MainActor isolation warning.
 - [ ] `SessionViewModel.pause()`, `resume()`, and `undo()` mutate the `KickSession` model object without reassigning the `@Published var session`. This works today only because SwiftData `@Model` types are `Observable`; it is fragile. Verify the count actually decrements on screen after Undo, and that Pause/Resume flip the UI.
 - [ ] `UserPreferences.defaultTargetCount` and `defaultTimeLimitSec` are persisted but have no Settings UI, so they are permanently 10 and 7200. Either expose them or drop them. Relatedly, `TimerDisplay` takes a `timeLimitSec` parameter it never uses.
-- [ ] `ExportService.escape()` quotes commas, quotes, and newlines correctly but does not neutralise notes beginning with `=`, `+`, `-`, or `@`, which spreadsheet apps treat as formulas. (Column alignment itself is now covered by `testSummaryCSVRoundTripsWithoutBreakingColumnAlignment`, so no manual export check is needed.)
+- [x] `ExportService.escape()` now prefixes notes beginning with `=`, `+`, `-`, `@`, tab, or carriage return with an apostrophe so spreadsheets read them as text, not formulas. Guarded by `testSummaryCSVNeutralisesNotesSpreadsheetsWouldRunAsFormulas` (verified to fail without the fix) and `testSummaryCSVLeavesOrdinaryNotesUntouched`. Column alignment stays covered by `testSummaryCSVRoundTripsWithoutBreakingColumnAlignment`, so no manual export check is needed.
 
 ### App Store Connect click paths
 

@@ -93,6 +93,51 @@ final class ExportServiceTests: XCTestCase {
         XCTAssertEqual(rows[2][6], "ended_early")
     }
 
+    /// Correct CSV quoting still leaves a cell beginning with `=`, `+`, `-` or
+    /// `@` to be evaluated as a formula on open. A note as ordinary as
+    /// "- strong kicks" renders as `#NAME?`, and a crafted one can call a
+    /// spreadsheet function. Each must come back as literal text.
+    func testSummaryCSVNeutralisesNotesSpreadsheetsWouldRunAsFormulas() {
+        let formulaNotes = ["=1+1", "+1+1", "- strong kicks tonight", "@SUM(A1)"]
+        let sessions = formulaNotes.enumerated().map { index, note in
+            session(
+                status: .complete,
+                startedAt: Date(timeIntervalSince1970: 1_800_000_000 + Double(index) * 3600),
+                endedAt: Date(timeIntervalSince1970: 1_800_000_600 + Double(index) * 3600),
+                durationSec: 600,
+                kickCount: 10,
+                notes: note
+            )
+        }
+
+        let rows = parseCSV(ExportService.summaryCSV(sessions: sessions))
+
+        XCTAssertEqual(rows.count, formulaNotes.count + 1, "header plus one row per session")
+        for (index, note) in formulaNotes.enumerated() {
+            XCTAssertEqual(
+                rows[index + 1][8], "'" + note,
+                "a note starting with '\(note.prefix(1))' must be marked as literal text"
+            )
+        }
+    }
+
+    /// The guard above must not fire on ordinary notes — an apostrophe added to
+    /// every export would be worse than the bug.
+    func testSummaryCSVLeavesOrdinaryNotesUntouched() {
+        let ordinary = session(
+            status: .complete,
+            startedAt: Date(timeIntervalSince1970: 1_800_000_000),
+            endedAt: Date(timeIntervalSince1970: 1_800_000_600),
+            durationSec: 600,
+            kickCount: 10,
+            notes: "quiet evening, baby settled"
+        )
+
+        let rows = parseCSV(ExportService.summaryCSV(sessions: [ordinary]))
+
+        XCTAssertEqual(rows[1][8], "quiet evening, baby settled")
+    }
+
     /// Minimal RFC 4180 reader: quoted fields may contain commas and newlines,
     /// and a doubled quote inside a quoted field is a literal quote.
     private func parseCSV(_ text: String) -> [[String]] {

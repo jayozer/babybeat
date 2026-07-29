@@ -26,6 +26,13 @@ final class SessionViewModel: ObservableObject {
         }
     }
 
+    /// The ticking loop is otherwise only stopped by `stopTicking()`. The view
+    /// model lives for the app's lifetime today, but nothing enforces that, and
+    /// a loop left running would sleep forever against a nil `self`.
+    deinit {
+        timerTask?.cancel()
+    }
+
     // MARK: - Computed
 
     var kickCount: Int { session?.kickCount ?? 0 }

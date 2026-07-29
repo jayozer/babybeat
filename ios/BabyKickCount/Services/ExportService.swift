@@ -41,8 +41,23 @@ enum ExportService {
         return f.string(from: date)
     }
 
+    /// Characters that make Excel, Numbers and Sheets read a cell as a formula
+    /// rather than text. Tab and carriage return are included because those
+    /// apps strip leading whitespace first and then see the character beneath.
+    private static let formulaTriggers: Set<Character> = ["=", "+", "-", "@", "\t", "\r"]
+
     private static func escape(_ value: String) -> String {
-        guard value.contains(",") || value.contains("\"") || value.contains("\n") else { return value }
+        var value = value
+
+        // A note like "- strong kicks tonight" is read as a formula and renders
+        // as #NAME?; a crafted one can invoke a spreadsheet function when the
+        // export is opened. A leading apostrophe marks the cell as literal text.
+        if let first = value.first, formulaTriggers.contains(first) {
+            value = "'" + value
+        }
+
+        guard value.contains(",") || value.contains("\"")
+            || value.contains("\n") || value.contains("\r") else { return value }
         let escaped = value.replacingOccurrences(of: "\"", with: "\"\"")
         return "\"\(escaped)\""
     }
