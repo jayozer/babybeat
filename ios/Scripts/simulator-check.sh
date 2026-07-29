@@ -197,8 +197,26 @@ check_shots() {
   [[ "$bad" == "0" ]] && pass "$label: $count screenshots, all $expect"
 }
 
+# Apple requires screenshots to match the submitted binary. This set has gone
+# stale twice already, so compare timestamps rather than relying on memory.
+check_shots_current() {
+  local dir="$1" label="$2"
+  [[ -d "$dir" ]] || return
+  local newest_shot newest_src
+  newest_shot="$(find "$dir" -name '*.png' -exec stat -f '%m' {} + 2>/dev/null | sort -n | tail -1)"
+  newest_src="$(find "$REPO_ROOT/ios/BabyKickCount" -name '*.swift' -exec stat -f '%m' {} + 2>/dev/null | sort -n | tail -1)"
+  [[ -n "$newest_shot" && -n "$newest_src" ]] || return
+  if (( newest_src > newest_shot )); then
+    warn "$label: app source changed after these were captured — re-run ios/Scripts/capture-screenshots.sh"
+  else
+    pass "$label: newer than the last app source change"
+  fi
+}
+
 check_shots "$REPO_ROOT/app_store_screenshots/iphone_6_9" "1320x2868" "6.9-inch (required slot)"
 check_shots "$REPO_ROOT/app_store_screenshots/iphone_6_7" "1284x2778" "6.7/6.5-inch"
+check_shots_current "$REPO_ROOT/app_store_screenshots/iphone_6_9" "6.9-inch"
+check_shots_current "$REPO_ROOT/app_store_screenshots/iphone_6_7" "6.7/6.5-inch"
 
 # --- 7. Launch in the simulator ---------------------------------------------
 

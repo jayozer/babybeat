@@ -25,6 +25,7 @@
 		B0E854F7A8EF6FFD21E61CD0 /* KickEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9D4EA5AD8C2AA01DB25B19B /* KickEvent.swift */; };
 		BCA5662A5588E820B18331D5 /* UserPreferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = B448BB032754547ECCA60BC3 /* UserPreferences.swift */; };
 		BE47DAA435AAAD611157B656 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAB68889B4973F56FCE77D5E /* RootView.swift */; };
+		C97BA0A5BB1F24509D9C7B69 /* ScreenshotCaptureTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D2CE80922A94459A9093025 /* ScreenshotCaptureTests.swift */; };
 		CE36E35229215B681F79A355 /* CountDisplay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A450C239AC2D78839345554 /* CountDisplay.swift */; };
 		D523FA28A1D3DEE9B35587FD /* HistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D3273FD36951B73FD2A6818 /* HistoryView.swift */; };
 		D69208441E7F8D44E4565F35 /* SessionStateMachine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97475CC26E2B9200181D88EF /* SessionStateMachine.swift */; };
@@ -72,6 +73,7 @@
 		54DCEB9A4F645AEC28B10AF6 /* AccessibilityTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessibilityTests.swift; sourceTree = "<group>"; };
 		599CE0BF259C91DF2FB47525 /* SessionStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionStatus.swift; sourceTree = "<group>"; };
 		77BCF9E7109184615A5758F2 /* BabyKickCountApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BabyKickCountApp.swift; sourceTree = "<group>"; };
+		7D2CE80922A94459A9093025 /* ScreenshotCaptureTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenshotCaptureTests.swift; sourceTree = "<group>"; };
 		8584E90F1E5B5D1D22B0F188 /* InfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoView.swift; sourceTree = "<group>"; };
 		97475CC26E2B9200181D88EF /* SessionStateMachine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionStateMachine.swift; sourceTree = "<group>"; };
 		9D3273FD36951B73FD2A6818 /* HistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryView.swift; sourceTree = "<group>"; };
@@ -105,6 +107,7 @@
 			isa = PBXGroup;
 			children = (
 				54DCEB9A4F645AEC28B10AF6 /* AccessibilityTests.swift */,
+				7D2CE80922A94459A9093025 /* ScreenshotCaptureTests.swift */,
 			);
 			path = BabyKickCountUITests;
 			sourceTree = "<group>";
@@ -334,6 +337,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D844C8D666C0B4A25C18FC04 /* AccessibilityTests.swift in Sources */,
+				C97BA0A5BB1F24509D9C7B69 /* ScreenshotCaptureTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

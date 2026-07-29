@@ -61,8 +61,8 @@ pregnancy,fetal movement,third trimester,OB,midwife,prenatal,maternity,timer,wel
 - [x] Choose primary/secondary categories. Saved as Health & Fitness primary and no secondary category.
 - [x] Confirm pricing and availability. Saved April 26, 2026 as free (`$0.00`) with 175 countries/regions available on app release.
 - [x] Upload 1-10 screenshots using Apple's current required iPhone sizes. App Store Connect shows `9 of 10 Screenshots` for the 6.5-inch display. Source files are in `app_store_screenshots/iphone_6_7/*` as exact `1284 x 2778` PNGs; keep `app_store_screenshots/iphone_6_9/*` only as the original `1320 x 2868` source set.
-- [ ] Capture screenshots from a fresh simulator or device with fictional data only. Suggested set: onboarding, active counter, completed summary, history calendar, settings/export, information disclaimer.
-- [ ] Make screenshots match the submitted build exactly. Do not show features that are not in the binary.
+- [x] Capture screenshots from a fresh simulator or device with fictional data only. `ios/Scripts/capture-screenshots.sh` drives `ScreenshotCaptureTests` on a freshly erased simulator per size, so the only data on screen is the one session the test records.
+- [x] Make screenshots match the submitted build exactly. Re-captured July 29, 2026. The previous set was genuinely stale: it showed the app titled `Baby Kick Count`, while the binary now says `Littletaps`.
 - [x] Verify the 1024 x 1024 app icon has no transparency, matches the website branding, and looks good on light/dark App Store surfaces. `sips` reports `1024 x 1024` and `hasAlpha: no`.
 - [x] Once App Store Connect generates the Apple app ID, update the website smart banner meta tag with `app-id=6763963304`.
 
@@ -115,7 +115,7 @@ Applied in this pass:
 Still open, not applied:
 
 - [ ] Confirm which iPhone screenshot slot is filled in App Store Connect. The P1 note above says the `1284 x 2778` set went into the 6.5-inch slot and the `1320 x 2868` set was kept "only as the original source". Apple now treats the 6.9-inch display as the required iPhone size — upload `app_store_screenshots/iphone_6_9/*` to the 6.9-inch slot.
-- [ ] Re-capture screenshots after the light-appearance change and the accessibility tweaks so they match the submitted binary (the history row is now slightly taller).
+- [x] Re-capture screenshots after the light-appearance change and the accessibility tweaks so they match the submitted binary. Done July 29, 2026 via `ios/Scripts/capture-screenshots.sh`, which regenerates both sizes. Status bars are pinned to 9:41 with full signal and battery, and every shot is taken on a settled screen — the old set had four different clock times and two shots caught mid-animation.
 - [x] `SessionViewModel.startTicking()` spawns a `Task` loop that is only cancelled by `stopTicking()`. Added `deinit { timerTask?.cancel() }`; it compiles clean under Swift 5.9 with no MainActor isolation warning.
 - [ ] `SessionViewModel.pause()`, `resume()`, and `undo()` mutate the `KickSession` model object without reassigning the `@Published var session`. This works today only because SwiftData `@Model` types are `Observable`; it is fragile. Verify the count actually decrements on screen after Undo, and that Pause/Resume flip the UI.
 - [ ] `UserPreferences.defaultTargetCount` and `defaultTimeLimitSec` are persisted but have no Settings UI, so they are permanently 10 and 7200. Either expose them or drop them. Relatedly, `TimerDisplay` takes a `timeLimitSec` parameter it never uses.
