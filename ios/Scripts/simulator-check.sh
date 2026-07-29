@@ -91,16 +91,27 @@ pass "$DEVICE ($UDID)"
 
 # --- 3. Unit tests -----------------------------------------------------------
 
-step "Unit tests"
+step "Tests"
 
+# Unit tests are instant; the UI tests drive the simulator and take ~3 minutes.
 if xcodebuild test \
-    -project "$PROJECT" -scheme "$SCHEME" \
+    -project "$PROJECT" -scheme "$SCHEME" -only-testing:BabyKickCountTests \
     -destination "id=$UDID" -derivedDataPath "$DERIVED" \
     > "$OUT/test.log" 2>&1; then
   pass "SessionStateMachine and ExportService tests passed"
 else
-  fail "tests failed — see $OUT/test.log"
+  fail "unit tests failed — see $OUT/test.log"
   tail -30 "$OUT/test.log"
+fi
+
+if xcodebuild test \
+    -project "$PROJECT" -scheme "$SCHEME" -only-testing:BabyKickCountUITests \
+    -destination "id=$UDID" -derivedDataPath "$DERIVED" \
+    > "$OUT/uitest.log" 2>&1; then
+  pass "accessibility tests passed (labels, 44pt hit targets, calendar at AX5)"
+else
+  fail "accessibility tests failed — see $OUT/uitest.log"
+  grep -E "error:" "$OUT/uitest.log" | sed 's/^/      /' | head -20
 fi
 
 # --- 4. Release build --------------------------------------------------------
@@ -263,23 +274,20 @@ cat <<'EOF'
     [ ] End early -> confirmation dialog -> session lands in History.
     [ ] Force-quit mid-session, relaunch -> session resumes with correct elapsed time.
 
-  Accessibility. Use Accessibility Inspector, not VoiceOver — it reads out the
-  same labels but lets you click an element instead of learning swipe gestures.
-    Xcode -> Open Developer Tool -> Accessibility Inspector. Set the target
-    (top-left dropdown) to your booted Simulator, then:
-    [ ] Click the crosshair, click a calendar day. The Label field should read
-        like "Monday, July 27, 2026, today, 2 sessions recorded" and Traits
-        should include Button.
-    [ ] Same for a star in the summary sheet ("Rate 3 stars"), the history row
-        "..." menu ("Session options"), and a sound preview ("Preview Pop sound").
-    [ ] Run the audit (the checkmark tab) on each of the 4 screens. It flags
-        unlabelled controls, hit targets under 44pt, and contrast failures.
-
-  Dynamic Type. Fastest path is Xcode's Environment Overrides: run the app from
-  Xcode, then in the debug bar click the slider icon, enable Dynamic Type, and
-  drag to AX5.
-    [ ] Counter screen at AX5: the tap pad's three stacked labels must not clip.
-        CountDisplay (72pt) and TapPad (64pt) are fixed sizes and will not grow.
+  Accessibility is now covered by BabyKickCountUITests, which runs above. It
+  asserts the labels VoiceOver reads out (calendar days, stars, the history
+  "..." menu, sound previews), that every button and link clears 44pt on all
+  four screens, and that the calendar does not wrap two-digit day numbers at
+  AX5. Only these are left by hand:
+    [ ] Contrast. The audit tab in Accessibility Inspector checks this and the
+        UI tests cannot. Xcode -> Open Developer Tool -> Accessibility
+        Inspector, target the booted Simulator, run the audit on each screen.
+    [ ] Counter screen at AX5: the tap pad's labels must not clip. Set the size
+        with `xcrun simctl ui booted content_size accessibility-extra-extra-extra-large`.
+        CountDisplay (72pt) and TapPad (64pt) are fixed sizes and will not grow,
+        which is a known and accepted gap.
+        Note: scrolling in the Simulator needs a click-drag; the mouse wheel
+        does nothing, which makes content look clipped when it merely scrolls.
 
   Then, on the App Store Connect side (see TODO.md for the click paths):
     [ ] Upload app_store_screenshots/iphone_6_9/* to the 6.9-inch slot.

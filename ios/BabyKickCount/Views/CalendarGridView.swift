@@ -28,6 +28,8 @@ struct CalendarGridView: View {
                     Text(day)
                         .font(.caption2)
                         .foregroundStyle(Theme.inkFaint)
+                        .lineLimit(1)
+                        .minimumScaleFactor(0.6)
                         .frame(maxWidth: .infinity)
                 }
 
@@ -45,6 +47,11 @@ struct CalendarGridView: View {
                     .onTapGesture { selectedDate = day }
                 }
             }
+            // Seven fixed columns can't reflow, so past a point extra text
+            // growth only wraps "10" into "1"/"0". Cap the grid and let the
+            // glyphs shrink to fit instead. The header, legend and month
+            // controls outside this grid still scale the whole way.
+            .dynamicTypeSize(...DynamicTypeSize.accessibility1)
 
             legend
         }
@@ -57,7 +64,8 @@ struct CalendarGridView: View {
             Button(action: { shift(by: -1) }) {
                 Image(systemName: "chevron.left")
                     .foregroundStyle(Theme.inkMuted)
-                    .padding(8)
+                    .frame(width: 44, height: 44)
+                    .contentShape(Rectangle())
             }
             Spacer()
             Text(monthTitle)
@@ -67,26 +75,36 @@ struct CalendarGridView: View {
             Button(action: { shift(by: 1) }) {
                 Image(systemName: "chevron.right")
                     .foregroundStyle(Theme.inkMuted)
-                    .padding(8)
+                    .frame(width: 44, height: 44)
+                    .contentShape(Rectangle())
             }
         }
     }
 
     private var legend: some View {
-        HStack(spacing: 16) {
-            legendDot(color: Theme.primaryLight, label: "Complete")
-            legendDot(color: Theme.timeoutAmber, label: "Timeout")
-            legendDot(color: Theme.endedLavender, label: "Ended")
+        // Three labels side by side stop fitting at accessibility sizes, where
+        // they hyphenate into "Com-/plete". Stack them instead of shrinking, so
+        // the legend keeps scaling the whole way.
+        ViewThatFits(in: .horizontal) {
+            HStack(spacing: 16) { legendItems }
+            VStack(alignment: .leading, spacing: 6) { legendItems }
         }
         .font(.caption2)
         .foregroundStyle(Theme.inkFaint)
         .padding(.top, 4)
     }
 
+    @ViewBuilder
+    private var legendItems: some View {
+        legendDot(color: Theme.primaryLight, label: "Complete")
+        legendDot(color: Theme.timeoutAmber, label: "Timeout")
+        legendDot(color: Theme.endedLavender, label: "Ended")
+    }
+
     private func legendDot(color: Color, label: String) -> some View {
         HStack(spacing: 4) {
             Circle().fill(color).frame(width: 6, height: 6)
-            Text(label)
+            Text(label).lineLimit(1)
         }
     }
 
@@ -141,6 +159,8 @@ private struct DayCell: View {
             Text(dayString)
                 .font(.system(.callout, design: .rounded).weight(isSelected ? .bold : .regular))
                 .foregroundStyle(foreground)
+                .lineLimit(1)
+                .minimumScaleFactor(0.6)
 
             HStack(spacing: 2) {
                 ForEach(markers.indices, id: \.self) { idx in

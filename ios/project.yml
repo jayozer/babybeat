@@ -57,15 +57,30 @@ targets:
         PRODUCT_BUNDLE_IDENTIFIER: com.babykickcount.app.tests
         GENERATE_INFOPLIST_FILE: YES
 
+  BabyKickCountUITests:
+    type: bundle.ui-testing
+    platform: iOS
+    sources:
+      - path: BabyKickCountUITests
+    dependencies:
+      - target: BabyKickCount
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.babykickcount.app.uitests
+        GENERATE_INFOPLIST_FILE: YES
+        TEST_TARGET_NAME: BabyKickCount
+
 schemes:
   BabyKickCount:
     build:
       targets:
         BabyKickCount: all
         BabyKickCountTests: [test]
+        BabyKickCountUITests: [test]
     test:
       targets:
         - BabyKickCountTests
+        - BabyKickCountUITests
     run:
       config: Debug
     archive:

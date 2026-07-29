@@ -93,11 +93,14 @@ struct SettingsView: View {
                         Text(option.label).foregroundStyle(Theme.ink)
                         Text(option.desc).font(.caption).foregroundStyle(Theme.inkFaint)
                     }
+                    // Claim the rest of the row so the whole thing is tappable
+                    // and the target clears 44pt.
+                    Spacer(minLength: 0)
                 }
+                .frame(minHeight: 44)
+                .contentShape(Rectangle())
             }
             .buttonStyle(.plain)
-
-            Spacer()
 
             if option != .none {
                 Button {
@@ -106,6 +109,8 @@ struct SettingsView: View {
                     Image(systemName: "play.circle.fill")
                         .foregroundStyle(Theme.primary)
                         .font(.title3)
+                        .frame(width: 44, height: 44)
+                        .contentShape(Rectangle())
                 }
                 .buttonStyle(.plain)
                 .accessibilityLabel("Preview \(option.label) sound")
