@@ -92,6 +92,8 @@ pregnancy,fetal movement,third trimester,OB,midwife,prenatal,maternity,timer,wel
 - [x] Replace beta invite UX with a real TestFlight public link, mailing-list implementation, or simple `mailto:` flow.
 - [x] Update sitemap/canonical URLs if `/privacy` and `/terms` are the preferred clean URLs.
 - [x] Add `/support` and use it for App Store Connect Support URL.
+- [x] Regenerate `web/images/og-cover.png`. It read `BABY KICK COUNT` with no mention of Littletaps, contradicting the page's own `og:site_name`, on every shared link. Source is now `scripts/og-cover/og-cover.html` plus `render.sh` (headless Chrome), kept outside `web/` so `cleanUrls` does not publish it as a page.
+- [x] Align the hero phone mockups in `web/index.html` with the shipped app. They are hand-built HTML/CSS, not screenshots, and had drifted: the counter claimed `14:32 elapsed` when the app counts *down* (`Time remaining`), the hint read `tap when you feel a kick` vs the app's `when you feel movement`, and the calendar legend said `Completed / Ended early` vs the app's `Complete / Ended`.
 - [ ] After App Store approval, replace TestFlight CTAs with App Store download CTAs.
 
 ## Follow-Up Review (July 28, 2026)
