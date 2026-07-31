@@ -3,8 +3,8 @@ import SwiftData
 
 struct SessionView: View {
     @EnvironmentObject private var preferences: PreferencesStore
+    @EnvironmentObject private var viewModel: SessionViewModel
     @Environment(\.scenePhase) private var scenePhase
-    @StateObject private var viewModel: SessionViewModel
 
     @State private var showSummary = false
     @State private var dismissedSummaryForSessionID: UUID?
@@ -13,11 +13,6 @@ struct SessionView: View {
     /// gates the reminder primer.
     @Query(filter: #Predicate<KickSession> { $0.endedAt != nil })
     private var finishedSessions: [KickSession]
-
-    init(context: ModelContext, preferences: PreferencesStore) {
-        let store = SessionStore(context: context)
-        _viewModel = StateObject(wrappedValue: SessionViewModel(store: store, preferences: preferences))
-    }
 
     var body: some View {
         ZStack {

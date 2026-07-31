@@ -86,6 +86,28 @@ final class SessionViewModel: ObservableObject {
         }
     }
 
+    /// Starts a session without logging a movement.
+    ///
+    /// `tap()` conflates the two — the first tap both creates the session and
+    /// records a kick — which is right for the tap pad but wrong for "start
+    /// counting" from Siri, where it would invent a movement the user never
+    /// felt.
+    func startSession() {
+        guard session == nil || isFinished else { return }
+        if isFinished { resetForNewSession() }
+        do {
+            let target = try ensureSession()
+            guard target.status == .idle else { return }
+            try SessionStateMachine.start(target)
+            try store.save()
+            startTicking()
+            session = target
+            syncNotifications()
+        } catch {
+            errorMessage = error.localizedDescription
+        }
+    }
+
     func undo() {
         guard let session else { return }
         do {
