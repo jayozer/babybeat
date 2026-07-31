@@ -43,6 +43,11 @@ final class ScreenshotCaptureTests: XCTestCase {
         advanceOnboarding(to: "2-hour session")
         capture("03_onboarding_timer")
 
+        // The disclaimer page is stepped through but not captured. It is
+        // already represented on the product page by 09_info, and a legal
+        // notice makes a poor marketing screenshot.
+        advanceOnboarding(to: "Not a medical device")
+
         let getStarted = app.buttons["Get Started"]
         XCTAssertTrue(getStarted.waitUntilVisible(), "onboarding never reached 'Get Started'")
         getStarted.tap()

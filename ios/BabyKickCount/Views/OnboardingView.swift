@@ -20,6 +20,15 @@ struct OnboardingView: View {
             icon: "clock.fill",
             title: "2-hour session",
             body: "Each session runs up to 2 hours. Pause or end anytime. Your data stays on this device."
+        ),
+        // Last, so it is the final thing read before the app opens. App Review
+        // has asked pregnancy and fetal-movement apps for a prominent
+        // disclaimer, and one buried in Settings -> Information & Help is not
+        // that. Wording matches InfoView so the two cannot drift apart.
+        Page(
+            icon: "stethoscope",
+            title: "Not a medical device",
+            body: "Littletaps is an informational wellness tool. It does not diagnose conditions or replace professional care. Contact your healthcare provider if movements change abruptly, slow down, or stop, if you cannot feel 10 movements in 2 hours, or if you have any concerns."
         )
     ]
 
@@ -68,21 +77,27 @@ struct OnboardingView: View {
         let page: Page
 
         var body: some View {
-            VStack(spacing: 20) {
-                Image(systemName: page.icon)
-                    .font(.system(size: 80))
-                    .foregroundStyle(Theme.primary)
-                    .padding(.top, 60)
-                Text(page.title)
-                    .font(.system(.title, design: .rounded).weight(.semibold))
-                    .foregroundStyle(Theme.ink)
-                    .multilineTextAlignment(.center)
-                Text(page.body)
-                    .font(.subheadline)
-                    .foregroundStyle(Theme.inkMuted)
-                    .multilineTextAlignment(.center)
-                    .padding(.horizontal, 32)
-                Spacer()
+            // Scrolls rather than clipping. The disclaimer page carries the
+            // longest body text in the app, and at accessibility text sizes it
+            // does not fit a page-style TabView slot.
+            ScrollView {
+                VStack(spacing: 20) {
+                    Image(systemName: page.icon)
+                        .font(.system(size: 80))
+                        .foregroundStyle(Theme.primary)
+                        .padding(.top, 60)
+                    Text(page.title)
+                        .font(.system(.title, design: .rounded).weight(.semibold))
+                        .foregroundStyle(Theme.ink)
+                        .multilineTextAlignment(.center)
+                    Text(page.body)
+                        .font(.subheadline)
+                        .foregroundStyle(Theme.inkMuted)
+                        .multilineTextAlignment(.center)
+                        .padding(.horizontal, 32)
+                }
+                .frame(maxWidth: .infinity)
+                .padding(.bottom, 24)
             }
         }
     }
