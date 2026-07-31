@@ -85,6 +85,18 @@ final class AccessibilityTests: XCTestCase {
         }
     }
 
+    /// Launches the app and clears onboarding.
+    ///
+    /// Onboarding only shows on a fresh install — which is what a CI runner and
+    /// a freshly erased simulator both start from. Without this every test here
+    /// asserts against the onboarding screen instead of the app, and fails
+    /// looking for a tab bar that is not on screen yet.
+    private func launchApp(file: StaticString = #filePath, line: UInt = #line) {
+        app.launch()
+        XCTAssertTrue(app.completeOnboardingIfPresent(),
+                      "could not get past onboarding", file: file, line: line)
+    }
+
     private func goToTab(_ name: String,
                          file: StaticString = #filePath,
                          line: UInt = #line) {
@@ -118,10 +130,19 @@ final class AccessibilityTests: XCTestCase {
         }
     }
 
+    /// The counter keeps showing the finished session until it is reset.
+    private func startNewSession() {
+        let button = app.buttons["Start New Session"]
+        if button.waitUntilVisible(timeout: 5) {
+            button.tap()
+            usleep(600_000)
+        }
+    }
+
     // MARK: - Hit targets and labels, across every screen
 
     func testEveryScreenMeetsHitTargetAndLabelMinimums() {
-        app.launch()
+        launchApp()
 
         assertHitTargets(on: "Counter")
         assertAllControlsLabelled(on: "Counter")
@@ -152,7 +173,7 @@ final class AccessibilityTests: XCTestCase {
     // MARK: - The specific labels VoiceOver reads out
 
     func testCalendarDaysAreButtonsWithDescriptiveLabels() {
-        app.launch()
+        launchApp()
         goToTab("History")
 
         // A day should read as a full date plus its session count — not a bare
@@ -168,8 +189,37 @@ final class AccessibilityTests: XCTestCase {
                       "day label '\(firstDay.label)' should state the session count")
     }
 
+    /// A day's spoken label must count sessions, not marker colours.
+    ///
+    /// The markers are deduplicated by status — several completed sessions on
+    /// one day draw a single green dot — so counting markers announced
+    /// "1 session recorded" no matter how many sessions were actually there.
+    func testCalendarCountsSessionsNotMarkerColours() {
+        launchApp()
+
+        // Two sessions on the same day, both completing, so they share a status
+        // and collapse to one marker.
+        completeASession()
+        dismissSummarySheet()
+        startNewSession()
+        completeASession()
+        dismissSummarySheet()
+
+        goToTab("History")
+
+        let todayCell = app.buttons.matching(
+            NSPredicate(format: "label CONTAINS %@", ", today")
+        ).firstMatch
+        XCTAssertTrue(todayCell.waitForExistence(timeout: 10),
+                      "could not find today's calendar cell")
+        XCTAssertTrue(
+            todayCell.label.contains("2 sessions recorded"),
+            "two sessions were completed today but VoiceOver reads '\(todayCell.label)'"
+        )
+    }
+
     func testHistoryRowMenuIsLabelled() {
-        app.launch()
+        launchApp()
         completeASession()
         dismissSummarySheet()
 
@@ -180,7 +230,7 @@ final class AccessibilityTests: XCTestCase {
     }
 
     func testSoundPreviewButtonsAreLabelled() {
-        app.launch()
+        launchApp()
         goToTab("Settings")
 
         for sound in ["Soft Click", "Pop", "Heartbeat", "Bubble"] {
@@ -191,7 +241,7 @@ final class AccessibilityTests: XCTestCase {
     }
 
     func testStarRatingButtonsAreLabelled() {
-        app.launch()
+        launchApp()
         completeASession()
 
         // Completing a session presents the summary sheet.
@@ -210,7 +260,7 @@ final class AccessibilityTests: XCTestCase {
             "-UIPreferredContentSizeCategoryName",
             "UICTContentSizeCategoryAccessibilityXXXL"
         ]
-        app.launch()
+        launchApp()
         goToTab("History")
 
         let dayCells = app.buttons.matching(

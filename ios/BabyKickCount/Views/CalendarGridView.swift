@@ -38,11 +38,13 @@ struct CalendarGridView: View {
                 }
 
                 ForEach(monthDays, id: \.self) { day in
+                    let daySessions = terminalSessions(on: day)
                     DayCell(
                         date: day,
                         isSelected: calendar.isDate(day, inSameDayAs: selectedDate),
                         isToday: calendar.isDateInToday(day),
-                        markers: markers(for: day)
+                        markers: markers(for: daySessions),
+                        sessionCount: daySessions.count
                     )
                     .onTapGesture { selectedDate = day }
                 }
@@ -135,15 +137,25 @@ struct CalendarGridView: View {
         }
     }
 
-    private func markers(for day: Date) -> [Color] {
-        let matches = sessions.filter {
-            guard let started = $0.startedAt else { return false }
-            return calendar.isDate(started, inSameDayAs: day)
+    /// Finished sessions that started on the given day. Only terminal sessions
+    /// appear on the calendar, so both the dots and the count VoiceOver reads
+    /// out come from this one list.
+    private func terminalSessions(on day: Date) -> [KickSession] {
+        sessions.filter { session in
+            guard let started = session.startedAt else { return false }
+            return session.status.isTerminal && calendar.isDate(started, inSameDayAs: day)
         }
+    }
+
+    /// One dot per status present, not one per session — three completed
+    /// sessions on the same day still show a single green dot. The spoken
+    /// count is taken from the session list instead, because collapsing them
+    /// here would announce "1 session recorded" for all three.
+    private func markers(for daySessions: [KickSession]) -> [Color] {
         var colors: [Color] = []
-        if matches.contains(where: { $0.status == .complete }) { colors.append(Theme.primaryLight) }
-        if matches.contains(where: { $0.status == .timeout }) { colors.append(Theme.timeoutAmber) }
-        if matches.contains(where: { $0.status == .endedEarly }) { colors.append(Theme.endedLavender) }
+        if daySessions.contains(where: { $0.status == .complete }) { colors.append(Theme.primaryLight) }
+        if daySessions.contains(where: { $0.status == .timeout }) { colors.append(Theme.timeoutAmber) }
+        if daySessions.contains(where: { $0.status == .endedEarly }) { colors.append(Theme.endedLavender) }
         return colors
     }
 }
@@ -153,6 +165,9 @@ private struct DayCell: View {
     let isSelected: Bool
     let isToday: Bool
     let markers: [Color]
+    /// Actual number of sessions that day, which is not `markers.count` —
+    /// markers are deduplicated by status.
+    let sessionCount: Int
 
     var body: some View {
         VStack(spacing: 2) {
@@ -193,12 +208,12 @@ private struct DayCell: View {
         var text = f.string(from: date)
         if isToday { text += ", today" }
         if isSelected { text += ", selected" }
-        if markers.isEmpty {
+        if sessionCount == 0 {
             text += ", no sessions"
-        } else if markers.count == 1 {
+        } else if sessionCount == 1 {
             text += ", 1 session recorded"
         } else {
-            text += ", \(markers.count) sessions recorded"
+            text += ", \(sessionCount) sessions recorded"
         }
         return text
     }

@@ -31,7 +31,7 @@ final class ScreenshotCaptureTests: XCTestCase {
         // 1-3: onboarding, which only appears on a fresh install. That is why
         // the script erases the simulator before each run.
         XCTAssertTrue(
-            waitUntilVisible(app.staticTexts["Welcome to Littletaps"], timeout: 25),
+            app.staticTexts["Welcome to Littletaps"].waitUntilVisible(timeout: 25),
             "onboarding did not appear — the app was probably already installed"
         )
         settle()
@@ -44,12 +44,12 @@ final class ScreenshotCaptureTests: XCTestCase {
         capture("03_onboarding_timer")
 
         let getStarted = app.buttons["Get Started"]
-        XCTAssertTrue(waitUntilVisible(getStarted), "onboarding never reached 'Get Started'")
+        XCTAssertTrue(getStarted.waitUntilVisible(), "onboarding never reached 'Get Started'")
         getStarted.tap()
 
         // 4: the counter before anything is recorded.
         let pad = app.buttons["Tap to record a kick"]
-        XCTAssertTrue(waitUntilVisible(pad, timeout: 15), "tap pad not found")
+        XCTAssertTrue(pad.waitUntilVisible(timeout: 15), "tap pad not found")
         settle()
         capture("04_counter_ready")
 
@@ -61,7 +61,7 @@ final class ScreenshotCaptureTests: XCTestCase {
         // 6: the summary sheet, which presents itself on the tenth tap.
         tapPad(pad, times: 7)
         let close = app.buttons["Close"]
-        XCTAssertTrue(waitUntilVisible(close, timeout: 15), "summary sheet did not present")
+        XCTAssertTrue(close.waitUntilVisible(timeout: 15), "summary sheet did not present")
         settle()
         capture("06_session_summary")
 
@@ -105,43 +105,14 @@ final class ScreenshotCaptureTests: XCTestCase {
         usleep(1_500_000)
     }
 
-    /// `waitForExistence` is not enough here: an element can be in the tree
-    /// while it is still sliding into place, and a tap sent then is dropped.
-    private func waitUntilVisible(_ element: XCUIElement, timeout: TimeInterval = 10) -> Bool {
-        let deadline = Date().addingTimeInterval(timeout)
-        while Date() < deadline {
-            if element.exists && element.isHittable { return true }
-            usleep(200_000)
-        }
-        return false
-    }
-
-    /// Advances one onboarding page and confirms it landed.
-    ///
-    /// The button relabels itself from "Next" to "Get Started" on the last
-    /// page, so the button alone cannot tell you which page you are on — the
-    /// page heading can. A tap issued during the page transition is silently
-    /// swallowed, which is exactly how a previous run ended up two pages in
-    /// after three taps, so retry until the destination heading appears.
+    /// Advances one onboarding page, then waits for the animation to finish so
+    /// the next capture lands on a settled screen.
     private func advanceOnboarding(to heading: String,
                                    file: StaticString = #filePath,
                                    line: UInt = #line) {
-        let destination = app.staticTexts[heading]
-        let next = app.buttons["Next"]
-
-        for attempt in 1...3 {
-            if waitUntilVisible(destination, timeout: 1) { break }
-
-            XCTAssertTrue(waitUntilVisible(next),
-                          "onboarding 'Next' button never became tappable",
-                          file: file, line: line)
-            next.tap()
-
-            if waitUntilVisible(destination, timeout: 6) { break }
-            XCTAssertLessThan(attempt, 3,
-                              "onboarding never advanced to '\(heading)'",
-                              file: file, line: line)
-        }
+        XCTAssertTrue(app.advanceOnboarding(to: heading),
+                      "onboarding never advanced to '\(heading)'",
+                      file: file, line: line)
         settle()
     }
 
@@ -157,7 +128,7 @@ final class ScreenshotCaptureTests: XCTestCase {
                          file: StaticString = #filePath,
                          line: UInt = #line) {
         let tab = app.buttons[name]
-        XCTAssertTrue(waitUntilVisible(tab, timeout: 15),
+        XCTAssertTrue(tab.waitUntilVisible(timeout: 15),
                       "could not reach the \(name) tab", file: file, line: line)
         tab.tap()
     }

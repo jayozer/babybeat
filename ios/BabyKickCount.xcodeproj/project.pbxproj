@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0F9052BE3DA0D22FCCD2DD49 /* UITestSupport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60EAABD89B61FD38C7C93667 /* UITestSupport.swift */; };
 		1C53E03228346FD9A8009192 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D99FAEE5CBB9FF65BC91ADC /* OnboardingView.swift */; };
 		2C35089F565CFCC1ABFBB3F9 /* InfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8584E90F1E5B5D1D22B0F188 /* InfoView.swift */; };
 		39DC051D26C06030BB0A5C8E /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = D18A6B89C5EFB393EE89A862 /* PrivacyInfo.xcprivacy */; };
@@ -72,6 +73,7 @@
 		4DD00789F2E0B93242BEDBB5 /* TapPad.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TapPad.swift; sourceTree = "<group>"; };
 		54DCEB9A4F645AEC28B10AF6 /* AccessibilityTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessibilityTests.swift; sourceTree = "<group>"; };
 		599CE0BF259C91DF2FB47525 /* SessionStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionStatus.swift; sourceTree = "<group>"; };
+		60EAABD89B61FD38C7C93667 /* UITestSupport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITestSupport.swift; sourceTree = "<group>"; };
 		77BCF9E7109184615A5758F2 /* BabyKickCountApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BabyKickCountApp.swift; sourceTree = "<group>"; };
 		7D2CE80922A94459A9093025 /* ScreenshotCaptureTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenshotCaptureTests.swift; sourceTree = "<group>"; };
 		8584E90F1E5B5D1D22B0F188 /* InfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoView.swift; sourceTree = "<group>"; };
@@ -108,6 +110,7 @@
 			children = (
 				54DCEB9A4F645AEC28B10AF6 /* AccessibilityTests.swift */,
 				7D2CE80922A94459A9093025 /* ScreenshotCaptureTests.swift */,
+				60EAABD89B61FD38C7C93667 /* UITestSupport.swift */,
 			);
 			path = BabyKickCountUITests;
 			sourceTree = "<group>";
@@ -338,6 +341,7 @@
 			files = (
 				D844C8D666C0B4A25C18FC04 /* AccessibilityTests.swift in Sources */,
 				C97BA0A5BB1F24509D9C7B69 /* ScreenshotCaptureTests.swift in Sources */,
+				0F9052BE3DA0D22FCCD2DD49 /* UITestSupport.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
