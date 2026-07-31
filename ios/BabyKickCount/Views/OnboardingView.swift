@@ -24,11 +24,11 @@ struct OnboardingView: View {
         // Last, so it is the final thing read before the app opens. App Review
         // has asked pregnancy and fetal-movement apps for a prominent
         // disclaimer, and one buried in Settings -> Information & Help is not
-        // that. Wording matches InfoView so the two cannot drift apart.
+        // that. Text comes from MedicalDisclaimer, which InfoView also uses.
         Page(
             icon: "stethoscope",
-            title: "Not a medical device",
-            body: "Littletaps is an informational wellness tool. It does not diagnose conditions or replace professional care. Contact your healthcare provider if movements change abruptly, slow down, or stop, if you cannot feel 10 movements in 2 hours, or if you have any concerns."
+            title: MedicalDisclaimer.onboardingTitle,
+            body: MedicalDisclaimer.body
         )
     ]
 
