@@ -41,7 +41,7 @@ extension XCUIApplication {
         }
         guard welcome.exists else { return pad.exists }
 
-        for heading in ["One tap at a time", "2-hour session"] {
+        for heading in ["One tap at a time", "2-hour session", "Not a medical device"] {
             guard advanceOnboarding(to: heading) else { return false }
         }
 

@@ -73,11 +73,11 @@ pregnancy,fetal movement,third trimester,OB,midwife,prenatal,maternity,timer,wel
 - [ ] Test fresh install, cold launch, onboarding, first tap, pause, resume, undo, complete at 10 kicks, end early, summary notes/rating, history, delete, settings, sound choices, haptics, keep-screen-awake, and CSV export.
 - [ ] Test offline/airplane mode. The app should remain fully usable.
 - [ ] Test after force quit and relaunch during an active or paused session.
-- [ ] Test with Dynamic Type at very large accessibility sizes.
-- [ ] Test with VoiceOver. The primary tap target already has an accessibility label; verify every control is reachable and understandable.
+- [x] Test with Dynamic Type at very large accessibility sizes. Automated for the calendar by `testCalendarStaysLegibleAtLargestAccessibilityTextSize`, which launches at AX5 and fails if day-cell heights diverge (the signature of a two-digit number wrapping). The Counter screen still needs one manual look — see the fixed-font-size item further down.
+- [ ] Test with VoiceOver. Narrowed: the labels themselves are asserted by `AccessibilityTests` (calendar days, star rating, history `...` menu, sound previews) and every button and link is checked for a non-empty label on all four screens. What is left is one pass with VoiceOver actually switched on, to confirm reading order and gesture navigation make sense — neither of which a UI test can judge.
 - [ ] Test Increase Contrast and Reduce Motion.
 - [ ] Check safe areas on the smallest supported iPhone and a notched/Dynamic Island device.
-- [ ] Verify interactive targets are at least 44 x 44 pt or have enough tappable padding.
+- [x] Verify interactive targets are at least 44 x 44 pt or have enough tappable padding. Automated by `testEveryScreenMeetsHitTargetAndLabelMinimums`, which measures every button and link across Counter, History, Settings and Info. Verified to fail against the pre-fix code.
 - [x] Test CSV exports for comma, quote, and newline escaping in notes. Covered by `testSummaryCSVRoundTripsWithoutBreakingColumnAlignment`, which parses the output with an RFC 4180 reader and asserts column alignment holds.
 - [x] Add focused unit tests for `SessionStateMachine` and `ExportService`; these are small and high-value for a health-adjacent app.
 - [ ] Consider a debug-only way to test timeout behavior without waiting two hours, then make sure it is removed from release builds.
@@ -131,7 +131,7 @@ Sign in at appstoreconnect.apple.com, **My Apps** -> **Littletaps - Baby Kick Co
 - [ ] **Regulated Medical Device.** Left sidebar -> **App Privacy**, then the **App Store Connect questions** / Business section; the medical-device question also appears in the submission flow when you click **Add for Review**. Answer **No**. Littletaps logs what the user felt and shows a disclaimer; it does not measure a physiological signal or make a diagnosis, which is what that question is asking about.
 - [ ] **App Review Information.** Same `1.0 Prepare for Submission` page, scroll to the **App Review Information** section near the bottom. Fill First Name, Last Name, Phone Number, and Email — a phone number Apple can actually reach during review. Leave "Sign-in required" unchecked (no account in the app). The Notes field already has the draft at the bottom of this file; paste it in if it is not there.
 - [ ] Fixed font sizes in `CountDisplay` (72 pt) and `TapPad` (64 pt) do not respond to Dynamic Type; check the tap pad's three stacked labels at the largest accessibility sizes.
-- [ ] The medical disclaimer lives in `InfoView`, reachable only via Settings -> Information & Help. Consider surfacing it during onboarding — App Review has asked for prominent disclaimers on pregnancy/fetal-movement apps.
+- [x] The medical disclaimer lives in `InfoView`, reachable only via Settings -> Information & Help. Now also the final onboarding page ("Not a medical device"), so it is the last thing read before the app opens rather than being three taps deep. Both screens read from `MedicalDisclaimer` in `App/MedicalDisclaimer.swift` — a first pass hand-wrote a second, similar-but-different string, and only one of the two said the app does not replace professional care. `MedicalDisclaimerTests` asserts the load-bearing claims survive a copy edit. `PageView` became scrollable in the same change — the disclaimer is the longest body text in the app and did not fit a page-style `TabView` slot at accessibility text sizes.
 - [ ] Answer "No" to the Regulated Medical Device question in App Store Connect. The in-app and website copy consistently position this as an informational wellness log, which supports that answer.
 - [ ] Fill the App Review Information contact first name, last name, phone, and email.
 
@@ -139,7 +139,7 @@ Sign in at appstoreconnect.apple.com, **My Apps** -> **Littletaps - Baby Kick Co
 
 - [x] Add a lightweight launch checklist to `README.md` or link this file from it.
 - [x] Add an automated pre-submission check script: `ios/Scripts/simulator-check.sh` validates screenshot dimensions per slot, icon alpha, bundle contents, and captures launch screenshots. It does not yet drive the app through each screen — that still needs UI tests (see below).
-- [ ] Add basic UI tests for onboarding, counting, summary, and export availability.
+- [ ] Add basic UI tests for onboarding, counting, summary, and export availability. Partly done: `BabyKickCountUITests` drives onboarding, counting to the target, and the summary sheet on every run, but it asserts accessibility properties rather than behaviour. Still missing are assertions that the export sheet offers a file at all, and that a completed session lands in History with the right kick count.
 - [ ] Add release notes template for version `1.0`.
 - [ ] Consider localization readiness if launching outside English-first regions.
 - [ ] Consider legal review of the privacy policy, terms, and medical disclaimer before global release.

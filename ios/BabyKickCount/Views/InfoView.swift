@@ -15,8 +15,8 @@ struct InfoView: View {
                 )
 
                 section(
-                    title: "Important",
-                    body: "This app is for educational purposes only — it is not a medical device and does not diagnose conditions. Contact your healthcare provider if movements change abruptly, slow down, or stop; if you cannot feel 10 movements in 2 hours; or if you have any concerns."
+                    title: MedicalDisclaimer.infoSectionTitle,
+                    body: MedicalDisclaimer.body
                 )
 
                 linkSection
