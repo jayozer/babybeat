@@ -35,6 +35,16 @@ final class SessionStore {
         return try context.fetch(descriptor)
     }
 
+    /// When the most recent session finished, for the inactivity nudge.
+    func lastSessionEndedAt() throws -> Date? {
+        var descriptor = FetchDescriptor<KickSession>(
+            predicate: #Predicate { $0.endedAt != nil },
+            sortBy: [SortDescriptor(\.endedAt, order: .reverse)]
+        )
+        descriptor.fetchLimit = 1
+        return try context.fetch(descriptor).first?.endedAt
+    }
+
     func deleteSession(_ session: KickSession) throws {
         context.delete(session)
         try context.save()

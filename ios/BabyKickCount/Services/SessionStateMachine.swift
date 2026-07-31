@@ -75,13 +75,12 @@ enum SessionStateMachine {
     }
 
     /// Seconds elapsed since start, minus time spent paused.
+    ///
+    /// Delegates to `SessionSnapshot` so notification scheduling and the
+    /// on-screen timer can never disagree about how much of the window is
+    /// left.
     static func elapsedSeconds(for session: KickSession, at now: Date = .now) -> Double {
-        guard let startedAt = session.startedAt else { return 0 }
-        var elapsed = now.timeIntervalSince(startedAt) - session.pausedDurationSec
-        if session.status == .paused, let pausedAt = session.pausedAt {
-            elapsed -= now.timeIntervalSince(pausedAt)
-        }
-        return max(0, elapsed)
+        SessionSnapshot(session).elapsedSeconds(at: now)
     }
 
     static func remainingSeconds(for session: KickSession, at now: Date = .now) -> Double {

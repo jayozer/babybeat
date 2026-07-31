@@ -7,6 +7,7 @@ struct UserPreferences: Codable, Equatable {
     var vibrationEnabled: Bool = true
     var keepScreenAwake: Bool = true
     var hasCompletedOnboarding: Bool = false
+    var notifications: NotificationPreferences = .default
 
     static let `default` = UserPreferences()
 
@@ -17,6 +18,7 @@ struct UserPreferences: Codable, Equatable {
         case vibrationEnabled
         case keepScreenAwake
         case hasCompletedOnboarding
+        case notifications
     }
 }
 
@@ -48,5 +50,7 @@ extension UserPreferences {
             ?? fallback.keepScreenAwake
         hasCompletedOnboarding = try container.decodeIfPresent(Bool.self, forKey: .hasCompletedOnboarding)
             ?? fallback.hasCompletedOnboarding
+        notifications = try container.decodeIfPresent(NotificationPreferences.self, forKey: .notifications)
+            ?? fallback.notifications
     }
 }

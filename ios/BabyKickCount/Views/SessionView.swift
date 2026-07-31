@@ -3,6 +3,7 @@ import SwiftData
 
 struct SessionView: View {
     @EnvironmentObject private var preferences: PreferencesStore
+    @Environment(\.scenePhase) private var scenePhase
     @StateObject private var viewModel: SessionViewModel
 
     @State private var showSummary = false
@@ -73,6 +74,13 @@ struct SessionView: View {
         }
         .onChange(of: viewModel.isActive) { _, _ in viewModel.applyWakeLock() }
         .onChange(of: viewModel.isPaused) { _, _ in viewModel.applyWakeLock() }
+        .onChange(of: scenePhase) { _, phase in
+            // Backgrounding is the last chance to write an accurate remaining
+            // time and tap count into the pending requests; returning is when
+            // permission may have changed in Settings.
+            guard phase == .background || phase == .active else { return }
+            viewModel.syncNotifications()
+        }
         .onChange(of: viewModel.session?.status) { _, newStatus in
             guard let newStatus, newStatus.isTerminal,
                   let id = viewModel.session?.id,

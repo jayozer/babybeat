@@ -42,6 +42,18 @@ struct SettingsView: View {
             }
 
             Section {
+                NavigationLink {
+                    NotificationSettingsView()
+                } label: {
+                    LabeledContent("Reminders", value: reminderSummary)
+                }
+            } header: {
+                Text("Reminders")
+            } footer: {
+                Text("Gentle nudges only. Littletaps never sends health alerts.")
+            }
+
+            Section {
                 Button("Summary Export") { triggerExport(kind: .summary) }
                 Button("Detailed Export") { triggerExport(kind: .detailed) }
             } header: {
@@ -133,6 +145,21 @@ struct SettingsView: View {
             exportFilename = "kick-count-detailed-\(today).csv"
         }
         showExporter = true
+    }
+
+    private var reminderSummary: String {
+        let notifications = preferences.preferences.notifications
+        guard notifications.masterEnabled else { return "Off" }
+        guard notifications.dailyEnabled else { return "On" }
+
+        var components = DateComponents()
+        components.hour = notifications.dailyHour
+        components.minute = notifications.dailyMinute
+        guard let date = Calendar.current.date(from: components) else { return "On" }
+
+        let formatter = DateFormatter()
+        formatter.timeStyle = .short
+        return "Daily at \(formatter.string(from: date))"
     }
 
     private var appVersion: String {

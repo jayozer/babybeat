@@ -24,6 +24,9 @@ final class SessionViewModel: ObservableObject {
         } catch {
             self.errorMessage = error.localizedDescription
         }
+        // Covers a relaunch mid-session: the window kept running while the app
+        // was gone, so whatever was scheduled needs recomputing against now.
+        syncNotifications()
     }
 
     /// The ticking loop is otherwise only stopped by `stopTicking()`. The view
@@ -62,6 +65,8 @@ final class SessionViewModel: ObservableObject {
             if target.status == .idle {
                 try SessionStateMachine.start(target)
                 startTicking()
+                session = target
+                syncNotifications()
             }
             guard target.status == .active else { return }
             try store.registerKick(in: target)
@@ -74,6 +79,7 @@ final class SessionViewModel: ObservableObject {
                 try SessionStateMachine.complete(target)
                 try store.save()
                 stopTicking()
+                syncNotifications()
             }
         } catch {
             errorMessage = error.localizedDescription
@@ -94,6 +100,9 @@ final class SessionViewModel: ObservableObject {
         do {
             try SessionStateMachine.pause(session)
             try store.save()
+            // A paused window has no meaningful countdown, so drop the
+            // pending requests rather than let them fire against frozen time.
+            syncNotifications()
         } catch {
             errorMessage = error.localizedDescription
         }
@@ -104,6 +113,7 @@ final class SessionViewModel: ObservableObject {
         do {
             try SessionStateMachine.resume(session)
             try store.save()
+            syncNotifications()
         } catch {
             errorMessage = error.localizedDescription
         }
@@ -115,6 +125,7 @@ final class SessionViewModel: ObservableObject {
             try SessionStateMachine.endEarly(session)
             try store.save()
             stopTicking()
+            syncNotifications()
         } catch {
             errorMessage = error.localizedDescription
         }
@@ -169,9 +180,31 @@ final class SessionViewModel: ObservableObject {
                 try SessionStateMachine.timeout(session)
                 try store.save()
                 stopTicking()
+                syncNotifications()
             } catch {
                 errorMessage = error.localizedDescription
             }
+        }
+    }
+
+    // MARK: - Notifications
+
+    /// Fire-and-forget by design. This runs on the tap path, which already
+    /// does a SwiftData save, so it must never block the UI.
+    ///
+    /// The live tap count deliberately is *not* a trigger for this — the
+    /// count only appears in the end-of-window body, and that gets refreshed
+    /// when the app is backgrounded, which is the only time it matters.
+    func syncNotifications() {
+        let snapshot = session.map(SessionSnapshot.init)
+        let lastEnded = try? store.lastSessionEndedAt()
+        let notificationPrefs = preferences.preferences.notifications
+        Task {
+            await NotificationService.shared.reconcile(
+                preferences: notificationPrefs,
+                session: snapshot,
+                lastSessionEndedAt: lastEnded
+            )
         }
     }
 
