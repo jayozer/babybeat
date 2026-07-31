@@ -35,6 +35,20 @@
                ReferencedContainer = "container:BabyKickCount.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "NO"
+            buildForProfiling = "NO"
+            buildForArchiving = "NO"
+            buildForAnalyzing = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "E5194F393D3D8B655EEFFF53"
+               BuildableName = "BabyKickCountUITests.xctest"
+               BlueprintName = "BabyKickCountUITests"
+               ReferencedContainer = "container:BabyKickCount.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction
@@ -61,6 +75,17 @@
                BlueprintIdentifier = "52B7E3DB25A65DC3E93F2C7E"
                BuildableName = "BabyKickCountTests.xctest"
                BlueprintName = "BabyKickCountTests"
+               ReferencedContainer = "container:BabyKickCount.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO"
+            parallelizable = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "E5194F393D3D8B655EEFFF53"
+               BuildableName = "BabyKickCountUITests.xctest"
+               BlueprintName = "BabyKickCountUITests"
                ReferencedContainer = "container:BabyKickCount.xcodeproj">
             </BuildableReference>
          </TestableReference>

@@ -1,0 +1,99 @@
+<!doctype html>
+<!--
+  Source for web/images/og-cover.png (1200x630), the social share card.
+
+  Render it with:
+    scripts/og-cover/render.sh
+
+  Kept in the repo because the card is text — the app name has already gone
+  stale once — and regenerating it should not need a design tool. It lives
+  outside web/ so it is not deployed as a page.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;1,9..144,300;1,9..144,400&display=swap" rel="stylesheet" />
+<style>
+  /* Same tokens as web/styles.css so the card matches the site. */
+  :root{
+    --cream-soft: #faf6ec;
+    --cream-deep: #ede7d8;
+    --sage:       #8fa68e;
+    --sage-deep:  #6d8a6c;
+    --ink:        #2e342e;
+    --ink-soft:   #5b635c;
+    --ink-mute:   #8a8f88;
+    --font-sans:    "Quicksand", ui-rounded, system-ui, -apple-system, sans-serif;
+    --font-display: "Fraunces", ui-serif, Georgia, serif;
+  }
+  *{ margin:0; padding:0; box-sizing:border-box; }
+  body{ width:1200px; height:630px; overflow:hidden; }
+
+  .card{
+    position:relative;
+    width:1200px; height:630px;
+    background:
+      radial-gradient(120% 90% at 88% 12%, rgba(143,166,142,.20) 0%, rgba(143,166,142,0) 55%),
+      linear-gradient(135deg, var(--cream-soft) 0%, var(--cream-deep) 100%);
+    font-family: var(--font-sans);
+    display:flex; align-items:center;
+  }
+
+  /* Wide enough that "your baby's movements." stays on one line, as in the
+     original card. Narrower and it wraps to three lines and crowds the sub. */
+  .content{ padding-left: 90px; width: 900px; }
+
+  .eyebrow{
+    font-size: 17px; font-weight: 700; letter-spacing: .18em;
+    text-transform: uppercase; color: var(--ink);
+    position:absolute; top: 88px; left: 90px;
+  }
+
+  .headline{
+    font-family: var(--font-display);
+    font-weight: 400; font-size: 62px; line-height: 1.18;
+    letter-spacing: -.02em; color: var(--ink);
+  }
+  .headline em{
+    display:block; font-style: italic; color: var(--sage-deep);
+  }
+
+  .sub{
+    margin-top: 26px;
+    font-size: 21px; font-weight: 500; color: var(--ink-soft);
+  }
+
+  .domain{
+    position:absolute; bottom: 78px; left: 90px;
+    font-size: 18px; font-weight: 500; color: var(--ink-mute);
+  }
+
+  .heart{
+    position:absolute; right: 96px; top: 50%;
+    transform: translateY(-50%);
+    color: var(--sage);
+  }
+</style>
+</head>
+<body>
+  <div class="card">
+    <p class="eyebrow">Littletaps</p>
+
+    <div class="content">
+      <h1 class="headline">
+        A calm way to count
+        <em>your baby&rsquo;s movements.</em>
+      </h1>
+      <p class="sub">One tap per kick. Free, ad-free, private.</p>
+    </div>
+
+    <p class="domain">babykickcount.com</p>
+
+    <svg class="heart" viewBox="0 0 32 32" width="210" height="210" aria-hidden="true">
+      <path d="M16 28.5C16 28.5 3.5 21 3.5 12.5C3.5 8.36 6.86 5 11 5C13.4 5 15.4 6.13 16 7.95C16.6 6.13 18.6 5 21 5C25.14 5 28.5 8.36 28.5 12.5C28.5 21 16 28.5 16 28.5Z" fill="currentColor"/>
+    </svg>
+  </div>
+</body>
+</html>

@@ -23,5 +23,8 @@ struct CountDisplay: View {
         }
         .frame(maxWidth: .infinity)
         .padding(.vertical, 20)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel("Movements counted")
+        .accessibilityValue("\(currentCount) of \(targetCount)")
     }
 }

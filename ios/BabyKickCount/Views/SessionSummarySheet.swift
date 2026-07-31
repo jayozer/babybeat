@@ -26,7 +26,7 @@ struct SessionSummarySheet: View {
                 }
 
                 Section {
-                    HStack(spacing: 12) {
+                    HStack(spacing: 0) {
                         ForEach(1...5, id: \.self) { value in
                             Button {
                                 rating = (rating == value) ? nil : value
@@ -34,8 +34,11 @@ struct SessionSummarySheet: View {
                                 Image(systemName: rating.map { value <= $0 } ?? false ? "star.fill" : "star")
                                     .font(.title3)
                                     .foregroundStyle(Theme.primary)
+                                    .frame(width: 44, height: 44)
+                                    .contentShape(Rectangle())
                             }
                             .buttonStyle(.plain)
+                            .accessibilityLabel(value == 1 ? "Rate 1 star" : "Rate \(value) stars")
                         }
                     }
                 } header: {

@@ -28,6 +28,8 @@ struct CalendarGridView: View {
                     Text(day)
                         .font(.caption2)
                         .foregroundStyle(Theme.inkFaint)
+                        .lineLimit(1)
+                        .minimumScaleFactor(0.6)
                         .frame(maxWidth: .infinity)
                 }
 
@@ -36,15 +38,22 @@ struct CalendarGridView: View {
                 }
 
                 ForEach(monthDays, id: \.self) { day in
+                    let daySessions = terminalSessions(on: day)
                     DayCell(
                         date: day,
                         isSelected: calendar.isDate(day, inSameDayAs: selectedDate),
                         isToday: calendar.isDateInToday(day),
-                        markers: markers(for: day)
+                        markers: markers(for: daySessions),
+                        sessionCount: daySessions.count
                     )
                     .onTapGesture { selectedDate = day }
                 }
             }
+            // Seven fixed columns can't reflow, so past a point extra text
+            // growth only wraps "10" into "1"/"0". Cap the grid and let the
+            // glyphs shrink to fit instead. The header, legend and month
+            // controls outside this grid still scale the whole way.
+            .dynamicTypeSize(...DynamicTypeSize.accessibility1)
 
             legend
         }
@@ -57,7 +66,8 @@ struct CalendarGridView: View {
             Button(action: { shift(by: -1) }) {
                 Image(systemName: "chevron.left")
                     .foregroundStyle(Theme.inkMuted)
-                    .padding(8)
+                    .frame(width: 44, height: 44)
+                    .contentShape(Rectangle())
             }
             Spacer()
             Text(monthTitle)
@@ -67,26 +77,36 @@ struct CalendarGridView: View {
             Button(action: { shift(by: 1) }) {
                 Image(systemName: "chevron.right")
                     .foregroundStyle(Theme.inkMuted)
-                    .padding(8)
+                    .frame(width: 44, height: 44)
+                    .contentShape(Rectangle())
             }
         }
     }
 
     private var legend: some View {
-        HStack(spacing: 16) {
-            legendDot(color: Theme.primaryLight, label: "Complete")
-            legendDot(color: Theme.timeoutAmber, label: "Timeout")
-            legendDot(color: Theme.endedLavender, label: "Ended")
+        // Three labels side by side stop fitting at accessibility sizes, where
+        // they hyphenate into "Com-/plete". Stack them instead of shrinking, so
+        // the legend keeps scaling the whole way.
+        ViewThatFits(in: .horizontal) {
+            HStack(spacing: 16) { legendItems }
+            VStack(alignment: .leading, spacing: 6) { legendItems }
         }
         .font(.caption2)
         .foregroundStyle(Theme.inkFaint)
         .padding(.top, 4)
     }
 
+    @ViewBuilder
+    private var legendItems: some View {
+        legendDot(color: Theme.primaryLight, label: "Complete")
+        legendDot(color: Theme.timeoutAmber, label: "Timeout")
+        legendDot(color: Theme.endedLavender, label: "Ended")
+    }
+
     private func legendDot(color: Color, label: String) -> some View {
         HStack(spacing: 4) {
             Circle().fill(color).frame(width: 6, height: 6)
-            Text(label)
+            Text(label).lineLimit(1)
         }
     }
 
@@ -117,15 +137,25 @@ struct CalendarGridView: View {
         }
     }
 
-    private func markers(for day: Date) -> [Color] {
-        let matches = sessions.filter {
-            guard let started = $0.startedAt else { return false }
-            return calendar.isDate(started, inSameDayAs: day)
+    /// Finished sessions that started on the given day. Only terminal sessions
+    /// appear on the calendar, so both the dots and the count VoiceOver reads
+    /// out come from this one list.
+    private func terminalSessions(on day: Date) -> [KickSession] {
+        sessions.filter { session in
+            guard let started = session.startedAt else { return false }
+            return session.status.isTerminal && calendar.isDate(started, inSameDayAs: day)
         }
+    }
+
+    /// One dot per status present, not one per session — three completed
+    /// sessions on the same day still show a single green dot. The spoken
+    /// count is taken from the session list instead, because collapsing them
+    /// here would announce "1 session recorded" for all three.
+    private func markers(for daySessions: [KickSession]) -> [Color] {
         var colors: [Color] = []
-        if matches.contains(where: { $0.status == .complete }) { colors.append(Theme.primaryLight) }
-        if matches.contains(where: { $0.status == .timeout }) { colors.append(Theme.timeoutAmber) }
-        if matches.contains(where: { $0.status == .endedEarly }) { colors.append(Theme.endedLavender) }
+        if daySessions.contains(where: { $0.status == .complete }) { colors.append(Theme.primaryLight) }
+        if daySessions.contains(where: { $0.status == .timeout }) { colors.append(Theme.timeoutAmber) }
+        if daySessions.contains(where: { $0.status == .endedEarly }) { colors.append(Theme.endedLavender) }
         return colors
     }
 }
@@ -135,12 +165,17 @@ private struct DayCell: View {
     let isSelected: Bool
     let isToday: Bool
     let markers: [Color]
+    /// Actual number of sessions that day, which is not `markers.count` —
+    /// markers are deduplicated by status.
+    let sessionCount: Int
 
     var body: some View {
         VStack(spacing: 2) {
             Text(dayString)
                 .font(.system(.callout, design: .rounded).weight(isSelected ? .bold : .regular))
                 .foregroundStyle(foreground)
+                .lineLimit(1)
+                .minimumScaleFactor(0.6)
 
             HStack(spacing: 2) {
                 ForEach(markers.indices, id: \.self) { idx in
@@ -151,15 +186,36 @@ private struct DayCell: View {
             }
             .frame(height: 6)
         }
-        .frame(maxWidth: .infinity, minHeight: 40)
+        .frame(maxWidth: .infinity, minHeight: 44)
         .background(background)
         .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
+        .contentShape(Rectangle())
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(accessibilityText)
+        .accessibilityAddTraits(.isButton)
     }
 
     private var dayString: String {
         let f = DateFormatter()
         f.dateFormat = "d"
         return f.string(from: date)
+    }
+
+    private var accessibilityText: String {
+        let f = DateFormatter()
+        f.dateStyle = .full
+        f.timeStyle = .none
+        var text = f.string(from: date)
+        if isToday { text += ", today" }
+        if isSelected { text += ", selected" }
+        if sessionCount == 0 {
+            text += ", no sessions"
+        } else if sessionCount == 1 {
+            text += ", 1 session recorded"
+        } else {
+            text += ", \(sessionCount) sessions recorded"
+        }
+        return text
     }
 
     @ViewBuilder

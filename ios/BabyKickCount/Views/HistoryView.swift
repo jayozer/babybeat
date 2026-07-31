@@ -87,8 +87,12 @@ private struct SessionRow: View {
                     Label("Delete", systemImage: "trash")
                 }
             } label: {
-                Image(systemName: "ellipsis").foregroundStyle(Theme.inkMuted).padding(8)
+                Image(systemName: "ellipsis")
+                    .foregroundStyle(Theme.inkMuted)
+                    .frame(width: 44, height: 44)
+                    .contentShape(Rectangle())
             }
+            .accessibilityLabel("Session options")
         }
         .padding(.vertical, 6)
         .confirmationDialog("Delete session?", isPresented: $confirmingDelete, titleVisibility: .visible) {

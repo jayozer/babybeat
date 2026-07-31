@@ -61,8 +61,8 @@ pregnancy,fetal movement,third trimester,OB,midwife,prenatal,maternity,timer,wel
 - [x] Choose primary/secondary categories. Saved as Health & Fitness primary and no secondary category.
 - [x] Confirm pricing and availability. Saved April 26, 2026 as free (`$0.00`) with 175 countries/regions available on app release.
 - [x] Upload 1-10 screenshots using Apple's current required iPhone sizes. App Store Connect shows `9 of 10 Screenshots` for the 6.5-inch display. Source files are in `app_store_screenshots/iphone_6_7/*` as exact `1284 x 2778` PNGs; keep `app_store_screenshots/iphone_6_9/*` only as the original `1320 x 2868` source set.
-- [ ] Capture screenshots from a fresh simulator or device with fictional data only. Suggested set: onboarding, active counter, completed summary, history calendar, settings/export, information disclaimer.
-- [ ] Make screenshots match the submitted build exactly. Do not show features that are not in the binary.
+- [x] Capture screenshots from a fresh simulator or device with fictional data only. `ios/Scripts/capture-screenshots.sh` drives `ScreenshotCaptureTests` on a freshly erased simulator per size, so the only data on screen is the one session the test records.
+- [x] Make screenshots match the submitted build exactly. Re-captured July 29, 2026. The previous set was genuinely stale: it showed the app titled `Baby Kick Count`, while the binary now says `Littletaps`.
 - [x] Verify the 1024 x 1024 app icon has no transparency, matches the website branding, and looks good on light/dark App Store surfaces. `sips` reports `1024 x 1024` and `hasAlpha: no`.
 - [x] Once App Store Connect generates the Apple app ID, update the website smart banner meta tag with `app-id=6763963304`.
 
@@ -78,7 +78,7 @@ pregnancy,fetal movement,third trimester,OB,midwife,prenatal,maternity,timer,wel
 - [ ] Test Increase Contrast and Reduce Motion.
 - [ ] Check safe areas on the smallest supported iPhone and a notched/Dynamic Island device.
 - [ ] Verify interactive targets are at least 44 x 44 pt or have enough tappable padding.
-- [ ] Test CSV exports for comma, quote, and newline escaping in notes.
+- [x] Test CSV exports for comma, quote, and newline escaping in notes. Covered by `testSummaryCSVRoundTripsWithoutBreakingColumnAlignment`, which parses the output with an RFC 4180 reader and asserts column alignment holds.
 - [x] Add focused unit tests for `SessionStateMachine` and `ExportService`; these are small and high-value for a health-adjacent app.
 - [ ] Consider a debug-only way to test timeout behavior without waiting two hours, then make sure it is removed from release builds.
 - [ ] Archive and upload using "App Store Connect," not "TestFlight Internal Only," so the build can be used for App Review and distribution.
@@ -92,12 +92,53 @@ pregnancy,fetal movement,third trimester,OB,midwife,prenatal,maternity,timer,wel
 - [x] Replace beta invite UX with a real TestFlight public link, mailing-list implementation, or simple `mailto:` flow.
 - [x] Update sitemap/canonical URLs if `/privacy` and `/terms` are the preferred clean URLs.
 - [x] Add `/support` and use it for App Store Connect Support URL.
+- [x] Regenerate `web/images/og-cover.png`. It read `BABY KICK COUNT` with no mention of Littletaps, contradicting the page's own `og:site_name`, on every shared link. Source is now `scripts/og-cover/og-cover.html` plus `render.sh` (headless Chrome), kept outside `web/` so `cleanUrls` does not publish it as a page.
+- [x] Align the hero phone mockups in `web/index.html` with the shipped app. They are hand-built HTML/CSS, not screenshots, and had drifted: the counter claimed `14:32 elapsed` when the app counts *down* (`Time remaining`), the hint read `tap when you feel a kick` vs the app's `when you feel movement`, and the calendar legend said `Completed / Ended early` vs the app's `Complete / Ended`.
 - [ ] After App Store approval, replace TestFlight CTAs with App Store download CTAs.
+
+## Follow-Up Review (July 28, 2026)
+
+Static review of the repo. No simulator was available in this environment, so
+nothing below was verified on a running build — re-run the test/build/archive
+commands on a Mac before submitting.
+
+Run `./ios/Scripts/simulator-check.sh` on a Mac to execute every automatable
+check in one pass (tests, Release build, bundle/privacy-manifest/icon/screenshot
+validation, clean install, and a light-vs-dark launch comparison). It prints the
+remaining hands-on checks at the end. Add `--archive` to also produce an App
+Store package.
+
+Applied in this pass:
+
+- [x] Lock the app to light appearance (`UIUserInterfaceStyle: Light` in `Info.plist` and `project.yml`). The design system in `DesignSystem/Theme.swift` hardcodes light colours (`Theme.ink`, `Theme.surface`, the `Theme.background` gradient), but `SettingsView` and `SessionSummarySheet` use `Form` and several views use `.ultraThinMaterial`, all of which follow the system appearance. In Dark Mode that put dark-grey text on dark backgrounds. This also makes the shipped build match the light-mode screenshots already uploaded.
+- [x] Delete unreferenced `AppIcon-1024_old.png` and `AppIcon-1024_round.png` from `AppIcon.appiconset`. They were not listed in `Contents.json` (Xcode warns on stray files) and `_round` carried an alpha channel.
+- [x] Add VoiceOver labels and 44 pt targets to the controls that had none: calendar day cells (were a bare `.onTapGesture` at 40 pt with no label or button trait), the history row overflow menu, the summary-sheet star rating, and the settings sound-preview buttons. Also gave `CountDisplay` a combined label/value and `TimerDisplay` a combined element.
+
+Still open, not applied:
+
+- [ ] Confirm which iPhone screenshot slot is filled in App Store Connect. The P1 note above says the `1284 x 2778` set went into the 6.5-inch slot and the `1320 x 2868` set was kept "only as the original source". Apple now treats the 6.9-inch display as the required iPhone size — upload `app_store_screenshots/iphone_6_9/*` to the 6.9-inch slot.
+- [x] Re-capture screenshots after the light-appearance change and the accessibility tweaks so they match the submitted binary. Done July 29, 2026 via `ios/Scripts/capture-screenshots.sh`, which regenerates both sizes. Status bars are pinned to 9:41 with full signal and battery, and every shot is taken on a settled screen — the old set had four different clock times and two shots caught mid-animation.
+- [x] `SessionViewModel.startTicking()` spawns a `Task` loop that is only cancelled by `stopTicking()`. Added `deinit { timerTask?.cancel() }`; it compiles clean under Swift 5.9 with no MainActor isolation warning.
+- [ ] `SessionViewModel.pause()`, `resume()`, and `undo()` mutate the `KickSession` model object without reassigning the `@Published var session`. This works today only because SwiftData `@Model` types are `Observable`; it is fragile. Verify the count actually decrements on screen after Undo, and that Pause/Resume flip the UI.
+- [ ] `UserPreferences.defaultTargetCount` and `defaultTimeLimitSec` are persisted but have no Settings UI, so they are permanently 10 and 7200. Either expose them or drop them. Relatedly, `TimerDisplay` takes a `timeLimitSec` parameter it never uses.
+- [x] `ExportService.escape()` now prefixes notes beginning with `=`, `+`, `-`, `@`, tab, or carriage return with an apostrophe so spreadsheets read them as text, not formulas. Guarded by `testSummaryCSVNeutralisesNotesSpreadsheetsWouldRunAsFormulas` (verified to fail without the fix) and `testSummaryCSVLeavesOrdinaryNotesUntouched`. Column alignment stays covered by `testSummaryCSVRoundTripsWithoutBreakingColumnAlignment`, so no manual export check is needed.
+
+### App Store Connect click paths
+
+Sign in at appstoreconnect.apple.com, **My Apps** -> **Littletaps - Baby Kick Count**.
+
+- [ ] **6.9-inch screenshots.** Left sidebar -> **iOS App** -> the `1.0 Prepare for Submission` row. In the Previews and Screenshots box there is a display-size dropdown above the thumbnails; choose **6.9" Display**. Drag all nine files from `app_store_screenshots/iphone_6_9/` in. If the 6.5-inch slot already holds the 1284x2778 set, leave it — extra sizes are allowed, a missing required size is not.
+- [ ] **Regulated Medical Device.** Left sidebar -> **App Privacy**, then the **App Store Connect questions** / Business section; the medical-device question also appears in the submission flow when you click **Add for Review**. Answer **No**. Littletaps logs what the user felt and shows a disclaimer; it does not measure a physiological signal or make a diagnosis, which is what that question is asking about.
+- [ ] **App Review Information.** Same `1.0 Prepare for Submission` page, scroll to the **App Review Information** section near the bottom. Fill First Name, Last Name, Phone Number, and Email — a phone number Apple can actually reach during review. Leave "Sign-in required" unchecked (no account in the app). The Notes field already has the draft at the bottom of this file; paste it in if it is not there.
+- [ ] Fixed font sizes in `CountDisplay` (72 pt) and `TapPad` (64 pt) do not respond to Dynamic Type; check the tap pad's three stacked labels at the largest accessibility sizes.
+- [ ] The medical disclaimer lives in `InfoView`, reachable only via Settings -> Information & Help. Consider surfacing it during onboarding — App Review has asked for prominent disclaimers on pregnancy/fetal-movement apps.
+- [ ] Answer "No" to the Regulated Medical Device question in App Store Connect. The in-app and website copy consistently position this as an informational wellness log, which supports that answer.
+- [ ] Fill the App Review Information contact first name, last name, phone, and email.
 
 ## P2: Nice To Have Before Public Launch
 
 - [x] Add a lightweight launch checklist to `README.md` or link this file from it.
-- [ ] Add automated screenshot capture scripts for App Store sizes.
+- [x] Add an automated pre-submission check script: `ios/Scripts/simulator-check.sh` validates screenshot dimensions per slot, icon alpha, bundle contents, and captures launch screenshots. It does not yet drive the app through each screen — that still needs UI tests (see below).
 - [ ] Add basic UI tests for onboarding, counting, summary, and export availability.
 - [ ] Add release notes template for version `1.0`.
 - [ ] Consider localization readiness if launching outside English-first regions.
