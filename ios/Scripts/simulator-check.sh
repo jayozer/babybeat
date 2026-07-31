@@ -128,11 +128,17 @@ else
   tail -30 "$OUT/build.log"
 fi
 
-if grep -q "warning:" "$OUT/build.log"; then
+# appintentsmetadataprocessor logs this on every build of an app that does not
+# link AppIntents.framework. It is toolchain noise rather than a code warning,
+# and the only way to silence it is to add a framework the app has no use for.
+# Listed explicitly so real warnings are never hidden by a blanket filter.
+BENIGN_WARNINGS='No AppIntents.framework dependency found'
+
+if grep "warning:" "$OUT/build.log" | grep -qv "$BENIGN_WARNINGS"; then
   warn "build emitted warnings:"
-  grep "warning:" "$OUT/build.log" | sort -u | sed 's/^/      /' | head -20
+  grep "warning:" "$OUT/build.log" | grep -v "$BENIGN_WARNINGS" | sort -u | sed 's/^/      /' | head -20
 else
-  pass "no build warnings"
+  pass "no build warnings (known toolchain noise ignored)"
 fi
 
 APP="$(find "$DERIVED/Build/Products" -name "*.app" -maxdepth 3 | grep -i release | head -1 || true)"
@@ -198,18 +204,35 @@ check_shots() {
 }
 
 # Apple requires screenshots to match the submitted binary. This set has gone
-# stale twice already, so compare timestamps rather than relying on memory.
+# stale twice already, so check it rather than relying on memory.
+#
+# Compares git commit times, not file mtimes: a fresh clone stamps every file
+# with the checkout time, which would make an mtime comparison meaningless and
+# the result depend on who ran it.
 check_shots_current() {
   local dir="$1" label="$2"
   [[ -d "$dir" ]] || return
-  local newest_shot newest_src
-  newest_shot="$(find "$dir" -name '*.png' -exec stat -f '%m' {} + 2>/dev/null | sort -n | tail -1)"
-  newest_src="$(find "$REPO_ROOT/ios/BabyKickCount" -name '*.swift' -exec stat -f '%m' {} + 2>/dev/null | sort -n | tail -1)"
-  [[ -n "$newest_shot" && -n "$newest_src" ]] || return
-  if (( newest_src > newest_shot )); then
+
+  local shots_at src_at
+  shots_at="$(git -C "$REPO_ROOT" log -1 --format=%ct -- "$dir" 2>/dev/null)"
+  src_at="$(git -C "$REPO_ROOT" log -1 --format=%ct -- "ios/BabyKickCount" 2>/dev/null)"
+
+  if [[ -z "$shots_at" || -z "$src_at" ]]; then
+    warn "$label: no commit history for the comparison, skipping staleness check"
+    return
+  fi
+
+  # Uncommitted view changes are invisible to the commit-time comparison, so
+  # say so rather than reporting a clean result that only covers committed work.
+  if ! git -C "$REPO_ROOT" diff --quiet HEAD -- "ios/BabyKickCount" 2>/dev/null; then
+    warn "$label: uncommitted changes under ios/BabyKickCount — screenshots may not reflect them"
+    return
+  fi
+
+  if (( src_at > shots_at )); then
     warn "$label: app source changed after these were captured — re-run ios/Scripts/capture-screenshots.sh"
   else
-    pass "$label: newer than the last app source change"
+    pass "$label: captured after the last app source change"
   fi
 }
 
