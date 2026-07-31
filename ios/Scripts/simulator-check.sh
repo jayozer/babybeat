@@ -280,14 +280,20 @@ if [[ "$DO_ARCHIVE" == "1" ]]; then
   step "App Store archive"
   ARCHIVE="$OUT/Littletaps.xcarchive"
   rm -rf "$ARCHIVE"
+  # -allowProvisioningUpdates lets automatic signing regenerate the profile.
+  # Without it the first archive after a capability change — the
+  # time-sensitive notification entitlement, say — fails on a stale profile
+  # that has nothing to do with the code.
   if xcodebuild archive \
       -project "$PROJECT" -scheme "$SCHEME" -configuration Release \
       -destination 'generic/platform=iOS' -archivePath "$ARCHIVE" \
+      -allowProvisioningUpdates \
       > "$OUT/archive.log" 2>&1; then
     pass "archived"
     if xcodebuild -exportArchive -archivePath "$ARCHIVE" \
         -exportOptionsPlist "$REPO_ROOT/ios/ExportOptions-AppStore.plist" \
-        -exportPath "$OUT/export" > "$OUT/export.log" 2>&1; then
+        -exportPath "$OUT/export" -allowProvisioningUpdates \
+        > "$OUT/export.log" 2>&1; then
       pass "exported an App Store package to $OUT/export"
     else
       fail "export failed (usually distribution provisioning) — see $OUT/export.log"
@@ -314,6 +320,32 @@ cat <<'EOF'
     [ ] Reach 10 taps -> summary sheet appears, rating + notes save.
     [ ] End early -> confirmation dialog -> session lands in History.
     [ ] Force-quit mid-session, relaunch -> session resumes with correct elapsed time.
+
+  Reminders. Scheduling logic is covered by NotificationPlannerTests; what
+  those cannot see is delivery and appearance. The Simulator does deliver
+  local notifications and does render attachments, so most of this works
+  without a device:
+    [ ] Settings -> Reminders -> turn on, accept the prompt, "Send a test
+        reminder", background the app. Banner shows the sage heart thumbnail,
+        and the title/body read as calm invitations, not instructions.
+    [ ] Turn on the daily reminder and check the weekday circles: all seven
+        reachable, each clearing 44pt, VoiceOver reading full day names.
+        Do this on iPhone SE (3rd generation) -- 7 x 44 = 308pt against a
+        ~305pt row is the tightest layout in the app.
+    [ ] Deny notifications on a clean install -> the master toggle must refuse
+        to stay on, and the "Turn on in Settings" row must appear and deep-link
+        to Littletaps' notification pane (not the generic app page).
+    [ ] Long-press a daily reminder -> "Remind me in an hour" -> a new pending
+        request exists and the app never came to the foreground.
+    [ ] Tap a notification from a cold launch (app force-quit) -> it opens.
+    [ ] Background round trip: start a session, background the app, wait past
+        the window. The "your window is up" alert fires, AND on returning the
+        session lands in .timeout exactly once -- not twice.
+    [ ] With reminders off, confirm nothing is ever scheduled.
+
+  Needs a real device, not the Simulator:
+    [ ] .timeSensitive breakthrough: enable a Focus, confirm the end-of-window
+        alert still arrives while the daily reminder does not.
 
   Accessibility is now covered by BabyKickCountUITests, which runs above. It
   asserts the labels VoiceOver reads out (calendar days, stars, the history

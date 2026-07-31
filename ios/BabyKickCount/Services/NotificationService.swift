@@ -27,6 +27,71 @@ final class NotificationService: ObservableObject {
         }
     }
 
+    // MARK: - Bootstrap
+
+    /// Registers the action buttons. Categories are global to the app, so this
+    /// runs once at launch regardless of whether anything is scheduled.
+    func registerCategories() {
+        let startCounting = UNNotificationAction(
+            identifier: NotificationAction.startCounting,
+            title: "Start counting",
+            options: [.foreground]
+        )
+        let snooze = UNNotificationAction(
+            identifier: NotificationAction.snooze,
+            title: "Remind me in an hour",
+            options: []
+        )
+        let open = UNNotificationAction(
+            identifier: NotificationAction.open,
+            title: "Open Littletaps",
+            options: [.foreground]
+        )
+
+        center.setNotificationCategories([
+            UNNotificationCategory(
+                identifier: NotificationCategory.daily,
+                actions: [startCounting, snooze],
+                intentIdentifiers: [],
+                options: []
+            ),
+            UNNotificationCategory(
+                identifier: NotificationCategory.session,
+                actions: [open],
+                intentIdentifiers: [],
+                options: []
+            ),
+            // The inactivity nudge deliberately offers no actions — it is a
+            // note, not a prompt.
+            UNNotificationCategory(
+                identifier: NotificationCategory.quiet,
+                actions: [],
+                intentIdentifiers: [],
+                options: []
+            )
+        ])
+    }
+
+    /// Handles "Remind me in an hour" without opening the app.
+    func scheduleSnooze() async {
+        let content = UNMutableNotificationContent()
+        content.title = "Still here"
+        content.body = "Ready whenever you are."
+        content.sound = .default
+        content.categoryIdentifier = NotificationCategory.daily
+        content.threadIdentifier = NotificationThread.reminders
+        content.interruptionLevel = .active
+        content.relevanceScore = 0.5
+        attachArt(.heart, to: content)
+
+        let request = UNNotificationRequest(
+            identifier: "\(NotificationPlanner.idPrefix)daily.snooze",
+            content: content,
+            trigger: UNTimeIntervalNotificationTrigger(timeInterval: 3600, repeats: false)
+        )
+        try? await center.add(request)
+    }
+
     // MARK: - Authorization
 
     func refreshAuthorizationStatus() async {
@@ -112,6 +177,7 @@ final class NotificationService: ObservableObject {
         content.body = "Find a comfy spot and tap along with your little one."
         content.sound = .default
         content.threadIdentifier = NotificationThread.reminders
+        attachArt(.heart, to: content)
 
         let request = UNNotificationRequest(
             identifier: "\(NotificationPlanner.idPrefix)test",
@@ -135,12 +201,27 @@ final class NotificationService: ObservableObject {
         content.threadIdentifier = planned.threadID
         content.relevanceScore = planned.relevance
         content.interruptionLevel = interruptionLevel(for: planned.level)
+        if let artKind = planned.artKind {
+            attachArt(artKind, to: content)
+        }
 
         return UNNotificationRequest(
             identifier: planned.id,
             content: content,
             trigger: trigger(for: planned.trigger)
         )
+    }
+
+    /// The thumbnail on the banner. Silently skipped on failure — a
+    /// notification without artwork is still a perfectly good notification.
+    private func attachArt(_ kind: NotificationArtKind, to content: UNMutableNotificationContent) {
+        guard let url = NotificationArtRenderer.attachmentURL(for: kind),
+              let attachment = try? UNNotificationAttachment(
+                  identifier: kind.rawValue,
+                  url: url,
+                  options: nil
+              ) else { return }
+        content.attachments = [attachment]
     }
 
     private func interruptionLevel(for level: PlannedLevel) -> UNNotificationInterruptionLevel {

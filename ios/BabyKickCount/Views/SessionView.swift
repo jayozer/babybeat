@@ -9,6 +9,11 @@ struct SessionView: View {
     @State private var showSummary = false
     @State private var dismissedSummaryForSessionID: UUID?
 
+    /// Only used to know whether the user has ever finished a session, which
+    /// gates the reminder primer.
+    @Query(filter: #Predicate<KickSession> { $0.endedAt != nil })
+    private var finishedSessions: [KickSession]
+
     init(context: ModelContext, preferences: PreferencesStore) {
         let store = SessionStore(context: context)
         _viewModel = StateObject(wrappedValue: SessionViewModel(store: store, preferences: preferences))
@@ -24,6 +29,12 @@ struct SessionView: View {
 
                     if let error = viewModel.errorMessage {
                         errorBanner(error)
+                    }
+
+                    if showsReminderPrimer {
+                        ReminderPrimerCard {
+                            preferences.update { $0.notifications.hasSeenPrimer = true }
+                        }
                     }
 
                     CountDisplay(currentCount: viewModel.kickCount, targetCount: viewModel.targetCount)
@@ -105,6 +116,16 @@ struct SessionView: View {
                 )
             }
         }
+    }
+
+    /// Shown once, and only after the user has actually finished a session —
+    /// never to someone who has already turned reminders on, and never in the
+    /// middle of counting.
+    private var showsReminderPrimer: Bool {
+        let notifications = preferences.preferences.notifications
+        guard !notifications.hasSeenPrimer, !notifications.masterEnabled else { return false }
+        guard viewModel.session == nil else { return false }
+        return finishedSessions.isEmpty == false
     }
 
     private var header: some View {

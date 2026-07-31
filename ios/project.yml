@@ -20,6 +20,8 @@ targets:
       - path: BabyKickCount
         excludes:
           - Info.plist
+          # Generated below; must not also be copied into the bundle.
+          - BabyKickCount.entitlements
     info:
       path: BabyKickCount/Info.plist
       properties:
@@ -34,6 +36,14 @@ targets:
         UIApplicationSceneManifest:
           UIApplicationSupportsMultipleScenes: false
         ITSAppUsesNonExemptEncryption: false
+    entitlements:
+      path: BabyKickCount/BabyKickCount.entitlements
+      properties:
+        # Lets the "your window is up" alert break through a Focus. Needs no
+        # Apple approval, but it does change the App ID's capability set, so
+        # the first archive after adding it needs the provisioning profile
+        # regenerating (or -allowProvisioningUpdates).
+        com.apple.developer.usernotifications.time-sensitive: true
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.babykickcount.app

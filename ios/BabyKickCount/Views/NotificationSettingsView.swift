@@ -289,25 +289,3 @@ struct WeekdayPicker: View {
         .accessibilityAddTraits(isOn ? [.isButton, .isSelected] : [.isButton])
     }
 }
-
-/// The artwork the notification attachment is rendered from, reused here so
-/// the screen and the banner are visibly the same object.
-struct NotificationArtView: View {
-    let kind: NotificationArtKind
-
-    var body: some View {
-        ZStack {
-            RoundedRectangle(cornerRadius: 28, style: .continuous)
-                .fill(Theme.tapPadGradient)
-
-            Circle()
-                .fill(Color.white.opacity(0.10))
-                .padding(18)
-
-            Image(systemName: kind == .heart ? "heart.fill" : "clock.fill")
-                .font(.system(size: 46, weight: .medium))
-                .foregroundStyle(.white)
-        }
-        .shadow(color: Theme.primary.opacity(0.30), radius: 18, x: 0, y: 6)
-    }
-}

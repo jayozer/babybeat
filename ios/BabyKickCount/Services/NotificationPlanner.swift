@@ -13,6 +13,12 @@ enum NotificationCategory {
     static let quiet = "LT_QUIET"
 }
 
+enum NotificationAction {
+    static let startCounting = "LT_START_COUNTING"
+    static let snooze = "LT_SNOOZE"
+    static let open = "LT_OPEN"
+}
+
 enum NotificationThread {
     static let reminders = "lt.reminders"
     static let session = "lt.session"
