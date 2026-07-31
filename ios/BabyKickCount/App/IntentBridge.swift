@@ -17,5 +17,13 @@ enum IntentBridge {
     static func register(_ viewModel: SessionViewModel) {
         guard session == nil else { return }
         session = viewModel
+
+        // Shared intents (the Live Activity's "+1") reach the app through a
+        // closure rather than a direct reference, so the widget extension can
+        // compile the same declaration without dragging in the session layer.
+        LiveActivityIntentHandlers.logTap = { [weak viewModel] in
+            guard let viewModel else { throw LiveActivityIntentError.unavailable }
+            viewModel.tap()
+        }
     }
 }

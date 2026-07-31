@@ -26,7 +26,10 @@ final class SessionViewModel: ObservableObject {
         }
         // Covers a relaunch mid-session: the window kept running while the app
         // was gone, so whatever was scheduled needs recomputing against now.
-        syncNotifications()
+        // A Live Activity outlives the process, so reattach to it rather than
+        // starting a second one alongside it.
+        LiveActivityController.adopt(matching: session.map(SessionSnapshot.init))
+        syncSessionSurfaces()
     }
 
     /// The ticking loop is otherwise only stopped by `stopTicking()`. The view
@@ -66,7 +69,7 @@ final class SessionViewModel: ObservableObject {
                 try SessionStateMachine.start(target)
                 startTicking()
                 session = target
-                syncNotifications()
+                syncSessionSurfaces()
             }
             guard target.status == .active else { return }
             try store.registerKick(in: target)
@@ -75,11 +78,12 @@ final class SessionViewModel: ObservableObject {
                 vibrationEnabled: preferences.preferences.vibrationEnabled
             )
             session = target
+            syncLiveActivity()
             if SessionStateMachine.shouldAutoComplete(target) {
                 try SessionStateMachine.complete(target)
                 try store.save()
                 stopTicking()
-                syncNotifications()
+                syncSessionSurfaces()
             }
         } catch {
             errorMessage = error.localizedDescription
@@ -102,7 +106,7 @@ final class SessionViewModel: ObservableObject {
             try store.save()
             startTicking()
             session = target
-            syncNotifications()
+            syncSessionSurfaces()
         } catch {
             errorMessage = error.localizedDescription
         }
@@ -112,6 +116,7 @@ final class SessionViewModel: ObservableObject {
         guard let session else { return }
         do {
             try store.undoLastKick(in: session)
+            syncLiveActivity()
         } catch {
             errorMessage = error.localizedDescription
         }
@@ -124,7 +129,7 @@ final class SessionViewModel: ObservableObject {
             try store.save()
             // A paused window has no meaningful countdown, so drop the
             // pending requests rather than let them fire against frozen time.
-            syncNotifications()
+            syncSessionSurfaces()
         } catch {
             errorMessage = error.localizedDescription
         }
@@ -135,7 +140,7 @@ final class SessionViewModel: ObservableObject {
         do {
             try SessionStateMachine.resume(session)
             try store.save()
-            syncNotifications()
+            syncSessionSurfaces()
         } catch {
             errorMessage = error.localizedDescription
         }
@@ -147,7 +152,7 @@ final class SessionViewModel: ObservableObject {
             try SessionStateMachine.endEarly(session)
             try store.save()
             stopTicking()
-            syncNotifications()
+            syncSessionSurfaces()
         } catch {
             errorMessage = error.localizedDescription
         }
@@ -208,22 +213,27 @@ final class SessionViewModel: ObservableObject {
                 try SessionStateMachine.timeout(session)
                 try store.save()
                 stopTicking()
-                syncNotifications()
+                syncSessionSurfaces()
             } catch {
                 errorMessage = error.localizedDescription
             }
         }
     }
 
-    // MARK: - Notifications
+    // MARK: - Background surfaces
 
+    /// Brings the two surfaces that outlive the foreground — scheduled
+    /// notifications and the Live Activity — in line with the current session.
+    ///
     /// Fire-and-forget by design. This runs on the tap path, which already
     /// does a SwiftData save, so it must never block the UI.
     ///
-    /// The live tap count deliberately is *not* a trigger for this — the
-    /// count only appears in the end-of-window body, and that gets refreshed
-    /// when the app is backgrounded, which is the only time it matters.
-    func syncNotifications() {
+    /// The live tap count deliberately does *not* trigger a notification
+    /// reschedule — it only appears in the end-of-window body, which is
+    /// refreshed when the app is backgrounded, the only time it matters. The
+    /// Live Activity does want it, so `syncLiveActivity()` is called on its
+    /// own from the tap path.
+    func syncSessionSurfaces() {
         let snapshot = session.map(SessionSnapshot.init)
         let lastEnded = try? store.lastSessionEndedAt()
         let notificationPrefs = preferences.preferences.notifications
@@ -234,6 +244,13 @@ final class SessionViewModel: ObservableObject {
                 lastSessionEndedAt: lastEnded
             )
         }
+        LiveActivityController.sync(with: snapshot)
+    }
+
+    /// Cheap enough to run per tap: it hands a value type to the system and
+    /// never touches the store.
+    func syncLiveActivity() {
+        LiveActivityController.sync(with: session.map(SessionSnapshot.init))
     }
 
     // MARK: - Wake lock

@@ -347,6 +347,24 @@ cat <<'EOF'
     [ ] .timeSensitive breakthrough: enable a Focus, confirm the end-of-window
         alert still arrives while the daily reminder does not.
 
+  Live Activity and Dynamic Island (needs a device with a Dynamic Island for
+  the second half):
+    [ ] Start a session -> the Live Activity appears on the Lock Screen with
+        the count, a countdown, and a progress bar.
+    [ ] Leave it for a few minutes without opening the app. The countdown must
+        keep ticking on its own -- nothing of ours pushes per-second updates,
+        so a frozen timer means the Text(timerInterval:) was replaced with a
+        static string.
+    [ ] Tap "+" on the Lock Screen without unlocking -> the count goes up, and
+        the movement is in History when you next open the app.
+    [ ] Pause -> the activity shows "Paused" and the + button disables.
+    [ ] Complete, time out, end early, and force-quit: in all four the activity
+        must disappear, not linger.
+    [ ] Force-quit mid-session and relaunch -> exactly one activity, the
+        original, still updating. Two means adopt() did not match.
+    [ ] Turn Live Activities off in iOS Settings -> counting still works
+        normally with no activity and no error.
+
   Siri and Shortcuts:
     [ ] "Hey Siri, log a tap in Littletaps" with the app force-quit. It should
         answer with the running count WITHOUT bringing the app forward, and

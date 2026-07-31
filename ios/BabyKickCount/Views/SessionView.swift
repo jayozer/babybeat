@@ -85,7 +85,7 @@ struct SessionView: View {
             // time and tap count into the pending requests; returning is when
             // permission may have changed in Settings.
             guard phase == .background || phase == .active else { return }
-            viewModel.syncNotifications()
+            viewModel.syncSessionSurfaces()
         }
         .onChange(of: viewModel.session?.status) { _, newStatus in
             guard let newStatus, newStatus.isTerminal,

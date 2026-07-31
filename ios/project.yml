@@ -22,6 +22,8 @@ targets:
           - Info.plist
           # Generated below; must not also be copied into the bundle.
           - BabyKickCount.entitlements
+      # Compiled into both the app and the widget extension.
+      - path: Shared
     info:
       path: BabyKickCount/Info.plist
       properties:
@@ -36,6 +38,7 @@ targets:
         UIApplicationSceneManifest:
           UIApplicationSupportsMultipleScenes: false
         ITSAppUsesNonExemptEncryption: false
+        NSSupportsLiveActivities: true
     entitlements:
       path: BabyKickCount/BabyKickCount.entitlements
       properties:
@@ -44,6 +47,9 @@ targets:
         # the first archive after adding it needs the provisioning profile
         # regenerating (or -allowProvisioningUpdates).
         com.apple.developer.usernotifications.time-sensitive: true
+    dependencies:
+      # Embeds the widget extension that renders the Live Activity.
+      - target: LittletapsWidgets
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.babykickcount.app
@@ -54,6 +60,40 @@ targets:
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
         ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
         GENERATE_INFOPLIST_FILE: NO
+
+  # Renders the session Live Activity and nothing else. Deliberately no Home or
+  # Lock Screen widgets: those read from a timeline provider running in this
+  # process, which would require moving the SwiftData store into an App Group
+  # and migrating every existing user's data. A Live Activity is handed its
+  # state by value, so it needs none of that.
+  LittletapsWidgets:
+    type: app-extension
+    platform: iOS
+    sources:
+      - path: LittletapsWidgets
+        excludes:
+          - Info.plist
+      - path: Shared
+      # Shared so the Live Activity is drawn from the same palette as the app.
+      # A local package would be the answer if a second extension ever appears;
+      # for one file it would be pure ceremony.
+      - path: BabyKickCount/DesignSystem/Theme.swift
+    info:
+      path: LittletapsWidgets/Info.plist
+      properties:
+        CFBundleDisplayName: Littletaps
+        CFBundleShortVersionString: $(MARKETING_VERSION)
+        CFBundleVersion: $(CURRENT_PROJECT_VERSION)
+        NSExtension:
+          NSExtensionPointIdentifier: com.apple.widgetkit-extension
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.babykickcount.app.widgets
+        DEVELOPMENT_TEAM: 72D6H97SLU
+        CODE_SIGN_STYLE: Automatic
+        TARGETED_DEVICE_FAMILY: "1"
+        GENERATE_INFOPLIST_FILE: NO
+        SKIP_INSTALL: YES
 
   BabyKickCountTests:
     type: bundle.unit-test
@@ -85,6 +125,7 @@ schemes:
     build:
       targets:
         BabyKickCount: all
+        LittletapsWidgets: all
         BabyKickCountTests: [test]
         BabyKickCountUITests: [test]
     test:
