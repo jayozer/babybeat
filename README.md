@@ -13,15 +13,26 @@ build now lives entirely in [`ios/`](ios/).
 - Calendar-based history and session review
 - CSV export through the native iOS share sheet
 - First-run onboarding, settings, and educational safety guidance
-- On-device data only: no sign-in, analytics, backend, or network layer
+- Optional local reminders: a daily nudge, an alert when a 2-hour window is
+  ending or up, and a gentle check-in after a quiet spell — all off by default
+- Siri, Shortcuts, Spotlight and Action button support via App Intents
+- A Live Activity with a live count and countdown, and a "+1" button in the
+  Dynamic Island that logs a movement without unlocking
+- On-device data only: no sign-in, analytics, backend, or network layer.
+  Notifications are scheduled locally; there is no push token and no server.
 
 ## Development
 
 Requirements:
 
-- Xcode 15 or later
-- iOS 17.0 or later
+- Xcode 26 or later
+- iOS 26.0 or later
 - [XcodeGen](https://github.com/yonaskolb/XcodeGen)
+
+Building against the iOS 26 SDK applies Liquid Glass to system chrome — the
+tab bar, `Form` sections, navigation bars and sheets — automatically. The app
+does not set `UIDesignRequiresCompatibility`: Apple describes that key as a
+temporary aid slated for removal, so opting out would only defer the work.
 
 Generate and open the Xcode project:
 

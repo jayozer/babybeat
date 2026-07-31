@@ -391,6 +391,19 @@ cat <<'EOF'
         Note: scrolling in the Simulator needs a click-drag; the mouse wheel
         does nothing, which makes content look clipped when it merely scrolls.
 
+  Liquid Glass. The app is built against the iOS 26 SDK, so system chrome
+  restyles itself and this needs eyes on it once:
+    [ ] Tab bar: the three tabs against Theme.background, with Theme.primary
+        as the tint. Check the selected state is still legible.
+    [ ] Settings and Reminders: Form sections over the gradient, with
+        scrollContentBackground(.hidden). If the grouped background now reads
+        heavier than softCard() elsewhere, that is the thing to retune.
+    [ ] Navigation bars and the summary sheet.
+    [ ] softCard()'s .ultraThinMaterial next to the new chrome -- it should
+        read as the same family, not as a leftover.
+    [ ] Then re-run ios/Scripts/capture-screenshots.sh; the App Store shots
+        predate the restyle.
+
   Then, on the App Store Connect side (see TODO.md for the click paths):
     [ ] Upload app_store_screenshots/iphone_6_9/* to the 6.9-inch slot.
     [ ] Answer "No" to Regulated Medical Device.
