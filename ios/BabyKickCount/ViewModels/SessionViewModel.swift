@@ -167,6 +167,12 @@ final class SessionViewModel: ObservableObject {
 
     func dismissError() { errorMessage = nil }
 
+    /// Finished sessions, newest first. Exists so `SessionEntityQuery` can
+    /// read history without a second `SessionStore` on a second context.
+    func finishedSessions() throws -> [KickSession] {
+        try store.allSessions().filter { $0.status.isTerminal }
+    }
+
     // MARK: - Private
 
     private func ensureSession() throws -> KickSession {

@@ -128,10 +128,10 @@ else
   tail -30 "$OUT/build.log"
 fi
 
-# appintentsmetadataprocessor logs this on every build of an app that does not
-# link AppIntents.framework. It is toolchain noise rather than a code warning,
-# and the only way to silence it is to add a framework the app has no use for.
-# Listed explicitly so real warnings are never hidden by a blanket filter.
+# appintentsmetadataprocessor logged this on every build back when the app did
+# not link AppIntents.framework. It does now, so this should no longer appear —
+# the pattern is kept so an older log still reads correctly, and because
+# dropping it would mean a blanket filter that could hide real warnings.
 BENIGN_WARNINGS='No AppIntents.framework dependency found'
 
 if grep "warning:" "$OUT/build.log" | grep -qv "$BENIGN_WARNINGS"; then
@@ -346,6 +346,17 @@ cat <<'EOF'
   Needs a real device, not the Simulator:
     [ ] .timeSensitive breakthrough: enable a Focus, confirm the end-of-window
         alert still arrives while the daily reminder does not.
+
+  Siri and Shortcuts:
+    [ ] "Hey Siri, log a tap in Littletaps" with the app force-quit. It should
+        answer with the running count WITHOUT bringing the app forward, and
+        the movement should appear in History when you next open it.
+    [ ] "Hey Siri, how many taps in Littletaps" during a session -> spoken
+        count plus the sage snippet card.
+    [ ] Shortcuts app -> Littletaps: all four actions listed, and "Taps so far"
+        returns a number that can be piped into another action.
+    [ ] Spotlight: type "log a tap" and confirm the shortcut is offered.
+    [ ] Action button (iPhone 15 Pro and later): assign "Log a tap" and press.
 
   Accessibility is now covered by BabyKickCountUITests, which runs above. It
   asserts the labels VoiceOver reads out (calendar days, stars, the history
