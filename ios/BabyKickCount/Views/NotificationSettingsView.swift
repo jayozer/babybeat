@@ -9,6 +9,7 @@ import UserNotifications
 struct NotificationSettingsView: View {
     @EnvironmentObject private var preferences: PreferencesStore
     @EnvironmentObject private var notifications: NotificationService
+    @EnvironmentObject private var sessionViewModel: SessionViewModel
     @Environment(\.scenePhase) private var scenePhase
 
     @State private var testSent = false
@@ -42,6 +43,13 @@ struct NotificationSettingsView: View {
             // Self-heals when the user comes back from the Settings app.
             guard phase == .active else { return }
             Task { await notifications.refreshAuthorizationStatus() }
+        }
+        .onChange(of: preferences.preferences.notifications) { _, _ in
+            // Session transitions and backgrounding reconcile on their own;
+            // this screen is the only place the plan itself changes. Without
+            // it, a daily reminder enabled for later today schedules nothing
+            // until some unrelated event — and misses today entirely.
+            sessionViewModel.syncSessionSurfaces()
         }
     }
 

@@ -13,6 +13,20 @@ final class NotificationService: ObservableObject {
 
     @Published private(set) var authorizationStatus: UNAuthorizationStatus = .notDetermined
 
+    /// One-shot requests the user asked for directly, as opposed to plan
+    /// output. `reconcile` must never treat these as stale: the planner will
+    /// never re-emit their IDs, so without the exemption any reconcile within
+    /// the snooze hour cancels a reminder the user explicitly requested.
+    static let snoozeID = "\(NotificationPlanner.idPrefix)daily.snooze"
+    static let testID = "\(NotificationPlanner.idPrefix)test"
+    private static let oneShotIDs: Set<String> = [snoozeID, testID]
+
+    /// Bumped at the start of every `reconcile`. Each run bails at its next
+    /// suspension point once a newer run exists, so rapid session transitions
+    /// (pause, then resume) cannot interleave and leave the pending requests
+    /// describing the older snapshot.
+    private var reconcileGeneration = 0
+
     private let center: UNUserNotificationCenter
 
     init(center: UNUserNotificationCenter = .current()) {
@@ -85,7 +99,7 @@ final class NotificationService: ObservableObject {
         attachArt(.heart, to: content)
 
         let request = UNNotificationRequest(
-            identifier: "\(NotificationPlanner.idPrefix)daily.snooze",
+            identifier: Self.snoozeID,
             content: content,
             trigger: UNTimeIntervalNotificationTrigger(timeInterval: 3600, repeats: false)
         )
@@ -123,11 +137,15 @@ final class NotificationService: ObservableObject {
         lastSessionEndedAt: Date?,
         now: Date = .now
     ) async {
+        reconcileGeneration += 1
+        let generation = reconcileGeneration
+
         // Always re-read first. At launch the cached status is still
         // `.notDetermined`, and reconciling against that would plan nothing
         // and so delete every request we had legitimately scheduled. It also
         // picks up permission the user revoked in Settings while we were gone.
         await refreshAuthorizationStatus()
+        guard generation == reconcileGeneration else { return }
 
         let planned = NotificationPlanner.plan(
             preferences: preferences,
@@ -140,9 +158,12 @@ final class NotificationService: ObservableObject {
         let ours = await center.pendingNotificationRequests()
             .map(\.identifier)
             .filter { $0.hasPrefix(NotificationPlanner.idPrefix) }
+        guard generation == reconcileGeneration else { return }
 
         let plannedIDs = planned.map(\.id)
-        let stale = Set(ours).subtracting(plannedIDs)
+        let stale = Set(ours)
+            .subtracting(plannedIDs)
+            .subtracting(Self.oneShotIDs)
         if !stale.isEmpty {
             center.removePendingNotificationRequests(withIdentifiers: Array(stale))
         }
@@ -155,6 +176,7 @@ final class NotificationService: ObservableObject {
         // restart from now anyway.
         center.removePendingNotificationRequests(withIdentifiers: plannedIDs)
         for item in planned {
+            guard generation == reconcileGeneration else { return }
             try? await center.add(request(for: item))
         }
     }
@@ -180,7 +202,7 @@ final class NotificationService: ObservableObject {
         attachArt(.heart, to: content)
 
         let request = UNNotificationRequest(
-            identifier: "\(NotificationPlanner.idPrefix)test",
+            identifier: Self.testID,
             content: content,
             trigger: UNTimeIntervalNotificationTrigger(timeInterval: 5, repeats: false)
         )
