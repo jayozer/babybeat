@@ -3,6 +3,7 @@ import SwiftData
 
 struct SessionView: View {
     @EnvironmentObject private var preferences: PreferencesStore
+    @ObservedObject private var sync = PhoneSyncService.shared
     @StateObject private var viewModel: SessionViewModel
 
     @State private var showSummary = false
@@ -10,7 +11,19 @@ struct SessionView: View {
 
     init(context: ModelContext, preferences: PreferencesStore) {
         let store = SessionStore(context: context)
-        _viewModel = StateObject(wrappedValue: SessionViewModel(store: store, preferences: preferences))
+        let viewModel = SessionViewModel(
+            store: store,
+            preferences: preferences,
+            feedback: FeedbackService.shared,
+            onMutation: { PhoneSyncService.shared.handle(mutation: $0) }
+        )
+        _viewModel = StateObject(wrappedValue: viewModel)
+    }
+
+    /// Starting a second session here while the watch is reachable and
+    /// counting would double-count; existing sessions are unaffected.
+    private var blockedByWatch: Bool {
+        sync.counterpartHasActiveSession && viewModel.session == nil
     }
 
     var body: some View {
@@ -25,6 +38,10 @@ struct SessionView: View {
                         errorBanner(error)
                     }
 
+                    if blockedByWatch {
+                        watchSessionBanner
+                    }
+
                     CountDisplay(currentCount: viewModel.kickCount, targetCount: viewModel.targetCount)
 
                     TimerDisplay(
@@ -34,7 +51,7 @@ struct SessionView: View {
                         isIdle: viewModel.session == nil
                     )
 
-                    TapPad(disabled: viewModel.isPaused || viewModel.isFinished) {
+                    TapPad(disabled: viewModel.isPaused || viewModel.isFinished || blockedByWatch) {
                         viewModel.tap()
                     }
 
@@ -108,6 +125,19 @@ struct SessionView: View {
                 .font(.footnote)
                 .foregroundStyle(Theme.inkFaint)
         }
+    }
+
+    private var watchSessionBanner: some View {
+        HStack {
+            Image(systemName: "applewatch")
+                .foregroundStyle(Theme.primary)
+            Text("A session is in progress on your Apple Watch.")
+                .font(.footnote)
+                .foregroundStyle(Theme.ink)
+            Spacer()
+        }
+        .padding(12)
+        .background(Theme.surface, in: RoundedRectangle(cornerRadius: 14, style: .continuous))
     }
 
     private func errorBanner(_ message: String) -> some View {
