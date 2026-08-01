@@ -85,6 +85,23 @@ final class WatchSyncService: NSObject, ObservableObject {
             return
         }
         counterpartSnapshot = snapshot
+        adoptPhoneDefaults(from: snapshot)
+    }
+
+    /// The iPhone is the settings authority and the watch has no settings UI
+    /// for these, so a watch-started session honors whatever target count and
+    /// time limit the user configured on the phone.
+    private func adoptPhoneDefaults(from snapshot: SnapshotDTO) {
+        guard let preferences else { return }
+        let current = preferences.preferences
+        guard current.defaultTargetCount != snapshot.defaultTargetCount
+                || current.defaultTimeLimitSec != snapshot.defaultTimeLimitSec else {
+            return
+        }
+        preferences.update {
+            $0.defaultTargetCount = snapshot.defaultTargetCount
+            $0.defaultTimeLimitSec = snapshot.defaultTimeLimitSec
+        }
     }
 
     private func receive(durable dictionary: [String: Any]) {

@@ -143,7 +143,11 @@ final class SyncIngestor {
             context.delete(event)
         }
         if let session {
-            recomputeKicks(for: session, fallbackCount: nil)
+            // Relationship fix-up for a pending delete is only guaranteed at
+            // save time, so `session.events` may still contain the deleted
+            // event here — exclude it explicitly instead of trusting timing.
+            let surviving = session.events.filter { $0.id != dto.eventID }
+            session.kickCount = SessionMerge.renumber(surviving)
         }
         try context.save()
     }

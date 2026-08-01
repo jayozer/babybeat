@@ -200,9 +200,12 @@ struct CommandDTO: Codable, Equatable {
 
 // MARK: - Snapshot staleness guard
 
-/// WatchConnectivity can replay an application context after relaunch, so
+/// Guards against out-of-order snapshot delivery within a process lifetime:
 /// snapshots carry a per-device sequence number and this gate drops anything
-/// not strictly newer than what has already been seen from that device.
+/// not strictly newer than what has already been seen from that device. The
+/// gate is deliberately not persisted — after a relaunch the system replays
+/// the counterpart's *latest* application context, which is exactly the state
+/// a fresh gate should admit.
 struct SnapshotGate {
     private var lastSeq: [SyncDevice: UInt64] = [:]
 

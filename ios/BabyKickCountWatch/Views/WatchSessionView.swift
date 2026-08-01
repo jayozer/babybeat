@@ -17,14 +17,15 @@ struct WatchSessionView: View {
     @State private var selectedPage = Page.tap.rawValue
 
     init(context: ModelContext, preferences: PreferencesStore) {
-        let store = SessionStore(context: context)
-        let viewModel = SessionViewModel(
-            store: store,
+        // Everything stays inside the autoclosure so re-renders of the parent
+        // never construct a throwaway view model (which would fetch the
+        // active session and briefly start a ticking task).
+        _viewModel = StateObject(wrappedValue: SessionViewModel(
+            store: SessionStore(context: context),
             preferences: preferences,
             feedback: WatchFeedbackService.shared,
             onMutation: { WatchSyncService.shared.handle(mutation: $0) }
-        )
-        _viewModel = StateObject(wrappedValue: viewModel)
+        ))
     }
 
     var body: some View {

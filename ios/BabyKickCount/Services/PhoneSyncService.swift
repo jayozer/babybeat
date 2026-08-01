@@ -1,3 +1,4 @@
+import Combine
 import Foundation
 import SwiftData
 import WatchConnectivity
@@ -24,6 +25,7 @@ final class PhoneSyncService: NSObject, ObservableObject {
 
     private var container: ModelContainer?
     private var preferences: PreferencesStore?
+    private var preferencesObserver: AnyCancellable?
     private var gate = SnapshotGate()
     private static let seqKey = "BabyKickCount.sync.snapshotSeq"
 
@@ -34,6 +36,13 @@ final class PhoneSyncService: NSObject, ObservableObject {
     func configure(container: ModelContainer, preferences: PreferencesStore) {
         self.container = container
         self.preferences = preferences
+        // Session defaults ride in every snapshot and the watch adopts them,
+        // so a Settings change here must publish without waiting for the
+        // next session event. The hop to the next runloop pass lets the
+        // change land before the snapshot is built.
+        preferencesObserver = preferences.objectWillChange
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] _ in self?.publishSnapshot() }
     }
 
     func activate() {
