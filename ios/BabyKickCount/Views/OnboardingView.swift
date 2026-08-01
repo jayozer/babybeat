@@ -19,7 +19,7 @@ struct OnboardingView: View {
         Page(
             icon: "clock.fill",
             title: "2-hour session",
-            body: "Each session runs up to 2 hours. Pause or end anytime. Your data stays on this device."
+            body: "Each session runs up to 2 hours. Pause or end anytime. Your data stays on your devices."
         ),
         // Last, so it is the final thing read before the app opens. App Review
         // has asked pregnancy and fetal-movement apps for a prominent

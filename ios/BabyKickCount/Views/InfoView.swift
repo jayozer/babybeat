@@ -11,7 +11,7 @@ struct InfoView: View {
 
                 section(
                     title: "Using Littletaps",
-                    body: "Tap the heart whenever you feel a movement. The timer starts at the first tap and runs for up to 2 hours. Pause, undo, or end anytime. Your data stays on your device."
+                    body: "Tap the heart whenever you feel a movement. The timer starts at the first tap and runs for up to 2 hours. Pause, undo, or end anytime. Your data stays on your devices — sessions counted on Apple Watch sync directly to this iPhone, never through a server."
                 )
 
                 section(

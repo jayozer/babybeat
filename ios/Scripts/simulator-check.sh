@@ -98,7 +98,7 @@ if xcodebuild test \
     -project "$PROJECT" -scheme "$SCHEME" -only-testing:BabyKickCountTests \
     -destination "id=$UDID" -derivedDataPath "$DERIVED" \
     > "$OUT/test.log" 2>&1; then
-  pass "SessionStateMachine and ExportService tests passed"
+  pass "unit tests passed (state machine, export, sync engine)"
 else
   fail "unit tests failed — see $OUT/test.log"
   tail -30 "$OUT/test.log"
@@ -141,8 +141,22 @@ else
   pass "no build warnings (known toolchain noise ignored)"
 fi
 
-APP="$(find "$DERIVED/Build/Products" -name "*.app" -maxdepth 3 | grep -i release | head -1 || true)"
-[[ -n "$APP" ]] || APP="$(find "$DERIVED/Build/Products" -name "*.app" -maxdepth 3 | head -1)"
+APP="$(find "$DERIVED/Build/Products" -name "*.app" -maxdepth 3 ! -path "*/Watch/*" | grep -i release | head -1 || true)"
+[[ -n "$APP" ]] || APP="$(find "$DERIVED/Build/Products" -name "*.app" -maxdepth 3 ! -path "*/Watch/*" | head -1)"
+
+# --- 4b. Watch app build ------------------------------------------------------
+
+step "Watch app build"
+
+if xcodebuild build \
+    -project "$PROJECT" -scheme "BabyKickCountWatch" -configuration Release \
+    -destination 'generic/platform=watchOS Simulator' -derivedDataPath "$DERIVED" \
+    > "$OUT/watch-build.log" 2>&1; then
+  pass "watch app builds for the watchOS simulator with no errors"
+else
+  fail "watch app build failed — see $OUT/watch-build.log"
+  tail -30 "$OUT/watch-build.log"
+fi
 
 # --- 5. Bundle checks --------------------------------------------------------
 
@@ -167,6 +181,17 @@ read_plist() { /usr/libexec/PlistBuddy -c "Print :$1" "$PLIST" 2>/dev/null || ec
 [[ -f "$APP/PrivacyInfo.xcprivacy" ]] \
   && pass "PrivacyInfo.xcprivacy is bundled" \
   || fail "PrivacyInfo.xcprivacy is NOT in the built app — Apple will reject the upload"
+
+# The watch app rides inside the iOS bundle; each app needs its own manifest.
+WATCH_APP="$APP/Watch/BabyKickCountWatch.app"
+if [[ -d "$WATCH_APP" ]]; then
+  pass "watch app is embedded at Watch/BabyKickCountWatch.app"
+  [[ -f "$WATCH_APP/PrivacyInfo.xcprivacy" ]] \
+    && pass "watch PrivacyInfo.xcprivacy is bundled" \
+    || fail "watch PrivacyInfo.xcprivacy is NOT in the embedded watch app"
+else
+  warn "no embedded watch app in the iOS bundle — re-run xcodegen generate and rebuild if the watch target was just added"
+fi
 
 # App icon must be 1024x1024 with no alpha channel.
 ICON_SRC="$REPO_ROOT/ios/BabyKickCount/Resources/Assets.xcassets/AppIcon.appiconset/AppIcon-1024.png"

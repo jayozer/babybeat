@@ -144,10 +144,25 @@ Sign in at appstoreconnect.apple.com, **My Apps** -> **Littletaps - Baby Kick Co
 - [ ] Consider localization readiness if launching outside English-first regions.
 - [ ] Consider legal review of the privacy policy, terms, and medical disclaimer before global release.
 
+## Apple Watch Companion (target: v1.1, after the iPhone app is approved)
+
+Phase 0 (shared sync engine, feedback seam) and phase 1 (standalone watch
+counting, durable watch->phone sync over WatchConnectivity) are implemented.
+Before submitting a build that includes the watch app:
+
+- [ ] Run `xcodegen generate` on a Mac and verify the regenerated project embeds `BabyKickCountWatch.app` under the iOS app's Watch directory, and that automatic signing mints a profile for `com.babykickcount.app.watchkitapp`.
+- [ ] Validate the durable sync path (`transferUserInfo`) on paired hardware — it is historically unreliable on simulators. Count a session on the watch with the iPhone app killed, then open the iPhone app and confirm the session lands in History with the right kick count and ordinals.
+- [ ] The watch app icon currently reuses `AppIcon-1024.png`; watch icons are masked to a circle, so verify the heart survives the crop or export a circular-safe variant.
+- [ ] Capture watch screenshots for the new required App Store Connect slot (verify the current required size at submission time).
+- [ ] Known phase 1 limitation to document in release notes/review notes: sessions started on both devices while disconnected appear as two history entries; the phase 2 mirror adds the deterministic merge (`SessionMerge` is already implemented and unit-tested, but not yet wired to delete records).
+- [ ] Phase 2 (bidirectional mirror: live kick mirroring, remote pause/end, overlap merge), phase 3 (complication/Smart Stack widget — needs a device-local App Group, the app's first entitlement), and phase 4 (local-only reminder notifications — the app's first permission prompt) per the design plan.
+
 ## App Review Notes Draft
 
 ```text
 Littletaps is a native iPhone wellness logging app for counting fetal movements. It does not require an account, does not use a backend, does not collect analytics, does not use HealthKit, and does not include purchases or subscriptions.
+
+The build includes a watchOS companion app for counting sessions from the wrist. Session data syncs only between the user's own paired iPhone and Apple Watch via WatchConnectivity — there is still no account, no network access, no server, and no HealthKit.
 
 To test:
 1. Launch the app and complete onboarding.
