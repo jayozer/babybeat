@@ -7,27 +7,50 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0BEF590DC79E9728746CBF2F /* KickSessionLiveActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4594D3112B393CF4D17C798B /* KickSessionLiveActivity.swift */; };
+		0C7016C7CE6483BB940FE188 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = A260E42BBEFD822A644555E6 /* Theme.swift */; };
 		0F9052BE3DA0D22FCCD2DD49 /* UITestSupport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60EAABD89B61FD38C7C93667 /* UITestSupport.swift */; };
+		14ADD807CB81153AE635FC8E /* SessionSnapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED947077223AF1A981C17D94 /* SessionSnapshot.swift */; };
+		1BEE7FC8E412D475250AB82E /* StartSessionIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F8763C0883283FB1980A46D /* StartSessionIntent.swift */; };
 		1C53E03228346FD9A8009192 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D99FAEE5CBB9FF65BC91ADC /* OnboardingView.swift */; };
+		212016D6F3C7CE9B2D26729C /* LiveActivityController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 575678F0C9F304BB2DFBEE4D /* LiveActivityController.swift */; };
 		2C35089F565CFCC1ABFBB3F9 /* InfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8584E90F1E5B5D1D22B0F188 /* InfoView.swift */; };
+		2DE4FBE84D8AB2B3584AA23E /* IntentBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35BBB5D71751FA8BD5532A71 /* IntentBridge.swift */; };
+		34D4B4955FE4E5956DC4D0DB /* NotificationPlannerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AC7090FD5439E900FB8ABC9 /* NotificationPlannerTests.swift */; };
 		39DC051D26C06030BB0A5C8E /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = D18A6B89C5EFB393EE89A862 /* PrivacyInfo.xcprivacy */; };
 		3A39C36960C863BA750D24E0 /* SessionStateMachineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E1C82AE89ED04A7C5B709AF /* SessionStateMachineTests.swift */; };
+		3DD42B38A705BE286182737D /* LittletapsWidgetsBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B63424ED9968B6DB19FCB13 /* LittletapsWidgetsBundle.swift */; };
 		3F71605CBC8133246B9F00C4 /* MedicalDisclaimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DF8EB7583FA5D965CC22DFE /* MedicalDisclaimer.swift */; };
 		405C116A2EDE1EF178A37632 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = A260E42BBEFD822A644555E6 /* Theme.swift */; };
+		41B3B82109771DE108A90C4B /* KickSessionAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = C47CE0BF890323C6D4EE07E5 /* KickSessionAttributes.swift */; };
 		43196D700166D1EC8BAD1A92 /* AppURLs.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0DFDAB990F9BD76744113D5 /* AppURLs.swift */; };
 		440ACDCC5C17775151ED6F50 /* ExportServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0C4BC9612C9C5590536116C /* ExportServiceTests.swift */; };
+		45AC81A736579D56AE251FE8 /* LogTapIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1416BCD030D33680B27090E /* LogTapIntent.swift */; };
+		5350B24B21E893A7AAF55E8A /* NotificationPlanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B535ABD488CA41A44064A4F /* NotificationPlanner.swift */; };
+		5850E68772C41189BE76F6C4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C994A1326BF4927649625317 /* AppDelegate.swift */; };
 		600C8984F09C9C3FA4785868 /* SessionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E281FE34E2CB50C3440E0AD7 /* SessionView.swift */; };
+		60BF748521BA72BEB05D92A4 /* KickSessionAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = C47CE0BF890323C6D4EE07E5 /* KickSessionAttributes.swift */; };
 		670A2F71B8C317417DD52376 /* FeedbackService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4291CD0CA059C978BC397BAA /* FeedbackService.swift */; };
+		7838B36BF750043CA3EC4815 /* NotificationPreferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 786F2CA9365A3D95100D93CD /* NotificationPreferences.swift */; };
 		7996F44232278F2DAB550732 /* SessionSummarySheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = D431564CCF08305CBE651133 /* SessionSummarySheet.swift */; };
+		7B260694E627CE1D556728B7 /* NotificationArtRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 680675F91F9C6E4CF4342531 /* NotificationArtRenderer.swift */; };
+		816AEED5DC744C8BD8AEEA9B /* LittletapsShortcuts.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50A1CE8B138EADFE1092CD2 /* LittletapsShortcuts.swift */; };
 		8187F4F0D64B4D0DA6DED12D /* ExportService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD8B3BEEBC7D7A2C38B93A5D /* ExportService.swift */; };
+		8B0DCBA8993926D1AA7B3339 /* SessionEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = A66BCFE89C85D09D5DCDB1C4 /* SessionEntity.swift */; };
 		97270661D071DF3F084D64DA /* TimerDisplay.swift in Sources */ = {isa = PBXBuildFile; fileRef = E36D2CA0E094063DE16F4257 /* TimerDisplay.swift */; };
 		97EC4DA56295AA5E5DD3CBF9 /* KickSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9BD218D6A2CE3645FBEF6C1 /* KickSession.swift */; };
 		98277520BD6C9531C26E53F6 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12655E16A02246BC06995E80 /* SettingsView.swift */; };
+		9A258E486C8EB073E77F1BF9 /* NotificationArtView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D1E71DD916EED5E11AF4484 /* NotificationArtView.swift */; };
+		9AEE364E22204AF21CF9939B /* NotificationSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E97E4DCEDC7F01A22F47A739 /* NotificationSettingsView.swift */; };
+		AA78776A10AB1DC96054F969 /* LogTapIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1416BCD030D33680B27090E /* LogTapIntent.swift */; };
 		AD359E6132E50F16EED59572 /* TapPad.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DD00789F2E0B93242BEDBB5 /* TapPad.swift */; };
 		B0E854F7A8EF6FFD21E61CD0 /* KickEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9D4EA5AD8C2AA01DB25B19B /* KickEvent.swift */; };
 		B1324D1BDA7F145BFF9DD4EF /* MedicalDisclaimerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B508846E66261E2164E4F7 /* MedicalDisclaimerTests.swift */; };
+		B6A80F106CCF91F400663790 /* LogKickIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5717305373892C218E740AE5 /* LogKickIntent.swift */; };
 		BCA5662A5588E820B18331D5 /* UserPreferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = B448BB032754547ECCA60BC3 /* UserPreferences.swift */; };
+		BDB95ADEF060579710DAE0A0 /* LittletapsWidgets.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 81B45A0ACF313652A4A98C09 /* LittletapsWidgets.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		BE47DAA435AAAD611157B656 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAB68889B4973F56FCE77D5E /* RootView.swift */; };
+		C15C93BEF1A52CFAF0B8118A /* ReminderPrimerCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1FAE03BBAA82CEA168316D3 /* ReminderPrimerCard.swift */; };
 		C97BA0A5BB1F24509D9C7B69 /* ScreenshotCaptureTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D2CE80922A94459A9093025 /* ScreenshotCaptureTests.swift */; };
 		CE36E35229215B681F79A355 /* CountDisplay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A450C239AC2D78839345554 /* CountDisplay.swift */; };
 		D523FA28A1D3DEE9B35587FD /* HistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D3273FD36951B73FD2A6818 /* HistoryView.swift */; };
@@ -35,11 +58,17 @@
 		D844C8D666C0B4A25C18FC04 /* AccessibilityTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54DCEB9A4F645AEC28B10AF6 /* AccessibilityTests.swift */; };
 		DC7CD0EF469EA18A39683A26 /* SessionStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 599CE0BF259C91DF2FB47525 /* SessionStatus.swift */; };
 		DCD9865DB7DEAE0AFB76EDD6 /* SessionStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 038CB1CF82077615D70500AF /* SessionStore.swift */; };
+		DE668BADCF3BA66AB804D4D5 /* UITestFlags.swift in Sources */ = {isa = PBXBuildFile; fileRef = 591C2E569381278B6FECAA9F /* UITestFlags.swift */; };
+		DFFA31F71E6018BDB2212A0E /* LittletapsIntentError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79BA84FC2C45A3D88DEBAB2D /* LittletapsIntentError.swift */; };
+		E3B0DAA7B6C8B2CB0A483CE8 /* UserPreferencesCodingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD09EDF6B5728460F1911DAA /* UserPreferencesCodingTests.swift */; };
 		E642C41356C6943478F4DD4F /* CalendarGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 297EB62CEA2C5D0526D5B982 /* CalendarGridView.swift */; };
+		E64F4EB5A5F304260355977D /* EndSessionIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = C29D542D8593F056F151A7EB /* EndSessionIntent.swift */; };
 		EB004F37D78045FBF7C7D226 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E81B718D2FC655CAA1560E41 /* Assets.xcassets */; };
 		EC4551B2FCF0E913475F957A /* SessionControls.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2863DA364DFE117E9A7A5522 /* SessionControls.swift */; };
+		EDFB80956E9FE3E45C91CF56 /* KickCountQueryIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA3CF7F4A6E5B6185ACCA0C /* KickCountQueryIntent.swift */; };
 		F05ED6A685066C25E9D74DE5 /* BabyKickCountApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77BCF9E7109184615A5758F2 /* BabyKickCountApp.swift */; };
 		F06A6B1DBEE9C2297372BDE7 /* SessionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D5643D4E0CCFD0FAF77AF9B /* SessionViewModel.swift */; };
+		F4D8581E3E108BF88FA8BD01 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D815CC9ADD611BDE1A8FF305 /* NotificationService.swift */; };
 		F6E6D928C0E80B905931ED74 /* PreferencesStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 171EB21CE30DE04E3D473164 /* PreferencesStore.swift */; };
 /* End PBXBuildFile section */
 
@@ -51,6 +80,13 @@
 			remoteGlobalIDString = 88FCFD51E6A48905EAFE1053;
 			remoteInfo = BabyKickCount;
 		};
+		61784587CEC42D15AE3C04D9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D8DAA2F4B005571680B7A246 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = BE8EBF9BCE3AAC660BD61153;
+			remoteInfo = LittletapsWidgets;
+		};
 		F84F57E0AA626F38A74B932A /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = D8DAA2F4B005571680B7A246 /* Project object */;
@@ -60,9 +96,25 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		81CB993B8F353D7443B5C074 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				BDB95ADEF060579710DAE0A0 /* LittletapsWidgets.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		038CB1CF82077615D70500AF /* SessionStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionStore.swift; sourceTree = "<group>"; };
 		04815B7F7CD041FC81007529 /* BabyKickCountTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = BabyKickCountTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		0B535ABD488CA41A44064A4F /* NotificationPlanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationPlanner.swift; sourceTree = "<group>"; };
+		0B63424ED9968B6DB19FCB13 /* LittletapsWidgetsBundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LittletapsWidgetsBundle.swift; sourceTree = "<group>"; };
 		0D99FAEE5CBB9FF65BC91ADC /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
 		0E1C82AE89ED04A7C5B709AF /* SessionStateMachineTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionStateMachineTests.swift; sourceTree = "<group>"; };
 		12655E16A02246BC06995E80 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
@@ -71,30 +123,54 @@
 		2863DA364DFE117E9A7A5522 /* SessionControls.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionControls.swift; sourceTree = "<group>"; };
 		297EB62CEA2C5D0526D5B982 /* CalendarGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarGridView.swift; sourceTree = "<group>"; };
 		2A450C239AC2D78839345554 /* CountDisplay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountDisplay.swift; sourceTree = "<group>"; };
+		2AC7090FD5439E900FB8ABC9 /* NotificationPlannerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationPlannerTests.swift; sourceTree = "<group>"; };
 		2DF8EB7583FA5D965CC22DFE /* MedicalDisclaimer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MedicalDisclaimer.swift; sourceTree = "<group>"; };
+		35BBB5D71751FA8BD5532A71 /* IntentBridge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntentBridge.swift; sourceTree = "<group>"; };
 		4291CD0CA059C978BC397BAA /* FeedbackService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbackService.swift; sourceTree = "<group>"; };
+		4594D3112B393CF4D17C798B /* KickSessionLiveActivity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KickSessionLiveActivity.swift; sourceTree = "<group>"; };
 		4DD00789F2E0B93242BEDBB5 /* TapPad.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TapPad.swift; sourceTree = "<group>"; };
+		4F8763C0883283FB1980A46D /* StartSessionIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartSessionIntent.swift; sourceTree = "<group>"; };
 		54DCEB9A4F645AEC28B10AF6 /* AccessibilityTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessibilityTests.swift; sourceTree = "<group>"; };
+		5717305373892C218E740AE5 /* LogKickIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogKickIntent.swift; sourceTree = "<group>"; };
+		575678F0C9F304BB2DFBEE4D /* LiveActivityController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveActivityController.swift; sourceTree = "<group>"; };
+		591C2E569381278B6FECAA9F /* UITestFlags.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITestFlags.swift; sourceTree = "<group>"; };
 		599CE0BF259C91DF2FB47525 /* SessionStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionStatus.swift; sourceTree = "<group>"; };
 		60EAABD89B61FD38C7C93667 /* UITestSupport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITestSupport.swift; sourceTree = "<group>"; };
+		680675F91F9C6E4CF4342531 /* NotificationArtRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationArtRenderer.swift; sourceTree = "<group>"; };
 		77BCF9E7109184615A5758F2 /* BabyKickCountApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BabyKickCountApp.swift; sourceTree = "<group>"; };
+		786F2CA9365A3D95100D93CD /* NotificationPreferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationPreferences.swift; sourceTree = "<group>"; };
+		79BA84FC2C45A3D88DEBAB2D /* LittletapsIntentError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LittletapsIntentError.swift; sourceTree = "<group>"; };
+		7D1E71DD916EED5E11AF4484 /* NotificationArtView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationArtView.swift; sourceTree = "<group>"; };
 		7D2CE80922A94459A9093025 /* ScreenshotCaptureTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenshotCaptureTests.swift; sourceTree = "<group>"; };
+		81B45A0ACF313652A4A98C09 /* LittletapsWidgets.appex */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = "wrapper.app-extension"; path = LittletapsWidgets.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		8584E90F1E5B5D1D22B0F188 /* InfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoView.swift; sourceTree = "<group>"; };
 		97475CC26E2B9200181D88EF /* SessionStateMachine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionStateMachine.swift; sourceTree = "<group>"; };
 		9D3273FD36951B73FD2A6818 /* HistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryView.swift; sourceTree = "<group>"; };
+		A1416BCD030D33680B27090E /* LogTapIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogTapIntent.swift; sourceTree = "<group>"; };
 		A260E42BBEFD822A644555E6 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
+		A66BCFE89C85D09D5DCDB1C4 /* SessionEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionEntity.swift; sourceTree = "<group>"; };
+		AAA3CF7F4A6E5B6185ACCA0C /* KickCountQueryIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KickCountQueryIntent.swift; sourceTree = "<group>"; };
 		ACA066818B4CDB307F781394 /* BabyKickCount.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = BabyKickCount.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AD8B3BEEBC7D7A2C38B93A5D /* ExportService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExportService.swift; sourceTree = "<group>"; };
+		B1FAE03BBAA82CEA168316D3 /* ReminderPrimerCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderPrimerCard.swift; sourceTree = "<group>"; };
 		B448BB032754547ECCA60BC3 /* UserPreferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserPreferences.swift; sourceTree = "<group>"; };
 		BAB68889B4973F56FCE77D5E /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
+		C29D542D8593F056F151A7EB /* EndSessionIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EndSessionIntent.swift; sourceTree = "<group>"; };
+		C47CE0BF890323C6D4EE07E5 /* KickSessionAttributes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KickSessionAttributes.swift; sourceTree = "<group>"; };
+		C50A1CE8B138EADFE1092CD2 /* LittletapsShortcuts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LittletapsShortcuts.swift; sourceTree = "<group>"; };
+		C994A1326BF4927649625317 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		CD09EDF6B5728460F1911DAA /* UserPreferencesCodingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserPreferencesCodingTests.swift; sourceTree = "<group>"; };
 		D0C4BC9612C9C5590536116C /* ExportServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExportServiceTests.swift; sourceTree = "<group>"; };
 		D18A6B89C5EFB393EE89A862 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		D431564CCF08305CBE651133 /* SessionSummarySheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionSummarySheet.swift; sourceTree = "<group>"; };
 		D4B508846E66261E2164E4F7 /* MedicalDisclaimerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MedicalDisclaimerTests.swift; sourceTree = "<group>"; };
+		D815CC9ADD611BDE1A8FF305 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
 		E0DFDAB990F9BD76744113D5 /* AppURLs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppURLs.swift; sourceTree = "<group>"; };
 		E281FE34E2CB50C3440E0AD7 /* SessionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionView.swift; sourceTree = "<group>"; };
 		E36D2CA0E094063DE16F4257 /* TimerDisplay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerDisplay.swift; sourceTree = "<group>"; };
 		E81B718D2FC655CAA1560E41 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		E97E4DCEDC7F01A22F47A739 /* NotificationSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationSettingsView.swift; sourceTree = "<group>"; };
+		ED947077223AF1A981C17D94 /* SessionSnapshot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionSnapshot.swift; sourceTree = "<group>"; };
 		F9BD218D6A2CE3645FBEF6C1 /* KickSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KickSession.swift; sourceTree = "<group>"; };
 		F9D4EA5AD8C2AA01DB25B19B /* KickEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KickEvent.swift; sourceTree = "<group>"; };
 		FE6C3FCC8BB5C7269DE25E48 /* BabyKickCountUITests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = BabyKickCountUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -125,8 +201,19 @@
 				4729C5B489811ACFD2E5486D /* BabyKickCount */,
 				BCCD878342468DFD56D772B8 /* BabyKickCountTests */,
 				175A08C4696D6451B1472604 /* BabyKickCountUITests */,
+				B642DD8F0F80BFAE71FA997D /* LittletapsWidgets */,
+				3BAA032B129069C80ED680D4 /* Shared */,
 				5A99B870195D37BBF43FBDB8 /* Products */,
 			);
+			sourceTree = "<group>";
+		};
+		3BAA032B129069C80ED680D4 /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				C47CE0BF890323C6D4EE07E5 /* KickSessionAttributes.swift */,
+				A1416BCD030D33680B27090E /* LogTapIntent.swift */,
+			);
+			path = Shared;
 			sourceTree = "<group>";
 		};
 		46048084302D288278A34EA4 /* Services */ = {
@@ -134,6 +221,10 @@
 			children = (
 				AD8B3BEEBC7D7A2C38B93A5D /* ExportService.swift */,
 				4291CD0CA059C978BC397BAA /* FeedbackService.swift */,
+				575678F0C9F304BB2DFBEE4D /* LiveActivityController.swift */,
+				680675F91F9C6E4CF4342531 /* NotificationArtRenderer.swift */,
+				0B535ABD488CA41A44064A4F /* NotificationPlanner.swift */,
+				D815CC9ADD611BDE1A8FF305 /* NotificationService.swift */,
 				171EB21CE30DE04E3D473164 /* PreferencesStore.swift */,
 				97475CC26E2B9200181D88EF /* SessionStateMachine.swift */,
 				038CB1CF82077615D70500AF /* SessionStore.swift */,
@@ -147,6 +238,7 @@
 				D18A6B89C5EFB393EE89A862 /* PrivacyInfo.xcprivacy */,
 				51FCCEBC472D5BDE53A3CDBC /* App */,
 				1696C1B3A31B20C985F8F1FD /* DesignSystem */,
+				D39479464D382B90AB31A789 /* Intents */,
 				6A4BD7F578C9E72B05F08F50 /* Models */,
 				9C6DE6C2D04B7E6ADE04A2F2 /* Resources */,
 				46048084302D288278A34EA4 /* Services */,
@@ -159,9 +251,12 @@
 		51FCCEBC472D5BDE53A3CDBC /* App */ = {
 			isa = PBXGroup;
 			children = (
+				C994A1326BF4927649625317 /* AppDelegate.swift */,
 				E0DFDAB990F9BD76744113D5 /* AppURLs.swift */,
 				77BCF9E7109184615A5758F2 /* BabyKickCountApp.swift */,
+				35BBB5D71751FA8BD5532A71 /* IntentBridge.swift */,
 				2DF8EB7583FA5D965CC22DFE /* MedicalDisclaimer.swift */,
+				591C2E569381278B6FECAA9F /* UITestFlags.swift */,
 			);
 			path = App;
 			sourceTree = "<group>";
@@ -172,6 +267,7 @@
 				ACA066818B4CDB307F781394 /* BabyKickCount.app */,
 				04815B7F7CD041FC81007529 /* BabyKickCountTests.xctest */,
 				FE6C3FCC8BB5C7269DE25E48 /* BabyKickCountUITests.xctest */,
+				81B45A0ACF313652A4A98C09 /* LittletapsWidgets.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -189,6 +285,8 @@
 			children = (
 				F9D4EA5AD8C2AA01DB25B19B /* KickEvent.swift */,
 				F9BD218D6A2CE3645FBEF6C1 /* KickSession.swift */,
+				786F2CA9365A3D95100D93CD /* NotificationPreferences.swift */,
+				ED947077223AF1A981C17D94 /* SessionSnapshot.swift */,
 				599CE0BF259C91DF2FB47525 /* SessionStatus.swift */,
 				B448BB032754547ECCA60BC3 /* UserPreferences.swift */,
 			);
@@ -203,14 +301,39 @@
 			path = Resources;
 			sourceTree = "<group>";
 		};
+		B642DD8F0F80BFAE71FA997D /* LittletapsWidgets */ = {
+			isa = PBXGroup;
+			children = (
+				4594D3112B393CF4D17C798B /* KickSessionLiveActivity.swift */,
+				0B63424ED9968B6DB19FCB13 /* LittletapsWidgetsBundle.swift */,
+			);
+			path = LittletapsWidgets;
+			sourceTree = "<group>";
+		};
 		BCCD878342468DFD56D772B8 /* BabyKickCountTests */ = {
 			isa = PBXGroup;
 			children = (
 				D0C4BC9612C9C5590536116C /* ExportServiceTests.swift */,
 				D4B508846E66261E2164E4F7 /* MedicalDisclaimerTests.swift */,
+				2AC7090FD5439E900FB8ABC9 /* NotificationPlannerTests.swift */,
 				0E1C82AE89ED04A7C5B709AF /* SessionStateMachineTests.swift */,
+				CD09EDF6B5728460F1911DAA /* UserPreferencesCodingTests.swift */,
 			);
 			path = BabyKickCountTests;
+			sourceTree = "<group>";
+		};
+		D39479464D382B90AB31A789 /* Intents */ = {
+			isa = PBXGroup;
+			children = (
+				C29D542D8593F056F151A7EB /* EndSessionIntent.swift */,
+				AAA3CF7F4A6E5B6185ACCA0C /* KickCountQueryIntent.swift */,
+				79BA84FC2C45A3D88DEBAB2D /* LittletapsIntentError.swift */,
+				C50A1CE8B138EADFE1092CD2 /* LittletapsShortcuts.swift */,
+				5717305373892C218E740AE5 /* LogKickIntent.swift */,
+				A66BCFE89C85D09D5DCDB1C4 /* SessionEntity.swift */,
+				4F8763C0883283FB1980A46D /* StartSessionIntent.swift */,
+			);
+			path = Intents;
 			sourceTree = "<group>";
 		};
 		E02A85F60378262A7DA2AFCB /* Views */ = {
@@ -220,7 +343,10 @@
 				2A450C239AC2D78839345554 /* CountDisplay.swift */,
 				9D3273FD36951B73FD2A6818 /* HistoryView.swift */,
 				8584E90F1E5B5D1D22B0F188 /* InfoView.swift */,
+				7D1E71DD916EED5E11AF4484 /* NotificationArtView.swift */,
+				E97E4DCEDC7F01A22F47A739 /* NotificationSettingsView.swift */,
 				0D99FAEE5CBB9FF65BC91ADC /* OnboardingView.swift */,
+				B1FAE03BBAA82CEA168316D3 /* ReminderPrimerCard.swift */,
 				BAB68889B4973F56FCE77D5E /* RootView.swift */,
 				2863DA364DFE117E9A7A5522 /* SessionControls.swift */,
 				D431564CCF08305CBE651133 /* SessionSummarySheet.swift */,
@@ -259,10 +385,12 @@
 			buildPhases = (
 				7B50B393DA59E496AF6DC68F /* Sources */,
 				FE196C3944CD0AD69152F7C7 /* Resources */,
+				81CB993B8F353D7443B5C074 /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				6FCE0AABEB6F628F76392CA8 /* PBXTargetDependency */,
 			);
 			name = BabyKickCount;
 			packageProductDependencies = (
@@ -270,6 +398,23 @@
 			productName = BabyKickCount;
 			productReference = ACA066818B4CDB307F781394 /* BabyKickCount.app */;
 			productType = "com.apple.product-type.application";
+		};
+		BE8EBF9BCE3AAC660BD61153 /* LittletapsWidgets */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 4C538157C1F0999D96855D59 /* Build configuration list for PBXNativeTarget "LittletapsWidgets" */;
+			buildPhases = (
+				15E6940F2272CEC8D140D900 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = LittletapsWidgets;
+			packageProductDependencies = (
+			);
+			productName = LittletapsWidgets;
+			productReference = 81B45A0ACF313652A4A98C09 /* LittletapsWidgets.appex */;
+			productType = "com.apple.product-type.app-extension";
 		};
 		E5194F393D3D8B655EEFFF53 /* BabyKickCountUITests */ = {
 			isa = PBXNativeTarget;
@@ -302,6 +447,10 @@
 						DevelopmentTeam = 72D6H97SLU;
 						ProvisioningStyle = Automatic;
 					};
+					BE8EBF9BCE3AAC660BD61153 = {
+						DevelopmentTeam = 72D6H97SLU;
+						ProvisioningStyle = Automatic;
+					};
 					E5194F393D3D8B655EEFFF53 = {
 						TestTargetID = 88FCFD51E6A48905EAFE1053;
 					};
@@ -322,6 +471,7 @@
 			projectRoot = "";
 			targets = (
 				88FCFD51E6A48905EAFE1053 /* BabyKickCount */,
+				BE8EBF9BCE3AAC660BD61153 /* LittletapsWidgets */,
 				52B7E3DB25A65DC3E93F2C7E /* BabyKickCountTests */,
 				E5194F393D3D8B655EEFFF53 /* BabyKickCountUITests */,
 			);
@@ -341,6 +491,18 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		15E6940F2272CEC8D140D900 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				60BF748521BA72BEB05D92A4 /* KickSessionAttributes.swift in Sources */,
+				0BEF590DC79E9728746CBF2F /* KickSessionLiveActivity.swift in Sources */,
+				3DD42B38A705BE286182737D /* LittletapsWidgetsBundle.swift in Sources */,
+				45AC81A736579D56AE251FE8 /* LogTapIntent.swift in Sources */,
+				0C7016C7CE6483BB940FE188 /* Theme.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		34F2159A94EC01CA07554282 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -355,21 +517,40 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5850E68772C41189BE76F6C4 /* AppDelegate.swift in Sources */,
 				43196D700166D1EC8BAD1A92 /* AppURLs.swift in Sources */,
 				F05ED6A685066C25E9D74DE5 /* BabyKickCountApp.swift in Sources */,
 				E642C41356C6943478F4DD4F /* CalendarGridView.swift in Sources */,
 				CE36E35229215B681F79A355 /* CountDisplay.swift in Sources */,
+				E64F4EB5A5F304260355977D /* EndSessionIntent.swift in Sources */,
 				8187F4F0D64B4D0DA6DED12D /* ExportService.swift in Sources */,
 				670A2F71B8C317417DD52376 /* FeedbackService.swift in Sources */,
 				D523FA28A1D3DEE9B35587FD /* HistoryView.swift in Sources */,
 				2C35089F565CFCC1ABFBB3F9 /* InfoView.swift in Sources */,
+				2DE4FBE84D8AB2B3584AA23E /* IntentBridge.swift in Sources */,
+				EDFB80956E9FE3E45C91CF56 /* KickCountQueryIntent.swift in Sources */,
 				B0E854F7A8EF6FFD21E61CD0 /* KickEvent.swift in Sources */,
 				97EC4DA56295AA5E5DD3CBF9 /* KickSession.swift in Sources */,
+				41B3B82109771DE108A90C4B /* KickSessionAttributes.swift in Sources */,
+				DFFA31F71E6018BDB2212A0E /* LittletapsIntentError.swift in Sources */,
+				816AEED5DC744C8BD8AEEA9B /* LittletapsShortcuts.swift in Sources */,
+				212016D6F3C7CE9B2D26729C /* LiveActivityController.swift in Sources */,
+				B6A80F106CCF91F400663790 /* LogKickIntent.swift in Sources */,
+				AA78776A10AB1DC96054F969 /* LogTapIntent.swift in Sources */,
 				3F71605CBC8133246B9F00C4 /* MedicalDisclaimer.swift in Sources */,
+				7B260694E627CE1D556728B7 /* NotificationArtRenderer.swift in Sources */,
+				9A258E486C8EB073E77F1BF9 /* NotificationArtView.swift in Sources */,
+				5350B24B21E893A7AAF55E8A /* NotificationPlanner.swift in Sources */,
+				7838B36BF750043CA3EC4815 /* NotificationPreferences.swift in Sources */,
+				F4D8581E3E108BF88FA8BD01 /* NotificationService.swift in Sources */,
+				9AEE364E22204AF21CF9939B /* NotificationSettingsView.swift in Sources */,
 				1C53E03228346FD9A8009192 /* OnboardingView.swift in Sources */,
 				F6E6D928C0E80B905931ED74 /* PreferencesStore.swift in Sources */,
+				C15C93BEF1A52CFAF0B8118A /* ReminderPrimerCard.swift in Sources */,
 				BE47DAA435AAAD611157B656 /* RootView.swift in Sources */,
 				EC4551B2FCF0E913475F957A /* SessionControls.swift in Sources */,
+				8B0DCBA8993926D1AA7B3339 /* SessionEntity.swift in Sources */,
+				14ADD807CB81153AE635FC8E /* SessionSnapshot.swift in Sources */,
 				D69208441E7F8D44E4565F35 /* SessionStateMachine.swift in Sources */,
 				DC7CD0EF469EA18A39683A26 /* SessionStatus.swift in Sources */,
 				DCD9865DB7DEAE0AFB76EDD6 /* SessionStore.swift in Sources */,
@@ -377,9 +558,11 @@
 				600C8984F09C9C3FA4785868 /* SessionView.swift in Sources */,
 				F06A6B1DBEE9C2297372BDE7 /* SessionViewModel.swift in Sources */,
 				98277520BD6C9531C26E53F6 /* SettingsView.swift in Sources */,
+				1BEE7FC8E412D475250AB82E /* StartSessionIntent.swift in Sources */,
 				AD359E6132E50F16EED59572 /* TapPad.swift in Sources */,
 				405C116A2EDE1EF178A37632 /* Theme.swift in Sources */,
 				97270661D071DF3F084D64DA /* TimerDisplay.swift in Sources */,
+				DE668BADCF3BA66AB804D4D5 /* UITestFlags.swift in Sources */,
 				BCA5662A5588E820B18331D5 /* UserPreferences.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -390,7 +573,9 @@
 			files = (
 				440ACDCC5C17775151ED6F50 /* ExportServiceTests.swift in Sources */,
 				B1324D1BDA7F145BFF9DD4EF /* MedicalDisclaimerTests.swift in Sources */,
+				34D4B4955FE4E5956DC4D0DB /* NotificationPlannerTests.swift in Sources */,
 				3A39C36960C863BA750D24E0 /* SessionStateMachineTests.swift in Sources */,
+				E3B0DAA7B6C8B2CB0A483CE8 /* UserPreferencesCodingTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -401,6 +586,11 @@
 			isa = PBXTargetDependency;
 			target = 88FCFD51E6A48905EAFE1053 /* BabyKickCount */;
 			targetProxy = 43737ACA7E29BE7F5EEA806A /* PBXContainerItemProxy */;
+		};
+		6FCE0AABEB6F628F76392CA8 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = BE8EBF9BCE3AAC660BD61153 /* LittletapsWidgets */;
+			targetProxy = 61784587CEC42D15AE3C04D9 /* PBXContainerItemProxy */;
 		};
 		AC946AF743E00DBF599C0436 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -415,6 +605,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = BabyKickCount/BabyKickCount.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 72D6H97SLU;
@@ -453,6 +644,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = BabyKickCount/BabyKickCount.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 72D6H97SLU;
@@ -516,7 +708,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
 				MARKETING_VERSION = 1.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
@@ -598,7 +790,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
 				MARKETING_VERSION = 1.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
@@ -610,6 +802,25 @@
 				SWIFT_VERSION = 5.9;
 			};
 			name = Debug;
+		};
+		BA214A84845DB6E1502C2693 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 72D6H97SLU;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = LittletapsWidgets/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.babykickcount.app.widgets;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
 		};
 		D9BFF05E17A590DBA51C13E9 /* Release */ = {
 			isa = XCBuildConfiguration;
@@ -627,6 +838,25 @@
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/BabyKickCount.app/BabyKickCount";
 			};
 			name = Release;
+		};
+		E34907D3945E5153B96D501A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 72D6H97SLU;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = LittletapsWidgets/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.babykickcount.app.widgets;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
 		};
 		FCEF8F85E5DE0E628580B0F9 /* Release */ = {
 			isa = XCBuildConfiguration;
@@ -653,6 +883,15 @@
 			buildConfigurations = (
 				9A2F906BB4D6E13B32276AEF /* Debug */,
 				FCEF8F85E5DE0E628580B0F9 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		4C538157C1F0999D96855D59 /* Build configuration list for PBXNativeTarget "LittletapsWidgets" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E34907D3945E5153B96D501A /* Debug */,
+				BA214A84845DB6E1502C2693 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;

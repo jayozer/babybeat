@@ -49,6 +49,20 @@
                ReferencedContainer = "container:BabyKickCount.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "BE8EBF9BCE3AAC660BD61153"
+               BuildableName = "LittletapsWidgets.appex"
+               BlueprintName = "LittletapsWidgets"
+               ReferencedContainer = "container:BabyKickCount.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction
