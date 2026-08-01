@@ -1,8 +1,6 @@
 import SwiftUI
-import SwiftData
 
 struct RootView: View {
-    @Environment(\.modelContext) private var context
     @EnvironmentObject private var preferences: PreferencesStore
 
     var body: some View {
@@ -10,7 +8,7 @@ struct RootView: View {
             if preferences.preferences.hasCompletedOnboarding {
                 TabView {
                     NavigationStack {
-                        SessionView(context: context, preferences: preferences)
+                        SessionView()
                     }
                     .tabItem { Label("Counter", systemImage: "heart.fill") }
 

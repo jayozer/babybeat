@@ -30,3 +30,22 @@ final class PreferencesStore: ObservableObject {
         UserDefaults.standard.set(data, forKey: Self.key)
     }
 }
+
+extension PreferencesStore {
+    /// Hand-rolling a `Binding` per setting stops scaling once a screen has
+    /// ten of them, so route them through a key path instead.
+    func binding<V>(_ keyPath: WritableKeyPath<UserPreferences, V>) -> Binding<V> {
+        Binding(
+            get: { self.preferences[keyPath: keyPath] },
+            set: { newValue in self.update { $0[keyPath: keyPath] = newValue } }
+        )
+    }
+
+    /// Convenience for nested groups such as `notifications`.
+    func binding<Group, V>(
+        _ group: WritableKeyPath<UserPreferences, Group>,
+        _ keyPath: WritableKeyPath<Group, V>
+    ) -> Binding<V> {
+        binding(group.appending(path: keyPath))
+    }
+}

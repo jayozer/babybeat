@@ -702,3 +702,36 @@ h1,h2,h3,h4{ margin:0; font-weight:500; letter-spacing:-0.01em; color: var(--ink
 /* ---------- Density helper ---------- */
 [data-density="comfy"]{ --density: 1.15; }
 [data-density="tight"]{ --density: 0.85; }
+
+/* ---------- DEMO ---------- */
+.demo{
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: clamp(60px, 8vw, 110px) var(--gutter);
+}
+.demo-lede{
+  max-width: 560px;
+  margin: 18px auto 0;
+  text-align: center;
+  color: var(--ink-soft);
+}
+.demo-phone-wrap{
+  display: flex;
+  justify-content: center;
+  margin-top: 48px;
+}
+.demo-phone{
+  width: min(320px, 86vw);
+  background: #1c2620;
+  border-radius: 48px;
+  padding: 10px;
+  box-shadow: var(--shadow-lg), inset 0 0 0 2px rgba(255,255,255,.06);
+}
+.demo-phone video{
+  display: block;
+  width: 100%;
+  aspect-ratio: 660 / 1434;
+  border-radius: 38px;
+  background: var(--cream-soft);
+  object-fit: cover;
+}

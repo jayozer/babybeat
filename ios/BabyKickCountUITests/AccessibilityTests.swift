@@ -155,6 +155,8 @@ final class AccessibilityTests: XCTestCase {
         assertHitTargets(on: "Settings")
         assertAllControlsLabelled(on: "Settings")
 
+        visitReminders()
+
         // The About section sits below the fold.
         let info = app.buttons["Information & Help"]
         var swipes = 0
@@ -168,6 +170,62 @@ final class AccessibilityTests: XCTestCase {
         info.tap()
         assertHitTargets(on: "Info")
         assertAllControlsLabelled(on: "Info")
+    }
+
+    /// Pushes into Reminders, checks it, and comes back to Settings.
+    ///
+    /// The weekday circles in here are the one new control at real risk of
+    /// falling under 44pt: seven of them at 44pt need 308pt, and a Form row on
+    /// the narrowest supported iPhone is about 305pt.
+    private func visitReminders(file: StaticString = #filePath, line: UInt = #line) {
+        let reminders = app.buttons.matching(
+            NSPredicate(format: "label BEGINSWITH 'Reminders'")
+        ).firstMatch
+        XCTAssertTrue(reminders.waitForExistence(timeout: 10),
+                      "Settings should link to Reminders", file: file, line: line)
+        reminders.tap()
+
+        // Scroll the whole screen so every section is measured, not just the
+        // ones above the fold.
+        for _ in 0..<3 {
+            assertHitTargets(on: "Reminders")
+            assertAllControlsLabelled(on: "Reminders")
+            app.swipeUp()
+            usleep(400_000)
+        }
+
+        let back = app.navigationBars.buttons.firstMatch
+        XCTAssertTrue(back.waitForExistence(timeout: 5),
+                      "no way back out of Reminders", file: file, line: line)
+        back.tap()
+    }
+
+    /// The weekday circles have to read as full day names, not "M"/"T"/"W" —
+    /// VoiceOver announcing "T" cannot distinguish Tuesday from Thursday.
+    func testWeekdayPickerAnnouncesFullDayNames() {
+        app.launchArguments += ["-ltShowAllReminderSections"]
+        launchApp()
+        goToTab("Settings")
+
+        let reminders = app.buttons.matching(
+            NSPredicate(format: "label BEGINSWITH 'Reminders'")
+        ).firstMatch
+        XCTAssertTrue(reminders.waitForExistence(timeout: 10))
+        reminders.tap()
+
+        for day in Calendar.current.weekdaySymbols {
+            let button = app.buttons[day]
+            XCTAssertTrue(button.waitForExistence(timeout: 5),
+                          "no weekday button labelled '\(day)'")
+            XCTAssertGreaterThanOrEqual(
+                button.frame.height, minimumTarget - tolerance,
+                "'\(day)' is \(button.frame.height)pt tall, under the 44pt minimum"
+            )
+            XCTAssertGreaterThanOrEqual(
+                button.frame.width, minimumTarget - tolerance,
+                "'\(day)' is \(button.frame.width)pt wide, under the 44pt minimum"
+            )
+        }
     }
 
     // MARK: - The specific labels VoiceOver reads out

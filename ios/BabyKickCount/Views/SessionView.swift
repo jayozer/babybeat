@@ -3,15 +3,16 @@ import SwiftData
 
 struct SessionView: View {
     @EnvironmentObject private var preferences: PreferencesStore
-    @StateObject private var viewModel: SessionViewModel
+    @EnvironmentObject private var viewModel: SessionViewModel
+    @Environment(\.scenePhase) private var scenePhase
 
     @State private var showSummary = false
     @State private var dismissedSummaryForSessionID: UUID?
 
-    init(context: ModelContext, preferences: PreferencesStore) {
-        let store = SessionStore(context: context)
-        _viewModel = StateObject(wrappedValue: SessionViewModel(store: store, preferences: preferences))
-    }
+    /// Only used to know whether the user has ever finished a session, which
+    /// gates the reminder primer.
+    @Query(filter: #Predicate<KickSession> { $0.endedAt != nil })
+    private var finishedSessions: [KickSession]
 
     var body: some View {
         ZStack {
@@ -23,6 +24,12 @@ struct SessionView: View {
 
                     if let error = viewModel.errorMessage {
                         errorBanner(error)
+                    }
+
+                    if showsReminderPrimer {
+                        ReminderPrimerCard {
+                            preferences.update { $0.notifications.hasSeenPrimer = true }
+                        }
                     }
 
                     CountDisplay(currentCount: viewModel.kickCount, targetCount: viewModel.targetCount)
@@ -73,6 +80,13 @@ struct SessionView: View {
         }
         .onChange(of: viewModel.isActive) { _, _ in viewModel.applyWakeLock() }
         .onChange(of: viewModel.isPaused) { _, _ in viewModel.applyWakeLock() }
+        .onChange(of: scenePhase) { _, phase in
+            // Backgrounding is the last chance to write an accurate remaining
+            // time and tap count into the pending requests; returning is when
+            // permission may have changed in Settings.
+            guard phase == .background || phase == .active else { return }
+            viewModel.syncSessionSurfaces()
+        }
         .onChange(of: viewModel.session?.status) { _, newStatus in
             guard let newStatus, newStatus.isTerminal,
                   let id = viewModel.session?.id,
@@ -97,6 +111,16 @@ struct SessionView: View {
                 )
             }
         }
+    }
+
+    /// Shown once, and only after the user has actually finished a session —
+    /// never to someone who has already turned reminders on, and never in the
+    /// middle of counting.
+    private var showsReminderPrimer: Bool {
+        let notifications = preferences.preferences.notifications
+        guard !notifications.hasSeenPrimer, !notifications.masterEnabled else { return false }
+        guard viewModel.session == nil else { return false }
+        return finishedSessions.isEmpty == false
     }
 
     private var header: some View {

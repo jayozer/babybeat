@@ -128,10 +128,10 @@ else
   tail -30 "$OUT/build.log"
 fi
 
-# appintentsmetadataprocessor logs this on every build of an app that does not
-# link AppIntents.framework. It is toolchain noise rather than a code warning,
-# and the only way to silence it is to add a framework the app has no use for.
-# Listed explicitly so real warnings are never hidden by a blanket filter.
+# appintentsmetadataprocessor logged this on every build back when the app did
+# not link AppIntents.framework. It does now, so this should no longer appear —
+# the pattern is kept so an older log still reads correctly, and because
+# dropping it would mean a blanket filter that could hide real warnings.
 BENIGN_WARNINGS='No AppIntents.framework dependency found'
 
 if grep "warning:" "$OUT/build.log" | grep -qv "$BENIGN_WARNINGS"; then
@@ -280,14 +280,20 @@ if [[ "$DO_ARCHIVE" == "1" ]]; then
   step "App Store archive"
   ARCHIVE="$OUT/Littletaps.xcarchive"
   rm -rf "$ARCHIVE"
+  # -allowProvisioningUpdates lets automatic signing regenerate the profile.
+  # Without it the first archive after a capability change — the
+  # time-sensitive notification entitlement, say — fails on a stale profile
+  # that has nothing to do with the code.
   if xcodebuild archive \
       -project "$PROJECT" -scheme "$SCHEME" -configuration Release \
       -destination 'generic/platform=iOS' -archivePath "$ARCHIVE" \
+      -allowProvisioningUpdates \
       > "$OUT/archive.log" 2>&1; then
     pass "archived"
     if xcodebuild -exportArchive -archivePath "$ARCHIVE" \
         -exportOptionsPlist "$REPO_ROOT/ios/ExportOptions-AppStore.plist" \
-        -exportPath "$OUT/export" > "$OUT/export.log" 2>&1; then
+        -exportPath "$OUT/export" -allowProvisioningUpdates \
+        > "$OUT/export.log" 2>&1; then
       pass "exported an App Store package to $OUT/export"
     else
       fail "export failed (usually distribution provisioning) — see $OUT/export.log"
@@ -315,6 +321,61 @@ cat <<'EOF'
     [ ] End early -> confirmation dialog -> session lands in History.
     [ ] Force-quit mid-session, relaunch -> session resumes with correct elapsed time.
 
+  Reminders. Scheduling logic is covered by NotificationPlannerTests; what
+  those cannot see is delivery and appearance. The Simulator does deliver
+  local notifications and does render attachments, so most of this works
+  without a device:
+    [ ] Settings -> Reminders -> turn on, accept the prompt, "Send a test
+        reminder", background the app. Banner shows the sage heart thumbnail,
+        and the title/body read as calm invitations, not instructions.
+    [ ] Turn on the daily reminder and check the weekday circles: all seven
+        reachable, each clearing 44pt, VoiceOver reading full day names.
+        Do this on iPhone SE (3rd generation) -- 7 x 44 = 308pt against a
+        ~305pt row is the tightest layout in the app.
+    [ ] Deny notifications on a clean install -> the master toggle must refuse
+        to stay on, and the "Turn on in Settings" row must appear and deep-link
+        to Littletaps' notification pane (not the generic app page).
+    [ ] Long-press a daily reminder -> "Remind me in an hour" -> a new pending
+        request exists and the app never came to the foreground.
+    [ ] Tap a notification from a cold launch (app force-quit) -> it opens.
+    [ ] Background round trip: start a session, background the app, wait past
+        the window. The "your window is up" alert fires, AND on returning the
+        session lands in .timeout exactly once -- not twice.
+    [ ] With reminders off, confirm nothing is ever scheduled.
+
+  Needs a real device, not the Simulator:
+    [ ] .timeSensitive breakthrough: enable a Focus, confirm the end-of-window
+        alert still arrives while the daily reminder does not.
+
+  Live Activity and Dynamic Island (needs a device with a Dynamic Island for
+  the second half):
+    [ ] Start a session -> the Live Activity appears on the Lock Screen with
+        the count, a countdown, and a progress bar.
+    [ ] Leave it for a few minutes without opening the app. The countdown must
+        keep ticking on its own -- nothing of ours pushes per-second updates,
+        so a frozen timer means the Text(timerInterval:) was replaced with a
+        static string.
+    [ ] Tap "+" on the Lock Screen without unlocking -> the count goes up, and
+        the movement is in History when you next open the app.
+    [ ] Pause -> the activity shows "Paused" and the + button disables.
+    [ ] Complete, time out, end early, and force-quit: in all four the activity
+        must disappear, not linger.
+    [ ] Force-quit mid-session and relaunch -> exactly one activity, the
+        original, still updating. Two means adopt() did not match.
+    [ ] Turn Live Activities off in iOS Settings -> counting still works
+        normally with no activity and no error.
+
+  Siri and Shortcuts:
+    [ ] "Hey Siri, log a tap in Littletaps" with the app force-quit. It should
+        answer with the running count WITHOUT bringing the app forward, and
+        the movement should appear in History when you next open it.
+    [ ] "Hey Siri, how many taps in Littletaps" during a session -> spoken
+        count plus the sage snippet card.
+    [ ] Shortcuts app -> Littletaps: all four actions listed, and "Taps so far"
+        returns a number that can be piped into another action.
+    [ ] Spotlight: type "log a tap" and confirm the shortcut is offered.
+    [ ] Action button (iPhone 15 Pro and later): assign "Log a tap" and press.
+
   Accessibility is now covered by BabyKickCountUITests, which runs above. It
   asserts the labels VoiceOver reads out (calendar days, stars, the history
   "..." menu, sound previews), that every button and link clears 44pt on all
@@ -329,6 +390,19 @@ cat <<'EOF'
         which is a known and accepted gap.
         Note: scrolling in the Simulator needs a click-drag; the mouse wheel
         does nothing, which makes content look clipped when it merely scrolls.
+
+  Liquid Glass. The app is built against the iOS 26 SDK, so system chrome
+  restyles itself and this needs eyes on it once:
+    [ ] Tab bar: the three tabs against Theme.background, with Theme.primary
+        as the tint. Check the selected state is still legible.
+    [ ] Settings and Reminders: Form sections over the gradient, with
+        scrollContentBackground(.hidden). If the grouped background now reads
+        heavier than softCard() elsewhere, that is the thing to retune.
+    [ ] Navigation bars and the summary sheet.
+    [ ] softCard()'s .ultraThinMaterial next to the new chrome -- it should
+        read as the same family, not as a leftover.
+    [ ] Then re-run ios/Scripts/capture-screenshots.sh; the App Store shots
+        predate the restyle.
 
   Then, on the App Store Connect side (see TODO.md for the click paths):
     [ ] Upload app_store_screenshots/iphone_6_9/* to the 6.9-inch slot.
