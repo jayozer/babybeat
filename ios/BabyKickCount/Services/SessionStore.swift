@@ -56,13 +56,17 @@ final class SessionStore {
         return kick
     }
 
+    /// Returns the removed event's id (captured before deletion — a deleted
+    /// `@Model` must not be read back), which the sync layer uses to
+    /// tombstone the kick on the paired device.
     @discardableResult
-    func undoLastKick(in session: KickSession) throws -> KickEvent? {
+    func undoLastKick(in session: KickSession) throws -> UUID? {
         let sorted = session.events.sorted(by: { $0.ordinal < $1.ordinal })
         guard let last = sorted.last else { return nil }
+        let removedID = last.id
         context.delete(last)
         session.kickCount = max(0, session.kickCount - 1)
         try context.save()
-        return last
+        return removedID
     }
 }

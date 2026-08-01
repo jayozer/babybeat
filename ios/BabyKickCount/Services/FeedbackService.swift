@@ -4,7 +4,7 @@ import UIKit
 /// Plays synthesized tap sounds and triggers haptic feedback.
 /// Uses AVAudioEngine so the app does not need bundled audio files.
 @MainActor
-final class FeedbackService {
+final class FeedbackService: FeedbackProviding {
     static let shared = FeedbackService()
 
     private let engine = AVAudioEngine()
@@ -38,7 +38,7 @@ final class FeedbackService {
         }
     }
 
-    func trigger(sound: SoundOption, vibrationEnabled: Bool) {
+    func kickFeedback(sound: SoundOption, vibrationEnabled: Bool) {
         if sound != .none {
             play(sound)
         }
@@ -46,6 +46,12 @@ final class FeedbackService {
             haptic.impactOccurred()
         }
     }
+
+    // Terminal states and undo have no feedback on the iPhone; the summary
+    // sheet is the completion cue. The watch overrides both with haptics.
+    func outcomeFeedback(_ status: SessionStatus) {}
+
+    func undoFeedback() {}
 
     func play(_ sound: SoundOption) {
         guard sound != .none else { return }
